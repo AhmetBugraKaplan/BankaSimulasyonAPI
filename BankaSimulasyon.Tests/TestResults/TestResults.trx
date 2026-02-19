@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="e5c3f68e-532e-412a-8ff0-133f50e477de" name="bugra@DESKTOP-EVOHUKA 2026-02-18 12:05:32" runUser="DESKTOP-EVOHUKA\bugra" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-02-18T12:05:32.1703969+03:00" queuing="2026-02-18T12:05:32.1703972+03:00" start="2026-02-18T12:05:31.3966172+03:00" finish="2026-02-18T12:05:32.1773118+03:00" />
+  <TestSettings name="default" id="a007fcb1-7c80-4529-8487-c8e64bc26094">
+    <Deployment runDeploymentRoot="bugra_DESKTOP-EVOHUKA_2026-02-18_12_05_32" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="a7840f46-1521-4dd9-9679-f0908ec35a7d" testId="9d944f2b-f160-0278-cf66-10acd236cb83" testName="BankaSimulasyon.Tests.AtmServiceTests.AtmdenParaCekAsync_YeterliBakiyeVeUygunKasetler_BasariliDonmeli" computerName="DESKTOP-EVOHUKA" duration="00:00:00.0381473" startTime="2026-02-18T12:05:32.0775220+03:00" endTime="2026-02-18T12:05:32.0775315+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a7840f46-1521-4dd9-9679-f0908ec35a7d" />
+    <UnitTestResult executionId="40325af9-681b-48a3-b783-bd49ba4eba78" testId="6cf27b39-f4ae-e045-bfc0-ba1a502816df" testName="BankaSimulasyon.Tests.AtmServiceTests.AtmdenParaCekAsync_KritikSeviyeAltindakiKaseti_PasGecmeli" computerName="DESKTOP-EVOHUKA" duration="00:00:00.0017106" startTime="2026-02-18T12:05:32.0801282+03:00" endTime="2026-02-18T12:05:32.0801284+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="40325af9-681b-48a3-b783-bd49ba4eba78" />
+    <UnitTestResult executionId="26c86250-59e1-4772-b03a-d78301b6f10e" testId="abb01fd1-c292-0ee5-5b97-1fd74113b444" testName="BankaSimulasyon.Tests.AtmServiceTests.AtmdenParaCekAsync_YetersizBakiye_BasarisizDonmeli" computerName="DESKTOP-EVOHUKA" duration="00:00:00.0008931" startTime="2026-02-18T12:05:32.0877615+03:00" endTime="2026-02-18T12:05:32.0877616+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="26c86250-59e1-4772-b03a-d78301b6f10e" />
+    <UnitTestResult executionId="ffa461c1-9544-4ea4-9b33-fc4de71191b6" testId="4a49b952-225e-1201-d4b3-0809e03aa29c" testName="BankaSimulasyon.Tests.AtmServiceTests.AtmdenParaCekAsync_GecersizTutar_10unKatiDegilse_HataDonmeli" computerName="DESKTOP-EVOHUKA" duration="00:00:00.0011074" startTime="2026-02-18T12:05:32.0792577+03:00" endTime="2026-02-18T12:05:32.0792577+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ffa461c1-9544-4ea4-9b33-fc4de71191b6" />
+    <UnitTestResult executionId="d8d2c5de-22a7-4c87-8697-5f9708aed3df" testId="0f69b279-64a7-8d37-e7f1-d22a6332c2d4" testName="BankaSimulasyon.Tests.AtmServiceTests.AtmdenParaCekAsync_ParaBozmaSenaryosu_Calismali" computerName="DESKTOP-EVOHUKA" duration="00:00:00.0011283" startTime="2026-02-18T12:05:32.0876746+03:00" endTime="2026-02-18T12:05:32.0876748+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d8d2c5de-22a7-4c87-8697-5f9708aed3df">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.NotNull() Failure</Message>
+          <StackTrace>   at BankaSimulasyon.Tests.AtmServiceTests.AtmdenParaCekAsync_ParaBozmaSenaryosu_Calismali() in C:\Users\bugra\Desktop\aspnetcore-dersleri\BankaSimulasyon\BankaSimulasyon.Tests\AtmServiceTests.cs:line 198&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="BankaSimulasyon.Tests.AtmServiceTests.AtmdenParaCekAsync_KritikSeviyeAltindakiKaseti_PasGecmeli" storage="c:\users\bugra\desktop\aspnetcore-dersleri\bankasimulasyon\bankasimulasyon.tests\bin\debug\net8.0\bankasimulasyon.tests.dll" id="6cf27b39-f4ae-e045-bfc0-ba1a502816df">
+      <Execution id="40325af9-681b-48a3-b783-bd49ba4eba78" />
+      <TestMethod codeBase="C:\Users\bugra\Desktop\aspnetcore-dersleri\BankaSimulasyon\BankaSimulasyon.Tests\bin\Debug\net8.0\BankaSimulasyon.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="BankaSimulasyon.Tests.AtmServiceTests" name="AtmdenParaCekAsync_KritikSeviyeAltindakiKaseti_PasGecmeli" />
+    </UnitTest>
+    <UnitTest name="BankaSimulasyon.Tests.AtmServiceTests.AtmdenParaCekAsync_ParaBozmaSenaryosu_Calismali" storage="c:\users\bugra\desktop\aspnetcore-dersleri\bankasimulasyon\bankasimulasyon.tests\bin\debug\net8.0\bankasimulasyon.tests.dll" id="0f69b279-64a7-8d37-e7f1-d22a6332c2d4">
+      <Execution id="d8d2c5de-22a7-4c87-8697-5f9708aed3df" />
+      <TestMethod codeBase="C:\Users\bugra\Desktop\aspnetcore-dersleri\BankaSimulasyon\BankaSimulasyon.Tests\bin\Debug\net8.0\BankaSimulasyon.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="BankaSimulasyon.Tests.AtmServiceTests" name="AtmdenParaCekAsync_ParaBozmaSenaryosu_Calismali" />
+    </UnitTest>
+    <UnitTest name="BankaSimulasyon.Tests.AtmServiceTests.AtmdenParaCekAsync_GecersizTutar_10unKatiDegilse_HataDonmeli" storage="c:\users\bugra\desktop\aspnetcore-dersleri\bankasimulasyon\bankasimulasyon.tests\bin\debug\net8.0\bankasimulasyon.tests.dll" id="4a49b952-225e-1201-d4b3-0809e03aa29c">
+      <Execution id="ffa461c1-9544-4ea4-9b33-fc4de71191b6" />
+      <TestMethod codeBase="C:\Users\bugra\Desktop\aspnetcore-dersleri\BankaSimulasyon\BankaSimulasyon.Tests\bin\Debug\net8.0\BankaSimulasyon.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="BankaSimulasyon.Tests.AtmServiceTests" name="AtmdenParaCekAsync_GecersizTutar_10unKatiDegilse_HataDonmeli" />
+    </UnitTest>
+    <UnitTest name="BankaSimulasyon.Tests.AtmServiceTests.AtmdenParaCekAsync_YetersizBakiye_BasarisizDonmeli" storage="c:\users\bugra\desktop\aspnetcore-dersleri\bankasimulasyon\bankasimulasyon.tests\bin\debug\net8.0\bankasimulasyon.tests.dll" id="abb01fd1-c292-0ee5-5b97-1fd74113b444">
+      <Execution id="26c86250-59e1-4772-b03a-d78301b6f10e" />
+      <TestMethod codeBase="C:\Users\bugra\Desktop\aspnetcore-dersleri\BankaSimulasyon\BankaSimulasyon.Tests\bin\Debug\net8.0\BankaSimulasyon.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="BankaSimulasyon.Tests.AtmServiceTests" name="AtmdenParaCekAsync_YetersizBakiye_BasarisizDonmeli" />
+    </UnitTest>
+    <UnitTest name="BankaSimulasyon.Tests.AtmServiceTests.AtmdenParaCekAsync_YeterliBakiyeVeUygunKasetler_BasariliDonmeli" storage="c:\users\bugra\desktop\aspnetcore-dersleri\bankasimulasyon\bankasimulasyon.tests\bin\debug\net8.0\bankasimulasyon.tests.dll" id="9d944f2b-f160-0278-cf66-10acd236cb83">
+      <Execution id="a7840f46-1521-4dd9-9679-f0908ec35a7d" />
+      <TestMethod codeBase="C:\Users\bugra\Desktop\aspnetcore-dersleri\BankaSimulasyon\BankaSimulasyon.Tests\bin\Debug\net8.0\BankaSimulasyon.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="BankaSimulasyon.Tests.AtmServiceTests" name="AtmdenParaCekAsync_YeterliBakiyeVeUygunKasetler_BasariliDonmeli" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="9d944f2b-f160-0278-cf66-10acd236cb83" executionId="a7840f46-1521-4dd9-9679-f0908ec35a7d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6cf27b39-f4ae-e045-bfc0-ba1a502816df" executionId="40325af9-681b-48a3-b783-bd49ba4eba78" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="abb01fd1-c292-0ee5-5b97-1fd74113b444" executionId="26c86250-59e1-4772-b03a-d78301b6f10e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4a49b952-225e-1201-d4b3-0809e03aa29c" executionId="ffa461c1-9544-4ea4-9b33-fc4de71191b6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0f69b279-64a7-8d37-e7f1-d22a6332c2d4" executionId="d8d2c5de-22a7-4c87-8697-5f9708aed3df" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="5" executed="5" passed="4" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.4.5+1caef2f33e (64-bit .NET 8.0.24)&#xD;
+[xUnit.net 00:00:00.36]   Discovering: BankaSimulasyon.Tests&#xD;
+[xUnit.net 00:00:00.37]   Discovered:  BankaSimulasyon.Tests&#xD;
+[xUnit.net 00:00:00.37]   Starting:    BankaSimulasyon.Tests&#xD;
+[xUnit.net 00:00:00.44]       Assert.NotNull() Failure&#xD;
+[xUnit.net 00:00:00.44]       Stack Trace:&#xD;
+[xUnit.net 00:00:00.44]         C:\Users\bugra\Desktop\aspnetcore-dersleri\BankaSimulasyon\BankaSimulasyon.Tests\AtmServiceTests.cs(198,0): at BankaSimulasyon.Tests.AtmServiceTests.AtmdenParaCekAsync_ParaBozmaSenaryosu_Calismali()&#xD;
+[xUnit.net 00:00:00.44]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:00.44]   Finished:    BankaSimulasyon.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="DESKTOP-EVOHUKA" outcome="Error" timestamp="2026-02-18T12:05:32.0871056+03:00">
+        <Text>[xUnit.net 00:00:00.44]     BankaSimulasyon.Tests.AtmServiceTests.AtmdenParaCekAsync_ParaBozmaSenaryosu_Calismali [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>
