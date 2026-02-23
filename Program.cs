@@ -3,6 +3,7 @@ using BankaSimulasyon.Repositories;
 using BankaSimulasyon.Services;
 using BankaSimulasyon.Middlewares;
 using Microsoft.EntityFrameworkCore;
+using BankaSimulasyon.Models.Entities;
 
 
 
@@ -24,6 +25,9 @@ builder.Services.AddScoped<IKullaniciRepository, KullaniciRepository>();
 builder.Services.AddScoped<IKullaniciService, KullaniciServis>();
 builder.Services.AddScoped<IHesapRepository, HesapRepository>();
 builder.Services.AddScoped<IHesapServis,HesapService>();
+builder.Services.AddScoped<IKartRepository,KartRepository>();
+builder.Services.AddScoped<IKartService,KartService>();
+
 
 
 

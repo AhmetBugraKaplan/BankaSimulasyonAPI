@@ -7,18 +7,24 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 
+
+
+
 namespace BankaSimulasyon.Tests
 {
     public class AtmServiceTests
     {
         private readonly Mock<IAtmKasetRepository> _mockAtmKasetRepository;
+        private readonly Mock<IAtmRepository> _mockAtmRepository;        // yeni ekle
         private readonly AtmService _atmService;
 
         public AtmServiceTests()
         {
             _mockAtmKasetRepository = new Mock<IAtmKasetRepository>();
-            _atmService = new AtmService(_mockAtmKasetRepository.Object);
+            _mockAtmRepository = new Mock<IAtmRepository>();             // yeni ekle
+            _atmService = new AtmService(_mockAtmKasetRepository.Object, _mockAtmRepository.Object);  // ikisini de ver
         }
+
 
         [Fact]
         public async Task AtmdenParaCekAsync_YeterliBakiyeVeUygunKasetler_BasariliDonmeli()

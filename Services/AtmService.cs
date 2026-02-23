@@ -84,7 +84,7 @@ namespace BankaSimulasyon.Services
                 }
             }
 
-            int bozmaEsigi = 3;
+            int bozmaEsigi = 4;
             if (cekilecekTutar == 0 && sonKullanilanKaset != null && toplamVerilenBanknot >= bozmaEsigi)
             {
                 int sonKupur = sonKullanilanKaset.Kupur;
@@ -93,7 +93,7 @@ namespace BankaSimulasyon.Services
 
                 Dictionary<int, int> bozmaOncesiAdetler = siraliKasetDizisi.ToDictionary(k => k.Id, k => k.Adet);
 
-                foreach (AtmKaset kaset in siraliKasetDizisi.OrderByDescending(k => k.Kupur))
+                foreach (AtmKaset kaset in siraliKasetDizisi.OrderBy(k => k.Kupur))
                 {
                     if (kaset.Kupur < sonKupur && kaset.Kupur <= bozulacak && kaset.Adet > 0)
                     {

@@ -13,6 +13,7 @@ namespace BankaSimulasyon.Data
         public DbSet<AtmKaset> AtmKasetler { get; set; } = null!;
         public DbSet<Kullanici> Kullanicilar { get; set; } = null!;
         public DbSet<KullaniciHesap> KullaniciHesaplari { get; set; } = null!;
+        public DbSet<Kart> Kartlar { get; set; } = null!;
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -40,6 +41,12 @@ namespace BankaSimulasyon.Data
             modelBuilder.Entity<KullaniciHesap>().HasData(
                 new KullaniciHesap { id = 1, KullaniciId = 1, HesapNumarasi = 1001, Bakiye = 100000, Sifre = "1234" }
             );
+
+            modelBuilder.Entity<Kart>().HasData(
+                new Kart{id = 1 ,KullaniciHesapId = 1, KartNumara = "6656 9988 1238 7435",KartSKT="04/29",CVV="123",KartTipi="Banka",AktifMi=true}
+            );
+
+
 
             base.OnModelCreating(modelBuilder);
         }
