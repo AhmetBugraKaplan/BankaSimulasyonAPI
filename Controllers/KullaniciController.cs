@@ -14,10 +14,13 @@ namespace BankaSimulasyon.Controllers
     public class KullaniciController : ControllerBase
     {
         private readonly IKullaniciService _kullaniciService;
+        private readonly IHesapServis _hesapServis;
 
-        public KullaniciController(IKullaniciService kullaniciService)
+
+        public KullaniciController(IKullaniciService kullaniciService,IHesapServis hesapServis)
         {
             _kullaniciService = kullaniciService;
+            _hesapServis = hesapServis;
         }
 
         [HttpPost("KullaniciEkle")]
@@ -44,6 +47,25 @@ namespace BankaSimulasyon.Controllers
 
             return Ok(sonuc);
         }
+
+        [HttpPost("KullaniciHesaptanParaCek")]
+        public async Task<IActionResult> KullaniciHesaptanParaCek(int hesapNumarasi, string girilenSifre, int atmId, int cekilecekTutar)
+        {
+            var sonuc = await _hesapServis.ParaCek(hesapNumarasi,girilenSifre,atmId,cekilecekTutar); 
+
+            return Ok(sonuc);
+        }
+
+
+
+        [HttpGet("KullaniciTestHata")]
+        public IActionResult KullaniciTestHata()
+        {
+            throw new Exception("Bu bir test hatasıdır!");
+        }
+        
+        
+
 
 
 

@@ -27,18 +27,18 @@ namespace BankaSimulasyon.Data
             );
 
             modelBuilder.Entity<AtmKaset>().HasData(
-                new AtmKaset { Id = 1, AtmId = 1, SlotNumarasi = 1, Kupur = 200, Adet = 20, KritikDeger = 20 },
-                new AtmKaset { Id = 2, AtmId = 1, SlotNumarasi = 2, Kupur = 100, Adet = 20, KritikDeger = 20 },
-                new AtmKaset { Id = 3, AtmId = 1, SlotNumarasi = 3, Kupur = 50, Adet = 20, KritikDeger = 20 },
-                new AtmKaset { Id = 4, AtmId = 1, SlotNumarasi = 4, Kupur = 20, Adet = 20, KritikDeger = 20 }
+                new AtmKaset { Id = 1, AtmId = 1, SlotNumarasi = 1, Kupur = 200, Adet = 200, KritikDeger = 20 },
+                new AtmKaset { Id = 2, AtmId = 1, SlotNumarasi = 2, Kupur = 100, Adet = 200, KritikDeger = 20 },
+                new AtmKaset { Id = 3, AtmId = 1, SlotNumarasi = 3, Kupur = 50, Adet = 200, KritikDeger = 20 },
+                new AtmKaset { Id = 4, AtmId = 1, SlotNumarasi = 4, Kupur = 20, Adet = 200, KritikDeger = 20 }
             );
 
             modelBuilder.Entity<Kullanici>().HasData(
-                new Kullanici {id = 1,Isim = "BugraTest",Soyisim = "Kaplan",Adres="Zeytinburnu"}
+                new Kullanici { id = 1, Isim = "BugraTest", Soyisim = "Kaplan", Adres = "Zeytinburnu" }
             );
 
             modelBuilder.Entity<KullaniciHesap>().HasData(
-                new KullaniciHesap {id=1,KullaniciId=1,HesapNumarasi= 000 , Bakiye = 100000}
+                new KullaniciHesap { id = 1, KullaniciId = 1, HesapNumarasi = 1001, Bakiye = 100000, Sifre = "1234" }
             );
 
             base.OnModelCreating(modelBuilder);

@@ -118,13 +118,16 @@ namespace BankaSimulasyon.Services
                     await _atmKasetRepository.AtmKasetGuncelleAsync(kaset);
 
                 var kullanilanKasetler = siraliKasetDizisi
-                    .Where(k => k.Adet != orijinalAdetler[k.Id])
-                    .ToList();
-
-                foreach (var kaset in kullanilanKasetler)
+                .Where(k => k.Adet != orijinalAdetler[k.Id])
+                .Select(k => new AtmKaset
                 {
-                    kaset.Adet = orijinalAdetler[kaset.Id] - kaset.Adet;
-                }
+                    Id = k.Id,
+                    AtmId = k.AtmId,
+                    SlotNumarasi = k.SlotNumarasi,
+                    Kupur = k.Kupur,
+                    Adet = orijinalAdetler[k.Id] - k.Adet
+                })
+                .ToList();
 
                 atmdenParaCekmeResponse.IslemBasariliMi = true;
                 atmdenParaCekmeResponse.Mesaj = "Para basariyla cekildi";
@@ -282,7 +285,7 @@ namespace BankaSimulasyon.Services
             }
 
 
-            
+
             return kasetGuncellemeResponse;
         }
 
@@ -316,7 +319,7 @@ namespace BankaSimulasyon.Services
         public async Task<List<ATM>> AtmleriGetirAktifligeGoreAsync(bool aktifMi)
         {
 
-            return await _atmRepository.AtmleriGetirAktifligeGoreAsync(aktifMi); 
+            return await _atmRepository.AtmleriGetirAktifligeGoreAsync(aktifMi);
         }
 
 

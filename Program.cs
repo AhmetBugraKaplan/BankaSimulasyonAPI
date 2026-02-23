@@ -1,7 +1,9 @@
 using BankaSimulasyon.Data;
 using BankaSimulasyon.Repositories;
 using BankaSimulasyon.Services;
+using BankaSimulasyon.Middlewares;
 using Microsoft.EntityFrameworkCore;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +22,10 @@ builder.Services.AddScoped<IAtmService,AtmService>();
 builder.Services.AddScoped<IAtmRepository, AtmRepository>();
 builder.Services.AddScoped<IKullaniciRepository, KullaniciRepository>();
 builder.Services.AddScoped<IKullaniciService, KullaniciServis>();
+builder.Services.AddScoped<IHesapRepository, HesapRepository>();
+builder.Services.AddScoped<IHesapServis,HesapService>();
+
+
 
 
 
@@ -32,9 +38,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//Middleware ekle
+app.UseMiddleware<ExceptionMiddleware>(); //Hata yakalama
+app.UseMiddleware<RateLimitingMiddleware>(); //İstek sınırla
+app.UseMiddleware<LoggingMiddleware>(); //Yapılan her isteği (get/post fark etmez) logluyoruz
 
+
+app.UseHttpsRedirection();
 app.MapControllers();
+
+
+
 
 app.Run();
 

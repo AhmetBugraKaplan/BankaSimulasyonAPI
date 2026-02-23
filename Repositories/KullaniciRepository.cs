@@ -71,6 +71,15 @@ namespace BankaSimulasyon.Repositories
         }
 
 
+        public async Task kullaniciHesapGuncelle(KullaniciHesap kullaniciHesap)
+        {
+            _context.KullaniciHesaplari.Update(kullaniciHesap);
+            await _context.SaveChangesAsync();
+        }
+
+
+
+
 
     }
 }

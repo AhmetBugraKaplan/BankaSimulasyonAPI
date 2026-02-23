@@ -14,6 +14,5 @@ namespace BankaSimulasyon.Services
         Task<Kullanici?> kullaniciGetirIdGore(int id);
 
         Task<KullaniciResponse> kullaniciSilIdGore(int id);
-        Task<KullaniciResponse> kullaniciHesaptanParaCek();
     }
 }

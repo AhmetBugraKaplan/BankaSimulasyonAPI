@@ -67,8 +67,6 @@ namespace BankaSimulasyon.Services
             }
             return kullaniciResponse;
         }
- 
-
 
         
     
