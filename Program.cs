@@ -28,19 +28,28 @@ builder.Services.AddScoped<IHesapServis,HesapService>();
 builder.Services.AddScoped<IKartRepository,KartRepository>();
 builder.Services.AddScoped<IKartService,KartService>();
 
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 
 
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowAngular");
 
 //Middleware ekle
 app.UseMiddleware<ExceptionMiddleware>(); //Hata yakalama
@@ -48,12 +57,14 @@ app.UseMiddleware<RateLimitingMiddleware>(); //İstek sınırla
 app.UseMiddleware<LoggingMiddleware>(); //Yapılan her isteği (get/post fark etmez) logluyoruz
 
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.MapControllers();
-
-
-
 
 app.Run();
 
 
+//veri tabanı erişimleri store prosedürler ile yapılacak
+
+//Bir uygulama yapıyoruz her tutarı tekr tekr kendisi istiyor ve sonuçları listeliyor. 10 liradan 1000tl ye kadar teker teker çeksin
+
+//Token-jvt
