@@ -27,7 +27,7 @@ namespace BankaSimulasyon.Controllers
         public async Task<IActionResult> YeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet)
         {
 
-            var sonuc = _kullaniciService.yeniKullaniciEkle(isim, soyisim, telefonNumarasi, adres, cinsiyet);
+            var sonuc = await _kullaniciService.yeniKullaniciEkle(isim, soyisim, telefonNumarasi, adres, cinsiyet);
 
             return Ok(sonuc);
         }
@@ -35,7 +35,7 @@ namespace BankaSimulasyon.Controllers
         [HttpPost("KullaniciGetirIdGore")]
         public async Task<IActionResult> KullaniciGetirIdGore(int id)
         {
-            var sonuc = _kullaniciService.kullaniciGetirIdGore(id); 
+            var sonuc = await _kullaniciService.kullaniciGetirIdGore(id); 
 
             return Ok(sonuc);
         }
@@ -43,7 +43,7 @@ namespace BankaSimulasyon.Controllers
         [HttpPost("KullaniciSilIdGore")]
         public async Task<IActionResult> KullaniciSilIdGore(int id)
         {
-            var sonuc = _kullaniciService.kullaniciSilIdGore(id);
+            var sonuc = await _kullaniciService.kullaniciSilIdGore(id);
 
             return Ok(sonuc);
         }
