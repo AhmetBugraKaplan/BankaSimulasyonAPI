@@ -53,8 +53,8 @@ app.UseCors("AllowAngular");
 
 //Middleware ekle
 app.UseMiddleware<ExceptionMiddleware>(); //Hata yakalama
-app.UseMiddleware<RateLimitingMiddleware>(); //İstek sınırla
 app.UseMiddleware<LoggingMiddleware>(); //Yapılan her isteği (get/post fark etmez) logluyoruz
+app.UseMiddleware<RateLimitingMiddleware>(); //İstek sınırla
 
 
 //app.UseHttpsRedirection();

@@ -28,7 +28,7 @@ namespace BankaSimulasyon.Repositories
             var telefonParam = new SqlParameter("@TelefonNumarasi", telefonNumarasi);
             var adresParam = new SqlParameter("@Adres", adres);
             var cinsiyetParam = new SqlParameter("@Cinsiyet", cinsiyet);
-            
+
 
             var etkilenenSatirParam = new SqlParameter("@EtkilenenSatir", SqlDbType.Int);
             etkilenenSatirParam.Direction = ParameterDirection.Output;
@@ -48,7 +48,14 @@ namespace BankaSimulasyon.Repositories
 
         public async Task<Kullanici?> kullaniciGetirIdGore(int id)
         {
-            return await _context.Kullanicilar.FirstOrDefaultAsync(k => k.id == id);
+            var idParam = new SqlParameter("@Id", id);
+
+            var kullanici = _context.Kullanicilar
+            .FromSqlRaw("EXEC SP_KullaniciGetirIdGore @Id", idParam)
+            .AsEnumerable()
+            .FirstOrDefault();
+
+            return kullanici;
         }
 
 
@@ -57,28 +64,38 @@ namespace BankaSimulasyon.Repositories
         public async Task<int> kullaniciSilIdGore(int id)
         {
 
-            var idParam = new SqlParameter("@Id",id);
+            var idParam = new SqlParameter("@Id", id);
 
-            var _return = new SqlParameter("@Return",SqlDbType.Int);
-            _return.Direction = ParameterDirection.Output; 
+            var _return = new SqlParameter("@Return", SqlDbType.Int);
+            _return.Direction = ParameterDirection.Output;
 
 
             await _context.Database.ExecuteSqlRawAsync(
-                "EXEC SP_KullaniciSilIdGore @Id,@Return OUTPUT",idParam,_return
+                "EXEC SP_KullaniciSilIdGore @Id,@Return OUTPUT", idParam, _return
             );
 
 
-            int sonuc = (int) _return.Value;
+            int sonuc = (int)_return.Value;
 
             return sonuc;
 
         }
 
-
+        //Bu işlemi zaten HesapRepositroy=>HesapGuncelle Fonksiyonu yapıyor şu anda aktif olarak referansıda yok ileride bi kontrol edelim tekrardan.
         public async Task kullaniciHesapGuncelle(KullaniciHesap kullaniciHesap)
         {
-            _context.KullaniciHesaplari.Update(kullaniciHesap);
-            await _context.SaveChangesAsync();
+            var idParam = new SqlParameter("@Id", kullaniciHesap.id);
+            var hesapNumarasiParam = new SqlParameter("@HesapNumarasi", kullaniciHesap.HesapNumarasi);
+            var bakiyeParam = new SqlParameter("@Bakiye", kullaniciHesap.Bakiye);
+            var sifreParam = new SqlParameter("@Sifre", kullaniciHesap.Sifre);
+
+            var sonuc = new SqlParameter("Sonuc", SqlDbType.Int);
+            sonuc.Direction = ParameterDirection.Output;
+
+            await _context.Database.ExecuteSqlRawAsync(
+            "EXEC SP_KullaniciHesapGuncelle @Id, @HesapNumarasi, @Bakiye, @Sifre, @Sonuc OUTPUT",
+            idParam, hesapNumarasiParam, bakiyeParam, sifreParam, sonuc
+            );
         }
 
 

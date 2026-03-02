@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using BankaSimulasyon.Data;
 using BankaSimulasyon.Models.Entities;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 
 namespace BankaSimulasyon.Repositories
@@ -20,40 +22,52 @@ namespace BankaSimulasyon.Repositories
 
         public async Task<List<ATM>> TumAtmleriGetirAsync()
         {
-            return await _context.AtmLer.ToListAsync();
+            var atmListesi = _context.AtmLer
+            .FromSqlRaw("EXEC SP_TumATMGetir").ToList();
+
+            return  atmListesi;
         }
 
         public async Task<List<ATM>> AtmleriGetirKonumaGoreAsync(string konum)
         {
+            var konumParam = new SqlParameter("@Konum",konum);
 
-            return await _context.AtmLer.Where(a => a.Konum == konum).ToListAsync();
+            var atmListesi = _context.AtmLer
+            .FromSqlRaw("EXEC SP_ATMGetirKonumaGore @Konum",konumParam)
+            .ToList();
+
+            return atmListesi;
         }
 
         public async Task<List<ATM>> AtmleriGetirAktifligeGoreAsync(bool aktifMi)
         {
-            return await _context.AtmLer.Where(a => a.AktifMi == aktifMi).ToListAsync();
+            var aktifMiParam = new SqlParameter("@AktifMi",aktifMi);
+
+            var atmListesi = _context.AtmLer
+            .FromSqlRaw("EXEC SP_ATMGetirAktifligeGore @AktifMi",aktifMiParam)
+            .ToList();
+
+            return atmListesi;
         }
 
         public async Task<int> AtmEkleAsync(string konum, bool aktifMi)
         {
 
+            var konumParam = new SqlParameter("@Konum",konum);
+            var aktifMiParam = new SqlParameter("@AktifMi",aktifMi);
+
+            var etkilenenSatirParam = new SqlParameter("@EtkilenenSatir",SqlDbType.Int);
+            etkilenenSatirParam.Direction = ParameterDirection.Output;
 
 
-            ATM atm = new ATM
-            {
-                Konum = konum,
-                AktifMi = aktifMi,
-                Kasetler = new List<AtmKaset>
-              {
-                new AtmKaset { SlotNumarasi = 1, Kupur = 0, Adet = 0, KritikDeger = 5 },
-                new AtmKaset { SlotNumarasi = 2, Kupur = 0, Adet = 0, KritikDeger = 5 },
-                new AtmKaset { SlotNumarasi = 3, Kupur = 0, Adet = 0, KritikDeger = 5 },
-                new AtmKaset { SlotNumarasi = 4, Kupur = 0, Adet = 0, KritikDeger = 5 }
-              }
-            };
+            await _context.Database.ExecuteSqlRawAsync(
+                "EXEC SP_AtmEkle @Konum, @AktifMi, @EtkilenenSatir OUTPUT",
+                konumParam,aktifMiParam,etkilenenSatirParam
+            );
 
-            _context.AtmLer.Add(atm);
-            return await _context.SaveChangesAsync();
+           int sonuc = (int)etkilenenSatirParam.Value;
+
+           return sonuc; 
         }
 
     }

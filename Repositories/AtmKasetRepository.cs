@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BankaSimulasyon.Data;
 using BankaSimulasyon.Models.Entities;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankaSimulasyon.Repositories
@@ -20,22 +21,31 @@ namespace BankaSimulasyon.Repositories
 
         public async Task<List<AtmKaset>> AtmdekiKasetleriGetirAsync(int atmId)
         {
-            var kasetDizisi = await _context.AtmKasetler.Where(k => k.AtmId == atmId).ToListAsync();
 
-            return kasetDizisi;
+            var atmIdParam = new SqlParameter("@atmId", atmId);
+
+            var kasetListesi = _context.AtmKasetler
+            .FromSqlRaw("EXEC SP_AtmdekiKasetleriGetir @atmId", atmIdParam)
+            .ToList();
+
+            return kasetListesi;
         }
 
 
 
         public async Task AtmKasetGuncelleAsync(AtmKaset atmKaset)
         {
-            _context.AtmKasetler.Update(atmKaset);
-            await _context.SaveChangesAsync();
+            var atmIdParam = new SqlParameter("@AtmId", atmKaset.AtmId);
+            var SlotNumarasiParam = new SqlParameter("@SlotNumarasi", atmKaset.SlotNumarasi);
+            var adetParam = new SqlParameter("@Adet", atmKaset.Adet);
+            var kupurParam = new SqlParameter("@Kupur", atmKaset.Kupur);
+            var kritikDegerParam = new SqlParameter("@KritikDeger", atmKaset.KritikDeger);
+
+            await _context.Database.ExecuteSqlRawAsync(
+                "EXEC SP_ATMKasetleriGuncelle @AtmId, @SlotNumarasi, @Adet, @Kupur, @KritikDeger"
+                ,atmIdParam,SlotNumarasiParam,adetParam,kupurParam,kritikDegerParam);
+
         }
-
-        
-
-
 
     }
 }

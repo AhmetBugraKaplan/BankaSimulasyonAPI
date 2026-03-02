@@ -25,7 +25,7 @@ namespace BankaSimulasyon.Controllers
         [HttpPost("KartEkle")]
         public async Task<IActionResult> KartEkle(int kullaniciHesapId, string KartNumara, string KartSKT, string CVV,string KartTipi,bool AktifMi)
         {
-            var sonuc = _kartService.KartEkle(kullaniciHesapId,KartNumara,KartSKT,CVV,KartTipi,AktifMi);
+            var sonuc = await _kartService.KartEkle(kullaniciHesapId,KartNumara,KartSKT,CVV,KartTipi,AktifMi);
 
             return Ok(sonuc);
         }
