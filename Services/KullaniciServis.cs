@@ -18,11 +18,13 @@ namespace BankaSimulasyon.Services
             _kullaniciRepository = kullaniciRepository;
         }
 
-        public async Task<KullaniciResponse> yeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet)
+        public async Task<KullaniciResponse> yeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet,string email,string sifre,string kullaniciRol)
         {
             KullaniciResponse kullaniciResponse = new();
             
-            int sonuc = await _kullaniciRepository.yeniKullaniciEkleAsync(isim,soyisim,telefonNumarasi,adres,cinsiyet);
+            string hashlenmisSfire = BCrypt.Net.BCrypt.HashPassword(sifre);
+
+            int sonuc = await _kullaniciRepository.yeniKullaniciEkleAsync(isim,soyisim,telefonNumarasi,adres,cinsiyet,email,hashlenmisSfire,kullaniciRol);
 
             if(sonuc > 0)
             {

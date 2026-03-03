@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using BankaSimulasyon.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -21,7 +22,7 @@ namespace BankaSimulasyon.Controllers
             _kartService = kartService;
         }
 
-
+        [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("KartEkle")]
         public async Task<IActionResult> KartEkle(int kullaniciHesapId, string KartNumara, string KartSKT, string CVV,string KartTipi,bool AktifMi)
         {

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using BankaSimulasyon.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -20,7 +21,7 @@ namespace BankaSimulasyon.Controllers
             _atmService = atmService;
         }
 
-
+        [Authorize(Roles = "admin,gelistirici")]
         [HttpGet("atmdeNeKadarVar")]
         public async Task<IActionResult> AtmdeNeKadarParaVar(int atmId)
         {
@@ -38,7 +39,7 @@ namespace BankaSimulasyon.Controllers
 
         }
 
-
+        [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("atmKasetKupurleriGuncelle")]
         public async Task<IActionResult> AtmKasetdekiKupurleriGuncelle(int atmId, int slotNumarasi, int adet, int kupur)
         {
@@ -48,6 +49,7 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("atmdenParaCek")]
         public async Task<IActionResult> AtmdenParaCek(int atmId, int cekilecekTutar)
         {
@@ -56,8 +58,8 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc); 
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost("atmEkle")]
-
         public async Task<IActionResult> AtmEkle(string konum,bool aktifMi)
         {
             var sonuc = await _atmService.AtmEkleAsync(konum,aktifMi);
@@ -65,6 +67,7 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("atmleriListeseAktifligeGore")]
         public async Task<IActionResult> aktifligeGoreAtmListele(bool aktifMi)
         {   
@@ -72,7 +75,7 @@ namespace BankaSimulasyon.Controllers
 
             return Ok(sonuc);
         }
-
+        [Authorize(Roles = "admin,gelistirici")]
         [HttpGet("tumAtmleriGetir")]
         public async Task<IActionResult> tumAtmleriGetir()
         {   

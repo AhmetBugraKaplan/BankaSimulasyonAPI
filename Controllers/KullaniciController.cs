@@ -4,42 +4,49 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using BankaSimulasyon.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace BankaSimulasyon.Controllers
 {
+
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class KullaniciController : ControllerBase
     {
         private readonly IKullaniciService _kullaniciService;
         private readonly IHesapServis _hesapServis;
 
 
-        public KullaniciController(IKullaniciService kullaniciService,IHesapServis hesapServis)
+        public KullaniciController(IKullaniciService kullaniciService, IHesapServis hesapServis)
         {
             _kullaniciService = kullaniciService;
             _hesapServis = hesapServis;
         }
 
+
+        [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("KullaniciEkle")]
-        public async Task<IActionResult> YeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet)
+        public async Task<IActionResult> YeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet, string email, string sifre,string kullaniciRol)
         {
 
-            var sonuc = await _kullaniciService.yeniKullaniciEkle(isim, soyisim, telefonNumarasi, adres, cinsiyet);
+            var sonuc = await _kullaniciService.yeniKullaniciEkle(isim, soyisim, telefonNumarasi, adres, cinsiyet,email,sifre,kullaniciRol);
 
             return Ok(sonuc);
         }
 
+        [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("KullaniciGetirIdGore")]
         public async Task<IActionResult> KullaniciGetirIdGore(int id)
         {
-            var sonuc = await _kullaniciService.kullaniciGetirIdGore(id); 
+            var sonuc = await _kullaniciService.kullaniciGetirIdGore(id);
 
             return Ok(sonuc);
         }
 
+        [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("KullaniciSilIdGore")]
         public async Task<IActionResult> KullaniciSilIdGore(int id)
         {
@@ -48,23 +55,24 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("KullaniciHesaptanParaCek")]
         public async Task<IActionResult> KullaniciHesaptanParaCek(int hesapNumarasi, string girilenSifre, int atmId, int cekilecekTutar)
         {
-            var sonuc = await _hesapServis.ParaCek(hesapNumarasi,girilenSifre,atmId,cekilecekTutar); 
+            var sonuc = await _hesapServis.ParaCek(hesapNumarasi, girilenSifre, atmId, cekilecekTutar);
 
             return Ok(sonuc);
         }
 
 
-
+        [Authorize(Roles = "admin,gelistirici")]
         [HttpGet("KullaniciTestHata")]
         public IActionResult KullaniciTestHata()
         {
             throw new Exception("Bu bir test hatasıdır!");
         }
-        
-        
+
+
 
 
 

@@ -20,7 +20,7 @@ namespace BankaSimulasyon.Data
 
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ATM>().HasData(
                 new ATM { Id = 1, Konum = "Zeytinburnu Beştelsiz Şube", AktifMi = true },
@@ -48,8 +48,8 @@ namespace BankaSimulasyon.Data
 
 
 
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder); 
+            */
         }
 
     }
-}
