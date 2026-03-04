@@ -8,25 +8,24 @@ using BankaSimulasyon.Repositories;
 
 namespace BankaSimulasyon.Services
 {
-    public class KullaniciServis: IKullaniciService
+    public class KullaniciServis : IKullaniciService
     {
-        //En son kullanici servisinin interfacesını hazırladık reposu zxaten hazır burdan kullanici servisinin kendisini yazıp yeni bir 
-        // kontroller ekleyip o kontrollere bağlayacağız usterı ıslemlerı oluşturulan yenı kontrollerde olacak
+
         private readonly IKullaniciRepository _kullaniciRepository;
         public KullaniciServis(IKullaniciRepository kullaniciRepository)
-        {   
+        {
             _kullaniciRepository = kullaniciRepository;
         }
 
-        public async Task<KullaniciResponse> yeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet,string email,string sifre,string kullaniciRol)
+        public async Task<KullaniciResponse> yeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet, string email, string sifre, string kullaniciRol)
         {
             KullaniciResponse kullaniciResponse = new();
-            
+
             string hashlenmisSfire = BCrypt.Net.BCrypt.HashPassword(sifre);
 
-            int sonuc = await _kullaniciRepository.yeniKullaniciEkleAsync(isim,soyisim,telefonNumarasi,adres,cinsiyet,email,hashlenmisSfire,kullaniciRol);
+            int sonuc = await _kullaniciRepository.yeniKullaniciEkleAsync(isim, soyisim, telefonNumarasi, adres, cinsiyet, email, hashlenmisSfire, kullaniciRol);
 
-            if(sonuc > 0)
+            if (sonuc > 0)
             {
                 kullaniciResponse.IslemBasariliMi = true;
                 kullaniciResponse.Mesaj = "Kullanici başarıyla eklendi";
@@ -36,16 +35,16 @@ namespace BankaSimulasyon.Services
                 kullaniciResponse.IslemBasariliMi = false;
                 kullaniciResponse.Mesaj = "Kullanıcı ekleme hatası";
             }
-            
-            return kullaniciResponse; 
+
+            return kullaniciResponse;
         }
-    
+
 
 
 
         public async Task<Kullanici?> kullaniciGetirIdGore(int id)
         {
-            return await _kullaniciRepository.kullaniciGetirIdGore(id);            
+            return await _kullaniciRepository.kullaniciGetirIdGore(id);
         }
 
 
@@ -57,7 +56,7 @@ namespace BankaSimulasyon.Services
 
             int sonuc = await _kullaniciRepository.kullaniciSilIdGore(id);
 
-            if(sonuc > 0)
+            if (sonuc > 0)
             {
                 kullaniciResponse.IslemBasariliMi = true;
                 kullaniciResponse.Mesaj = "Kullanıcı silindi";
@@ -70,7 +69,43 @@ namespace BankaSimulasyon.Services
             return kullaniciResponse;
         }
 
-        
-    
+
+
+
+        public async Task<KullaniciResponse> kullaniciHesapEkle(int kullaniciId, string hesapsifresi)
+        {
+            KullaniciResponse kullaniciResponse = new();
+
+            var kullanici = await _kullaniciRepository.kullaniciGetirIdGore(kullaniciId);
+
+            if (kullanici == null)
+            {
+                kullaniciResponse.IslemBasariliMi = false;
+                kullaniciResponse.Mesaj = "Kullanıcı bulunamadı";
+                return kullaniciResponse;
+            }
+
+            Random random = new Random();
+            int hesapNumarasi = random.Next(100000, 999999);
+
+
+            int sonuc = await _kullaniciRepository.kullaniciHesapEkle(kullaniciId,hesapNumarasi,0,hesapsifresi);
+
+            if (sonuc > 0)
+            {
+                kullaniciResponse.IslemBasariliMi = true;
+                kullaniciResponse.Mesaj = $"Hesap oluşturuldu. Hesap numaranız: {hesapNumarasi}";
+            }
+            else
+            {
+                kullaniciResponse.IslemBasariliMi = false;
+                kullaniciResponse.Mesaj = "Hesap oluşturulurken hata oluştu";
+            }
+
+            return kullaniciResponse;
+        }
+
+
+
     }
 }

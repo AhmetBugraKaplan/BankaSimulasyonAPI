@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BankaSimulasyon.Models.Entities;
+using BankaSimulasyon.Models.Responses;
 
 namespace BankaSimulasyon.Repositories
 {
@@ -12,6 +13,8 @@ namespace BankaSimulasyon.Repositories
         public Task<Kullanici?> kullaniciGetirIdGore(int id);
         public Task<int> kullaniciSilIdGore(int id);
         public Task kullaniciHesapGuncelle(KullaniciHesap kullaniciHesap);
+
+        public Task<int> kullaniciHesapEkle (int kullaniciId,int hesapNumarasi,decimal bakiye,string Hesapsifresi);
 
     }
 }

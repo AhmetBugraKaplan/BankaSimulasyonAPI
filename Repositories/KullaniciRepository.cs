@@ -21,7 +21,7 @@ namespace BankaSimulasyon.Repositories
             _context = context;
         }
 
-        public async Task<int> yeniKullaniciEkleAsync(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet, string email, string sifre,string kullaniciRol)
+        public async Task<int> yeniKullaniciEkleAsync(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet, string email, string sifre, string kullaniciRol)
         {
             var isimParam = new SqlParameter("@Isim", isim);
             var soyisimParam = new SqlParameter("@Soyisim", soyisim);
@@ -30,7 +30,7 @@ namespace BankaSimulasyon.Repositories
             var cinsiyetParam = new SqlParameter("@Cinsiyet", cinsiyet);
             var emailParam = new SqlParameter("@Email", email);
             var sifreParam = new SqlParameter("@Sifre", sifre);
-            var kullaniciRolParam = new SqlParameter("@KullaniciRol",kullaniciRol);
+            var kullaniciRolParam = new SqlParameter("@KullaniciRol", kullaniciRol);
 
 
             var etkilenenSatirParam = new SqlParameter("@EtkilenenSatir", SqlDbType.Int);
@@ -38,7 +38,7 @@ namespace BankaSimulasyon.Repositories
 
             await _context.Database.ExecuteSqlRawAsync(
                 "EXEC SP_YeniMusteriEkle @Isim,  @Soyisim, @TelefonNumarasi, @Adres, @Cinsiyet, @Email, @Sifre,@KullaniciRol,@EtkilenenSatir OUTPUT",
-                isimParam, soyisimParam, telefonParam, adresParam, cinsiyetParam, emailParam, sifreParam, kullaniciRolParam,etkilenenSatirParam
+                isimParam, soyisimParam, telefonParam, adresParam, cinsiyetParam, emailParam, sifreParam, kullaniciRolParam, etkilenenSatirParam
             );
 
             int sonuc = (int)etkilenenSatirParam.Value;
@@ -84,6 +84,8 @@ namespace BankaSimulasyon.Repositories
 
         }
 
+
+
         //Bu işlemi zaten HesapRepositroy=>HesapGuncelle Fonksiyonu yapıyor şu anda aktif olarak referansıda yok ileride bi kontrol edelim tekrardan.
         public async Task kullaniciHesapGuncelle(KullaniciHesap kullaniciHesap)
         {
@@ -101,6 +103,26 @@ namespace BankaSimulasyon.Repositories
             );
         }
 
+
+
+
+        public async Task<int> kullaniciHesapEkle(int kullaniciId, int hesapNumarasi, decimal bakiye, string sifre)
+        {
+            var kullaniciIdParam = new SqlParameter("@KullaniciId", kullaniciId);
+            var hesapNumarasiParam = new SqlParameter("@HesapNumarasi", hesapNumarasi);
+            var bakiyeParam = new SqlParameter("@Bakiye", bakiye);
+            var sifreParam = new SqlParameter("@Sifre", sifre);
+
+            var sonuc = new SqlParameter("@Sonuc", SqlDbType.Int);
+            sonuc.Direction = ParameterDirection.Output;
+
+            await _context.Database.ExecuteSqlRawAsync(
+                "EXEC SP_KullaniciHesapEkle @KullaniciId, @HesapNumarasi, @Bakiye, @Sifre, @Sonuc OUTPUT",
+                kullaniciIdParam, hesapNumarasiParam, bakiyeParam, sifreParam, sonuc
+            );
+            
+            return (int)sonuc.Value;
+        }
 
 
 

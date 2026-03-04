@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using BankaSimulasyon.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -27,7 +28,8 @@ namespace BankaSimulasyon.Controllers
         }
 
 
-        [Authorize(Roles = "admin,gelistirici")]
+        [AllowAnonymous]
+        //   [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("KullaniciEkle")]
         public async Task<IActionResult> YeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet, string email, string sifre,string kullaniciRol)
         {
@@ -37,7 +39,8 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
-        [Authorize(Roles = "admin,gelistirici")]
+        [AllowAnonymous]
+        //   [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("KullaniciGetirIdGore")]
         public async Task<IActionResult> KullaniciGetirIdGore(int id)
         {
@@ -46,7 +49,8 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
-        [Authorize(Roles = "admin,gelistirici")]
+        [AllowAnonymous]
+        //   [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("KullaniciSilIdGore")]
         public async Task<IActionResult> KullaniciSilIdGore(int id)
         {
@@ -55,7 +59,8 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
-        [Authorize(Roles = "admin,gelistirici,musteri")]
+        [AllowAnonymous]
+        //   [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("KullaniciHesaptanParaCek")]
         public async Task<IActionResult> KullaniciHesaptanParaCek(int hesapNumarasi, string girilenSifre, int atmId, int cekilecekTutar)
         {
@@ -65,13 +70,27 @@ namespace BankaSimulasyon.Controllers
         }
 
 
-        [Authorize(Roles = "admin,gelistirici")]
+        [AllowAnonymous]
+        //   [Authorize(Roles = "admin,gelistirici")]
         [HttpGet("KullaniciTestHata")]
         public IActionResult KullaniciTestHata()
         {
             throw new Exception("Bu bir test hatasıdır!");
         }
 
+
+        [AllowAnonymous]
+        //   [Authorize(Roles = "admin,gelistirici,musteri")]
+        [HttpPost("HesapEkle")]
+        public async Task<IActionResult> HesapEkle(string sifre)
+        {
+
+            var kullaniciId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            var sonuc = await _kullaniciService.kullaniciHesapEkle(kullaniciId,sifre);
+
+            return Ok(sonuc);
+        }
 
 
 

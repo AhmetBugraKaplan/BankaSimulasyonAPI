@@ -65,6 +65,9 @@ namespace BankaSimulasyon.Repositories
                 konumParam,aktifMiParam,etkilenenSatirParam
             );
 
+            
+
+
            int sonuc = (int)etkilenenSatirParam.Value;
 
            return sonuc; 

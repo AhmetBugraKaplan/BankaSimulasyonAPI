@@ -182,6 +182,8 @@ namespace BankaSimulasyon.Services
             return atmdenParaCekmeResponse;
         }
 
+
+
         public async Task<int> AtmdekiToplamParayiIdIleGetirAsync(int atmId)
         {
             KasetGuncellemeResponse kasetGuncellemeResponse = new KasetGuncellemeResponse();
