@@ -14,15 +14,16 @@ namespace BankaSimulasyon.Controllers
         {
             _authService = authService;
         }
-        
+
         [AllowAnonymous]
         [HttpPost("GirisYap")]
         public async Task<IActionResult> GirisYap(string email, string sifre)
         {
+
             var token = await _authService.GirisYap(email, sifre);
 
-            if (token == null)
-                return Unauthorized("Email veya şifre hatalı");
+            if (token == null || !token.StartsWith("eyJ"))
+                return Unauthorized(new { Mesaj = token ?? "Giriş başarısız" });
 
             return Ok(new { Token = token });
         }

@@ -28,8 +28,8 @@ namespace BankaSimulasyon.Controllers
         }
 
 
-        [AllowAnonymous]
-        //   [Authorize(Roles = "admin,gelistirici")]
+        //[AllowAnonymous]
+        [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("KullaniciEkle")]
         public async Task<IActionResult> YeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet, string email, string sifre,string kullaniciRol)
         {
@@ -39,8 +39,8 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
-        [AllowAnonymous]
-        //   [Authorize(Roles = "admin,gelistirici")]
+        //[AllowAnonymous]
+        [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("KullaniciGetirIdGore")]
         public async Task<IActionResult> KullaniciGetirIdGore(int id)
         {
@@ -49,8 +49,8 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
-        [AllowAnonymous]
-        //   [Authorize(Roles = "admin,gelistirici")]
+        //[AllowAnonymous]
+        [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("KullaniciSilIdGore")]
         public async Task<IActionResult> KullaniciSilIdGore(int id)
         {
@@ -59,8 +59,8 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
-        [AllowAnonymous]
-        //   [Authorize(Roles = "admin,gelistirici,musteri")]
+        //[AllowAnonymous]
+        [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("KullaniciHesaptanParaCek")]
         public async Task<IActionResult> KullaniciHesaptanParaCek(int hesapNumarasi, string girilenSifre, int atmId, int cekilecekTutar)
         {
@@ -70,8 +70,8 @@ namespace BankaSimulasyon.Controllers
         }
 
 
-        [AllowAnonymous]
-        //   [Authorize(Roles = "admin,gelistirici")]
+        //[AllowAnonymous]
+        [Authorize(Roles = "admin,gelistirici")]
         [HttpGet("KullaniciTestHata")]
         public IActionResult KullaniciTestHata()
         {
@@ -80,7 +80,7 @@ namespace BankaSimulasyon.Controllers
 
 
         [AllowAnonymous]
-        //   [Authorize(Roles = "admin,gelistirici,musteri")]
+        [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("HesapEkle")]
         public async Task<IActionResult> HesapEkle(string sifre)
         {

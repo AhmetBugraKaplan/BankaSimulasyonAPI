@@ -22,8 +22,8 @@ namespace BankaSimulasyon.Controllers
             _kartService = kartService;
         }
 
-        [AllowAnonymous]
-        //   [Authorize(Roles = "admin,gelistirici,musteri")]
+        //[AllowAnonymous]
+        [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("KartEkle")]
         public async Task<IActionResult> KartEkle(int kullaniciHesapId, string KartNumara, string KartSKT, string CVV,string KartTipi,bool AktifMi)
         {

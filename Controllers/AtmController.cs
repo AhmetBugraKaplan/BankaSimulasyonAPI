@@ -23,8 +23,8 @@ namespace BankaSimulasyon.Controllers
 
 
         
-        [AllowAnonymous]
-        //   [Authorize(Roles = "admin,gelistirici")]
+        //[AllowAnonymous]
+        [Authorize(Roles = "admin,gelistirici")]
         [HttpGet("atmdeNeKadarVar")]
         public async Task<IActionResult> AtmdeNeKadarParaVar(int atmId)
         {
@@ -49,8 +49,8 @@ namespace BankaSimulasyon.Controllers
         
         
         
-        [AllowAnonymous]
-        //   [Authorize(Roles = "admin,gelistirici")]
+         //[AllowAnonymous]
+        [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("atmKasetKupurleriGuncelle")]
         public async Task<IActionResult> AtmKasetdekiKupurleriGuncelle(int atmId, int slotNumarasi, int adet, int kupur)
         {
@@ -63,8 +63,8 @@ namespace BankaSimulasyon.Controllers
         
               
         
-        [AllowAnonymous]
-        //   [Authorize(Roles = "admin,gelistirici,musteri")]
+         //[AllowAnonymous]
+        [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("atmdenParaCek")]
         public async Task<IActionResult> AtmdenParaCek(int atmId, int cekilecekTutar)
         {
@@ -76,8 +76,8 @@ namespace BankaSimulasyon.Controllers
         
         
         
-        [AllowAnonymous]
-        //   [Authorize(Roles = "admin")]
+        //[AllowAnonymous]
+        [Authorize(Roles = "admin")]
         [HttpPost("atmEkle")]
         public async Task<IActionResult> AtmEkle(string konum,bool aktifMi)
         {
@@ -89,8 +89,8 @@ namespace BankaSimulasyon.Controllers
         
         
         
-        [AllowAnonymous]
-        //   [Authorize(Roles = "admin,gelistirici")]
+        //[AllowAnonymous]
+        [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("atmleriListeseAktifligeGore")]
         public async Task<IActionResult> aktifligeGoreAtmListele(bool aktifMi)
         {   
@@ -102,8 +102,8 @@ namespace BankaSimulasyon.Controllers
         
         
         
-        [AllowAnonymous]
-        //   [Authorize(Roles = "admin,gelistirici")]
+         //[AllowAnonymous]
+        [Authorize(Roles = "admin,gelistirici")]
         [HttpGet("tumAtmleriGetir")]
         public async Task<IActionResult> tumAtmleriGetir()
         {   
