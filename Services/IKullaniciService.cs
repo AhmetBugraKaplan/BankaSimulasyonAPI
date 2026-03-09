@@ -9,12 +9,12 @@ namespace BankaSimulasyon.Services
 {
     public interface IKullaniciService
     {
-        Task<KullaniciResponse> yeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet, string email, string sifre, string kullaniciRol);
+        KullaniciResponse yeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet, string email, string sifre, string kullaniciRol);
 
-        Task<Kullanici?> kullaniciGetirIdGore(int id);
+        Kullanici? kullaniciGetirIdGore(int id);
 
-        Task<KullaniciResponse> kullaniciSilIdGore(int id);
+        KullaniciResponse kullaniciSilIdGore(int id);
 
-        Task<KullaniciResponse> kullaniciHesapEkle(int kullaniciId, string Hesapsifresi);
+        KullaniciResponse kullaniciHesapEkle(int kullaniciId);
     }
 }

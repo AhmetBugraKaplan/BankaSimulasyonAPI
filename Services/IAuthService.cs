@@ -7,6 +7,6 @@ namespace BankaSimulasyon.Services
 {
     public interface IAuthService
     {
-        Task<string?> GirisYap(string email, string sifre);
+        string? GirisYap(string email, string sifre);
     }
 }

@@ -18,11 +18,11 @@ namespace BankaSimulasyon.Services
         }
 
 
-        public async Task<KullaniciResponse> KartEkle(int kullaniciHesapId, string KartNumara, string KartSKT, string CVV,string KartTipi,bool AktifMi)
+        public  KullaniciResponse KartEkle(int kullaniciHesapId, string KartNumara, string KartSKT, string CVV,string KartTipi,bool AktifMi)
         {
             KullaniciResponse kullaniciResponse = new();
           
-          int sonuc = await _kartRepository.KartEkle(kullaniciHesapId,KartNumara,KartSKT,CVV,KartTipi,AktifMi);
+          int sonuc = _kartRepository.KartEkle(kullaniciHesapId,KartNumara,KartSKT,CVV,KartTipi,AktifMi);
 
             if(sonuc > 0)
             {

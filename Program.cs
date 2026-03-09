@@ -53,7 +53,6 @@ builder.Services.AddSwaggerGen(c =>
 
 
 
-
 builder.Services.AddScoped<IAtmKasetRepository,AtmKasetRepository>();
 builder.Services.AddScoped<IAtmService,AtmService>();
 builder.Services.AddScoped<IAtmRepository, AtmRepository>();
@@ -151,3 +150,10 @@ app.Run();
 //Bir uygulama yapıyoruz her tutarı tekr tekr kendisi istiyor ve sonuçları listeliyor. 10 liradan 1000tl ye kadar teker teker çeksin
 
 //Token-jvt
+
+
+//müşteri limiti ayarlıcaz kartların lşmiti olucak müşterinin toplam limiti kartların limtinden fazla olamaz
+//Top nokta müşteri limitine göre ayarlanacak kartın max limiti müşterinin limiti kadar olabilecek
+//kartının limiti özel olarak belirlenebilecek
+
+//limit set eidlen ekranıız var para çekme işlemi limitkleri update edilecek ayrıca atm kasasıda güncellenecek

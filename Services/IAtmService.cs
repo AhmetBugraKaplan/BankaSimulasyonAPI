@@ -9,12 +9,13 @@ namespace BankaSimulasyon.Services
 {
     public interface IAtmService
     {
-        Task<AtmdenParaCekmeResponse> AtmdenParaCekAsync(int atmId, int cekilecekTutar);
-        Task<int> AtmdekiToplamParayiIdIleGetirAsync(int atmId);
-        Task<KasetGuncellemeResponse> AtmKasetlerdekiKupurleriGuncelleAsync(int atmId, int slotNumarasi, int adet, int kupur);
-        Task<List<ATM>> TumAtmleriGetirAsync();
-        Task<AtmEklemeResponse> AtmEkleAsync(string konum, bool aktifMi);
-        Task<List<ATM>> AtmleriGetirAktifligeGoreAsync(bool aktifMi);
+        AtmdenParaCekmeResponse AtmdenParaCek(int atmId, int cekilecekTutar);
+        int AtmdekiToplamParayiIdIleGetir(int atmId);
+        KasetGuncellemeResponse AtmKasetlerdekiKupurleriGuncelle(int atmId, int slotNumarasi, int adet, int kupur);
+        int AtmdekiToplamParayiHesapla(List<AtmKaset> kasetDizisi);
+        List<ATM> TumAtmleriGetir();
+        AtmEklemeResponse AtmEkle(string konum, bool aktifMi);
+        List<ATM> AtmleriGetirAktifligeGore(bool aktifMi);
 
 
 

@@ -22,7 +22,7 @@ namespace BankaSimulasyon.Repositories
             _context = context;
         }
 
-        public async Task<int> KartEkle(int KullaniciHesapId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi)
+        public int KartEkle(int KullaniciHesapId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi)
         {
 
             //Önce input atamalarını yapıyoaruz her zaman
@@ -37,7 +37,7 @@ namespace BankaSimulasyon.Repositories
             var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
             sonucParam.Direction = ParameterDirection.Output;
 
-            await _context.Database.ExecuteSqlRawAsync(
+            _context.Database.ExecuteSqlRaw(
             "EXEC SP_YeniKartEkle @KullaniciHesapId, @KartNumara, @KartSKT, @CVV, @KartTipi, @AktifMi, @Sonuc OUTPUT",
             kullaniciHesapIdParam, kartNumaraParam, kartSktParam, cvvParam, kartTipiParam, aktifMiParam, sonucParam
             );

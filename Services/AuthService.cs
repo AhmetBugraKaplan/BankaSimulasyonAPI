@@ -1,4 +1,5 @@
 using BankaSimulasyon.Data;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankaSimulasyon.Services
@@ -14,10 +15,17 @@ namespace BankaSimulasyon.Services
             _jwtService = jwtService;
         }
 
-        public async Task<string?> GirisYap(string email, string sifre)
+        public  string? GirisYap(string email, string sifre)
         {
-            var kullanici = await _context.Kullanicilar
-                .FirstOrDefaultAsync(k => k.Email == email);
+            var emailParam = new SqlParameter("@Email",email);
+
+            var kullaniciListesi = 
+            _context.Kullanicilar.FromSqlRaw
+            ("EXEC SP_KullaniciGetirEmailGore @Email", emailParam).ToList();
+
+            if (kullaniciListesi == null || kullaniciListesi.Count == 0) return "kullanici bulunamadi";
+
+            var kullanici = kullaniciListesi.FirstOrDefault();
 
             if (kullanici == null) return "kullanici bulunamadi";
 

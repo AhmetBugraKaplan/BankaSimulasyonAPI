@@ -9,10 +9,10 @@ namespace BankaSimulasyon.Repositories
 {
     public interface IAtmRepository
     {
-        Task<List<ATM>> TumAtmleriGetirAsync();
-        Task<List<ATM>> AtmleriGetirKonumaGoreAsync(string konum);
-        Task<List<ATM>> AtmleriGetirAktifligeGoreAsync(bool aktifMi);
-        Task<int> AtmEkleAsync(string konum,bool aktifMi);
+        List<ATM> TumAtmleriGetir();
+        List<ATM> AtmleriGetirKonumaGore(string konum);
+        List<ATM> AtmleriGetirAktifligeGore(bool aktifMi);
+        int AtmEkle(string konum, bool aktifMi);
 
 
     }

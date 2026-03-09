@@ -8,7 +8,7 @@ namespace BankaSimulasyon.Services
 {
     public interface IKartService
     {
-        public Task<KullaniciResponse> KartEkle(int kullaniciHesapId, string KartNumara, string KartSKT, string CVV,string KartTipi,bool AktifMi);
+        public KullaniciResponse KartEkle(int kullaniciHesapId, string KartNumara, string KartSKT, string CVV,string KartTipi,bool AktifMi);
 
     }
 }

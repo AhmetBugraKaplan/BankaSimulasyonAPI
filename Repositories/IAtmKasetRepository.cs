@@ -8,7 +8,7 @@ namespace BankaSimulasyon.Repositories
 {
     public interface IAtmKasetRepository
     {
-        Task<List<AtmKaset>> AtmdekiKasetleriGetirAsync (int atmId);
-        Task AtmKasetGuncelleAsync (AtmKaset atmKaset);
+        List<AtmKaset> AtmdekiKasetleriGetir (int atmId);
+        void AtmKasetGuncelle (AtmKaset atmKaset);
     }
 }

@@ -19,34 +19,32 @@ namespace BankaSimulasyon.Repositories
             _context = context;
         }
 
-        public async Task<KullaniciHesap?> kullanicininHessabiniBulAsync(int hesapNumarasi)
+        public KullaniciHesap? kullanicininHessabiniBul(int hesapNumarasi)
         {
-            var hesapNumarasiParam = new SqlParameter("@HesapNumarasi",hesapNumarasi);
+            var hesapNumarasiParam = new SqlParameter("@HesapNumarasi", hesapNumarasi);
 
             var hesap = _context.KullaniciHesaplari
-            .FromSqlRaw("EXEC SP_HesapGetirHesapNoGore @HesapNumarasi",hesapNumarasiParam)
+            .FromSqlRaw("EXEC SP_HesapGetirHesapNoGore @HesapNumarasi", hesapNumarasiParam)
             .AsEnumerable()
             .FirstOrDefault();
 
             return hesap;
         }
 
-         
-        public async Task hesapGuncelleAsync(KullaniciHesap kullaniciHesap)
-        {
 
+        public void hesapGuncelleAsync(KullaniciHesap kullaniciHesap)
+        {
             var idParam = new SqlParameter("@Id", kullaniciHesap.id);
             var hesapNumarasiParam = new SqlParameter("@HesapNumarasi", kullaniciHesap.HesapNumarasi);
             var bakiyeParam = new SqlParameter("@Bakiye", kullaniciHesap.Bakiye);
-            var sifreParam = new SqlParameter("@Sifre", kullaniciHesap.Sifre);
 
             var sonuc = new SqlParameter("Sonuc", SqlDbType.Int);
             sonuc.Direction = ParameterDirection.Output;
 
-            await _context.Database.ExecuteSqlRawAsync(
-            "EXEC SP_HesapGuncelle @Id, @HesapNumarasi, @Bakiye, @Sifre, @Sonuc OUTPUT",
-            idParam, hesapNumarasiParam, bakiyeParam, sifreParam, sonuc
-            );
+            _context.Database.ExecuteSqlRaw(
+           "EXEC SP_HesapGuncelle @Id, @HesapNumarasi, @Bakiye,@Sonuc OUTPUT",
+           idParam, hesapNumarasiParam, bakiyeParam, sonuc
+           );
         }
     }
 }

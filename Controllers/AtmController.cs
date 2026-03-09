@@ -22,15 +22,15 @@ namespace BankaSimulasyon.Controllers
         }
 
 
-        
-        //[AllowAnonymous]
+
+        [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici")]
         [HttpGet("atmdeNeKadarVar")]
-        public async Task<IActionResult> AtmdeNeKadarParaVar(int atmId)
+        public IActionResult AtmdeNeKadarParaVar(int atmId)
         {
-            var sonuc = await _atmService.AtmdekiToplamParayiIdIleGetirAsync(atmId);
+            var sonuc = _atmService.AtmdekiToplamParayiIdIleGetir(atmId);
 
-            if (sonuc >0)
+            if (sonuc > 0)
             {
                 return Ok(sonuc);
             }
@@ -46,68 +46,68 @@ namespace BankaSimulasyon.Controllers
 
         }
 
-        
-        
-        
-         //[AllowAnonymous]
+
+
+
+        [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("atmKasetKupurleriGuncelle")]
-        public async Task<IActionResult> AtmKasetdekiKupurleriGuncelle(int atmId, int slotNumarasi, int adet, int kupur)
+        public IActionResult AtmKasetdekiKupurleriGuncelle(int atmId, int slotNumarasi, int adet, int kupur)
         {
-            var sonuc = await _atmService.AtmKasetlerdekiKupurleriGuncelleAsync(atmId, slotNumarasi, adet, kupur);
+            var sonuc = _atmService.AtmKasetlerdekiKupurleriGuncelle(atmId, slotNumarasi, adet, kupur);
 
 
             return Ok(sonuc);
         }
 
-        
-              
-        
-         //[AllowAnonymous]
+
+
+
+        [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("atmdenParaCek")]
-        public async Task<IActionResult> AtmdenParaCek(int atmId, int cekilecekTutar)
+        public IActionResult AtmdenParaCek(int atmId, int cekilecekTutar)
         {
-            var sonuc = await _atmService.AtmdenParaCekAsync(atmId,cekilecekTutar);
+            var sonuc = _atmService.AtmdenParaCek(atmId, cekilecekTutar);
 
-            return Ok(sonuc); 
+            return Ok(sonuc);
         }
 
-        
-        
-        
-        //[AllowAnonymous]
+
+
+
+        [AllowAnonymous]
         [Authorize(Roles = "admin")]
         [HttpPost("atmEkle")]
-        public async Task<IActionResult> AtmEkle(string konum,bool aktifMi)
+        public IActionResult AtmEkle(string konum, bool aktifMi)
         {
-            var sonuc = await _atmService.AtmEkleAsync(konum,aktifMi);
+            var sonuc = _atmService.AtmEkle(konum, aktifMi);
 
             return Ok(sonuc);
         }
 
-        
-        
-        
-        //[AllowAnonymous]
+
+
+
+        [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("atmleriListeseAktifligeGore")]
-        public async Task<IActionResult> aktifligeGoreAtmListele(bool aktifMi)
-        {   
-            var sonuc = _atmService.AtmleriGetirAktifligeGoreAsync(aktifMi);
+        public IActionResult aktifligeGoreAtmListele(bool aktifMi)
+        {
+            var sonuc = _atmService.AtmleriGetirAktifligeGore(aktifMi);
 
             return Ok(sonuc);
         }
-        
-        
-        
-        
-         //[AllowAnonymous]
+
+
+
+
+        [AllowAnonymous]    
         [Authorize(Roles = "admin,gelistirici")]
         [HttpGet("tumAtmleriGetir")]
-        public async Task<IActionResult> tumAtmleriGetir()
-        {   
-            var sonuc = _atmService.TumAtmleriGetirAsync();
+        public IActionResult tumAtmleriGetir()
+        {
+            var sonuc = _atmService.TumAtmleriGetir();
 
             return Ok(sonuc);
         }

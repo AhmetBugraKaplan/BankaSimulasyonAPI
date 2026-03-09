@@ -21,7 +21,7 @@ namespace BankaSimulasyon.Repositories
             _context = context;
         }
 
-        public async Task<int> yeniKullaniciEkleAsync(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet, string email, string sifre, string kullaniciRol)
+        public int yeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet, string email, string sifre, string kullaniciRol)
         {
             var isimParam = new SqlParameter("@Isim", isim);
             var soyisimParam = new SqlParameter("@Soyisim", soyisim);
@@ -36,10 +36,10 @@ namespace BankaSimulasyon.Repositories
             var etkilenenSatirParam = new SqlParameter("@EtkilenenSatir", SqlDbType.Int);
             etkilenenSatirParam.Direction = ParameterDirection.Output;
 
-            await _context.Database.ExecuteSqlRawAsync(
-                "EXEC SP_YeniMusteriEkle @Isim,  @Soyisim, @TelefonNumarasi, @Adres, @Cinsiyet, @Email, @Sifre,@KullaniciRol,@EtkilenenSatir OUTPUT",
-                isimParam, soyisimParam, telefonParam, adresParam, cinsiyetParam, emailParam, sifreParam, kullaniciRolParam, etkilenenSatirParam
-            );
+            _context.Database.ExecuteSqlRaw(
+               "EXEC SP_YeniMusteriEkle @Isim,  @Soyisim, @TelefonNumarasi, @Adres, @Cinsiyet, @Email, @Sifre,@KullaniciRol,@EtkilenenSatir OUTPUT",
+               isimParam, soyisimParam, telefonParam, adresParam, cinsiyetParam, emailParam, sifreParam, kullaniciRolParam, etkilenenSatirParam
+           );
 
             int sonuc = (int)etkilenenSatirParam.Value;
 
@@ -49,7 +49,7 @@ namespace BankaSimulasyon.Repositories
 
 
 
-        public async Task<Kullanici?> kullaniciGetirIdGore(int id)
+        public Kullanici? kullaniciGetirIdGore(int id)
         {
             var idParam = new SqlParameter("@Id", id);
 
@@ -64,7 +64,7 @@ namespace BankaSimulasyon.Repositories
 
 
 
-        public async Task<int> kullaniciSilIdGore(int id)
+        public int kullaniciSilIdGore(int id)
         {
 
             var idParam = new SqlParameter("@Id", id);
@@ -73,9 +73,9 @@ namespace BankaSimulasyon.Repositories
             _return.Direction = ParameterDirection.Output;
 
 
-            await _context.Database.ExecuteSqlRawAsync(
-                "EXEC SP_KullaniciSilIdGore @Id,@Return OUTPUT", idParam, _return
-            );
+            _context.Database.ExecuteSqlRaw(
+               "EXEC SP_KullaniciSilIdGore @Id,@Return OUTPUT", idParam, _return
+           );
 
 
             int sonuc = (int)_return.Value;
@@ -87,40 +87,39 @@ namespace BankaSimulasyon.Repositories
 
 
         //Bu işlemi zaten HesapRepositroy=>HesapGuncelle Fonksiyonu yapıyor şu anda aktif olarak referansıda yok ileride bi kontrol edelim tekrardan.
-        public async Task kullaniciHesapGuncelle(KullaniciHesap kullaniciHesap)
+        public void kullaniciHesapGuncelle(KullaniciHesap kullaniciHesap)
         {
             var idParam = new SqlParameter("@Id", kullaniciHesap.id);
             var hesapNumarasiParam = new SqlParameter("@HesapNumarasi", kullaniciHesap.HesapNumarasi);
             var bakiyeParam = new SqlParameter("@Bakiye", kullaniciHesap.Bakiye);
-            var sifreParam = new SqlParameter("@Sifre", kullaniciHesap.Sifre);
 
             var sonuc = new SqlParameter("Sonuc", SqlDbType.Int);
             sonuc.Direction = ParameterDirection.Output;
 
-            await _context.Database.ExecuteSqlRawAsync(
-            "EXEC SP_KullaniciHesapGuncelle @Id, @HesapNumarasi, @Bakiye, @Sifre, @Sonuc OUTPUT",
-            idParam, hesapNumarasiParam, bakiyeParam, sifreParam, sonuc
-            );
+            _context.Database.ExecuteSqlRaw(
+           "EXEC SP_KullaniciHesapGuncelle @Id, @HesapNumarasi, @Bakiye, @Sifre, @Sonuc OUTPUT",
+           idParam, hesapNumarasiParam, bakiyeParam, sonuc
+           );
         }
 
 
 
 
-        public async Task<int> kullaniciHesapEkle(int kullaniciId, int hesapNumarasi, decimal bakiye, string sifre)
+        public int kullaniciHesapEkle(int kullaniciId, int hesapNumarasi, decimal bakiye)
         {
             var kullaniciIdParam = new SqlParameter("@KullaniciId", kullaniciId);
             var hesapNumarasiParam = new SqlParameter("@HesapNumarasi", hesapNumarasi);
             var bakiyeParam = new SqlParameter("@Bakiye", bakiye);
-            var sifreParam = new SqlParameter("@Sifre", sifre);
+
 
             var sonuc = new SqlParameter("@Sonuc", SqlDbType.Int);
             sonuc.Direction = ParameterDirection.Output;
 
-            await _context.Database.ExecuteSqlRawAsync(
-                "EXEC SP_KullaniciHesapEkle @KullaniciId, @HesapNumarasi, @Bakiye, @Sifre, @Sonuc OUTPUT",
-                kullaniciIdParam, hesapNumarasiParam, bakiyeParam, sifreParam, sonuc
+            _context.Database.ExecuteSqlRaw(
+                "EXEC SP_KullaniciHesapEkle @KullaniciId, @HesapNumarasi, @Bakiye,  @Sonuc OUTPUT",
+                kullaniciIdParam, hesapNumarasiParam, bakiyeParam, sonuc
             );
-            
+
             return (int)sonuc.Value;
         }
 

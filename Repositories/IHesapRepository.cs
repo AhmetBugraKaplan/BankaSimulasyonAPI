@@ -8,9 +8,9 @@ namespace BankaSimulasyon.Repositories
 {
     public interface IHesapRepository
     {
-        public Task<KullaniciHesap?> kullanicininHessabiniBulAsync(int hesapNumarasi);
+        public KullaniciHesap? kullanicininHessabiniBul(int hesapNumarasi);
 
-        public Task hesapGuncelleAsync(KullaniciHesap kullaniciHesap);
+        public  void hesapGuncelleAsync(KullaniciHesap kullaniciHesap);
 
     }
 }

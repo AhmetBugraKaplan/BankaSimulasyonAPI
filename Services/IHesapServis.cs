@@ -10,8 +10,7 @@ namespace BankaSimulasyon.Services
     public interface IHesapServis
     {
         public bool hesaptaYeterinceParaVarmi(KullaniciHesap hesap, int tutar);
-        public bool hesapSifresiDogruMu(KullaniciHesap hesap, string sifre);
-        public Task<KullaniciResponse> ParaCek(int hesapNumarasi, string girilenSifre, int atmId, int cekilecekTutar);
+        public KullaniciResponse ParaCek(int hesapNumarasi,int atmId, int cekilecekTutar);
 
     }
 }

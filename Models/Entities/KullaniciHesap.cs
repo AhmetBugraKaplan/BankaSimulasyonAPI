@@ -15,6 +15,5 @@ namespace BankaSimulasyon.Models.Entities
         public Kullanici kullanici { get; set; } = null!;
         public int HesapNumarasi { get; set; } = 0;
         public decimal Bakiye { get; set; } = 0;
-        public String Sifre { get; set; } = null!;
     }
 }

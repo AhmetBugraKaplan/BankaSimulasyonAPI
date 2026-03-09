@@ -22,11 +22,11 @@ namespace BankaSimulasyon.Services
 
 
 
-        public async Task<AtmdenParaCekmeResponse> AtmdenParaCekAsync(int atmId, int cekilecekTutar)
+        public  AtmdenParaCekmeResponse AtmdenParaCek(int atmId, int cekilecekTutar)
         {
             AtmdenParaCekmeResponse atmdenParaCekmeResponse = new();
-            List<AtmKaset> kasetDizisi = await _atmKasetRepository.AtmdekiKasetleriGetirAsync(atmId);
-            int atmdeBulunanToplamPara = await AtmdekiToplamParayiIdIleGetirAsync(atmId);
+            List<AtmKaset> kasetDizisi = _atmKasetRepository.AtmdekiKasetleriGetir(atmId);
+            int atmdeBulunanToplamPara = AtmdekiToplamParayiHesapla(kasetDizisi);
 
             if (cekilecekTutar <= 0)
             {
@@ -57,8 +57,8 @@ namespace BankaSimulasyon.Services
             int toplamVerilenBanknot = 0;
             AtmKaset sonKullanilanKaset = null!;
 
-            // ATM'deki tüm küpürler arasından en yüksek 2 küpür değeri belirlenir
-            // Örnek: 200, 200, 100, 50 varsa → enYuksek2Kupur = { 200, 100 }
+            // ATM deki küpürler arasından en yüksek 2 küpür değeri belirliyoruz
+            // 200, 200, 100, 50 için = { 200, 100 }
             var enYuksek2Kupur = kasetDizisi
                 .Select(k => k.Kupur)
                 .Distinct()
@@ -70,8 +70,8 @@ namespace BankaSimulasyon.Services
             // Top 2 dışındaki küpürler en sona eklenir, bu sayede örneğin 50 TL'de 200 adet olsa bile sıranın sonuna gider
             var siraliKasetler = kasetDizisi
                 .OrderByDescending(k => enYuksek2Kupur.Contains(k.Kupur) ? 1 : 0)
-                .ThenByDescending(k => k.Adet)
                 .ThenByDescending(k => k.Kupur)
+                .ThenByDescending(k => k.Adet)
                 .ToList();
 
             foreach (AtmKaset kaset in siraliKasetler)
@@ -155,7 +155,7 @@ namespace BankaSimulasyon.Services
             if (cekilecekTutar == 0)
             {
                 foreach (var kaset in kasetDizisi)
-                    await _atmKasetRepository.AtmKasetGuncelleAsync(kaset);
+                    _atmKasetRepository.AtmKasetGuncelle(kaset);
 
                 var kullanilanKasetler = kasetDizisi
                     .Where(k => k.Adet != orijinalAdetler[k.Id])
@@ -184,12 +184,22 @@ namespace BankaSimulasyon.Services
 
 
 
-        public async Task<int> AtmdekiToplamParayiIdIleGetirAsync(int atmId)
+
+        public int AtmdekiToplamParayiHesapla(List<AtmKaset> kasetDizisi)
+        {
+            return kasetDizisi.Sum(k => k.Kupur * k.Adet);
+        }
+
+
+
+
+        
+        public int AtmdekiToplamParayiIdIleGetir(int atmId)
         {
             KasetGuncellemeResponse kasetGuncellemeResponse = new KasetGuncellemeResponse();
             int AtmKasetlerToplamPara = 0;
 
-            var kasetDizisi = await _atmKasetRepository.AtmdekiKasetleriGetirAsync(atmId);
+            var kasetDizisi = _atmKasetRepository.AtmdekiKasetleriGetir(atmId);
 
             if (kasetDizisi.Any())
             {
@@ -212,10 +222,10 @@ namespace BankaSimulasyon.Services
 
 
 
-        public async Task<KasetGuncellemeResponse> AtmKasetlerdekiKupurleriGuncelleAsync(int atmId, int slotNumarasi, int adet, int kupur)
+        public  KasetGuncellemeResponse AtmKasetlerdekiKupurleriGuncelle(int atmId, int slotNumarasi, int adet, int kupur)
         {
             KasetGuncellemeResponse kasetGuncellemeResponse = new KasetGuncellemeResponse();
-            var kasetDizisi = await _atmKasetRepository.AtmdekiKasetleriGetirAsync(atmId);
+            var kasetDizisi = _atmKasetRepository.AtmdekiKasetleriGetir(atmId);
 
 
             if (kasetDizisi.Any())
@@ -227,7 +237,7 @@ namespace BankaSimulasyon.Services
                     hedefKaset.Adet = adet;
                     hedefKaset.Kupur = kupur;
                     kasetGuncellemeResponse.IslemBasariliMi = true;
-                    await _atmKasetRepository.AtmKasetGuncelleAsync(hedefKaset);
+                     _atmKasetRepository.AtmKasetGuncelle(hedefKaset);
 
                 }
                 else
@@ -252,11 +262,11 @@ namespace BankaSimulasyon.Services
 
 
 
-        public async Task<AtmEklemeResponse> AtmEkleAsync(string konum, bool aktifMi)
+        public AtmEklemeResponse AtmEkle(string konum, bool aktifMi)
         {
             AtmEklemeResponse atmEklemeResponse = new();
 
-            int sonuc = await _atmRepository.AtmEkleAsync(konum, aktifMi);
+            int sonuc = _atmRepository.AtmEkle(konum, aktifMi);
 
             if (sonuc > 0)
             {
@@ -276,17 +286,17 @@ namespace BankaSimulasyon.Services
 
 
 
-        public async Task<List<ATM>> AtmleriGetirAktifligeGoreAsync(bool aktifMi)
+        public  List<ATM> AtmleriGetirAktifligeGore(bool aktifMi)
         {
 
-            return await _atmRepository.AtmleriGetirAktifligeGoreAsync(aktifMi);
+            return _atmRepository.AtmleriGetirAktifligeGore(aktifMi);
         }
 
 
 
-        public async Task<List<ATM>> TumAtmleriGetirAsync()
+        public  List<ATM> TumAtmleriGetir()
         {
-            return await _atmRepository.TumAtmleriGetirAsync();
+            return  _atmRepository.TumAtmleriGetir();
         }
 
     }

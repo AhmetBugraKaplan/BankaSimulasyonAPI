@@ -28,49 +28,49 @@ namespace BankaSimulasyon.Controllers
         }
 
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("KullaniciEkle")]
-        public async Task<IActionResult> YeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet, string email, string sifre,string kullaniciRol)
+        public  IActionResult YeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet, string email, string sifre, string kullaniciRol)
         {
 
-            var sonuc = await _kullaniciService.yeniKullaniciEkle(isim, soyisim, telefonNumarasi, adres, cinsiyet,email,sifre,kullaniciRol);
+            var sonuc = _kullaniciService.yeniKullaniciEkle(isim, soyisim, telefonNumarasi, adres, cinsiyet, email, sifre, kullaniciRol);
 
             return Ok(sonuc);
         }
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("KullaniciGetirIdGore")]
-        public async Task<IActionResult> KullaniciGetirIdGore(int id)
+        public IActionResult KullaniciGetirIdGore(int id)
         {
-            var sonuc = await _kullaniciService.kullaniciGetirIdGore(id);
+            var sonuc =  _kullaniciService.kullaniciGetirIdGore(id);
 
             return Ok(sonuc);
         }
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("KullaniciSilIdGore")]
-        public async Task<IActionResult> KullaniciSilIdGore(int id)
+        public  IActionResult KullaniciSilIdGore(int id)
         {
-            var sonuc = await _kullaniciService.kullaniciSilIdGore(id);
+            var sonuc =  _kullaniciService.kullaniciSilIdGore(id);
 
             return Ok(sonuc);
         }
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("KullaniciHesaptanParaCek")]
-        public async Task<IActionResult> KullaniciHesaptanParaCek(int hesapNumarasi, string girilenSifre, int atmId, int cekilecekTutar)
+        public  IActionResult KullaniciHesaptanParaCek(int hesapNumarasi, int atmId, int cekilecekTutar)
         {
-            var sonuc = await _hesapServis.ParaCek(hesapNumarasi, girilenSifre, atmId, cekilecekTutar);
+            var sonuc = _hesapServis.ParaCek(hesapNumarasi, atmId, cekilecekTutar);
 
             return Ok(sonuc);
         }
 
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici")]
         [HttpGet("KullaniciTestHata")]
         public IActionResult KullaniciTestHata()
@@ -82,12 +82,12 @@ namespace BankaSimulasyon.Controllers
         [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("HesapEkle")]
-        public async Task<IActionResult> HesapEkle(string sifre)
+        public  IActionResult HesapEkle()
         {
 
             var kullaniciId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-            var sonuc = await _kullaniciService.kullaniciHesapEkle(kullaniciId,sifre);
+            var sonuc =  _kullaniciService.kullaniciHesapEkle(kullaniciId);
 
             return Ok(sonuc);
         }

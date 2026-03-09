@@ -7,6 +7,6 @@ namespace BankaSimulasyon.Repositories
 {
     public interface IKartRepository
     {
-        public Task<int> KartEkle(int kullaniciHesapId, string KartNumara, string KartSKT, string CVV,string KartTipi,bool AktifMi);
+        public int KartEkle(int kullaniciHesapId, string KartNumara, string KartSKT, string CVV,string KartTipi,bool AktifMi);
     }
 }

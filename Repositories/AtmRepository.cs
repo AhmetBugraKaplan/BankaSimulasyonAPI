@@ -20,57 +20,54 @@ namespace BankaSimulasyon.Repositories
             _context = context;
         }
 
-        public async Task<List<ATM>> TumAtmleriGetirAsync()
+        public List<ATM> TumAtmleriGetir()
         {
             var atmListesi = _context.AtmLer
             .FromSqlRaw("EXEC SP_TumATMGetir").ToList();
 
-            return  atmListesi;
+            return atmListesi;
         }
 
-        public async Task<List<ATM>> AtmleriGetirKonumaGoreAsync(string konum)
+        public List<ATM> AtmleriGetirKonumaGore(string konum)
         {
-            var konumParam = new SqlParameter("@Konum",konum);
+            var konumParam = new SqlParameter("@Konum", konum);
 
             var atmListesi = _context.AtmLer
-            .FromSqlRaw("EXEC SP_ATMGetirKonumaGore @Konum",konumParam)
+            .FromSqlRaw("EXEC SP_ATMGetirKonumaGore @Konum", konumParam)
             .ToList();
 
             return atmListesi;
         }
 
-        public async Task<List<ATM>> AtmleriGetirAktifligeGoreAsync(bool aktifMi)
+        public List<ATM> AtmleriGetirAktifligeGore(bool aktifMi)
         {
-            var aktifMiParam = new SqlParameter("@AktifMi",aktifMi);
+            var aktifMiParam = new SqlParameter("@AktifMi", aktifMi);
 
             var atmListesi = _context.AtmLer
-            .FromSqlRaw("EXEC SP_ATMGetirAktifligeGore @AktifMi",aktifMiParam)
+            .FromSqlRaw("EXEC SP_ATMGetirAktifligeGore @AktifMi", aktifMiParam)
             .ToList();
 
             return atmListesi;
         }
 
-        public async Task<int> AtmEkleAsync(string konum, bool aktifMi)
+        public int AtmEkle(string konum, bool aktifMi)
         {
 
-            var konumParam = new SqlParameter("@Konum",konum);
-            var aktifMiParam = new SqlParameter("@AktifMi",aktifMi);
+            var konumParam = new SqlParameter("@Konum", konum);
+            var aktifMiParam = new SqlParameter("@AktifMi", aktifMi);
 
-            var etkilenenSatirParam = new SqlParameter("@EtkilenenSatir",SqlDbType.Int);
+            var etkilenenSatirParam = new SqlParameter("@EtkilenenSatir", SqlDbType.Int);
             etkilenenSatirParam.Direction = ParameterDirection.Output;
 
 
-            await _context.Database.ExecuteSqlRawAsync(
+                _context.Database.ExecuteSqlRaw(
                 "EXEC SP_AtmEkle @Konum, @AktifMi, @EtkilenenSatir OUTPUT",
-                konumParam,aktifMiParam,etkilenenSatirParam
+                konumParam, aktifMiParam, etkilenenSatirParam
             );
 
-            
+            int sonuc = (int)etkilenenSatirParam.Value;
 
-
-           int sonuc = (int)etkilenenSatirParam.Value;
-
-           return sonuc; 
+            return sonuc;
         }
 
     }

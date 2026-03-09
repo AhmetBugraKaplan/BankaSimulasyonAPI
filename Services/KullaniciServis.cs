@@ -17,13 +17,13 @@ namespace BankaSimulasyon.Services
             _kullaniciRepository = kullaniciRepository;
         }
 
-        public async Task<KullaniciResponse> yeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet, string email, string sifre, string kullaniciRol)
+        public  KullaniciResponse yeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet, string email, string sifre, string kullaniciRol)
         {
             KullaniciResponse kullaniciResponse = new();
 
             string hashlenmisSfire = BCrypt.Net.BCrypt.HashPassword(sifre);
 
-            int sonuc = await _kullaniciRepository.yeniKullaniciEkleAsync(isim, soyisim, telefonNumarasi, adres, cinsiyet, email, hashlenmisSfire, kullaniciRol);
+            int sonuc = _kullaniciRepository.yeniKullaniciEkle(isim, soyisim, telefonNumarasi, adres, cinsiyet, email, hashlenmisSfire, kullaniciRol);
 
             if (sonuc > 0)
             {
@@ -42,19 +42,19 @@ namespace BankaSimulasyon.Services
 
 
 
-        public async Task<Kullanici?> kullaniciGetirIdGore(int id)
+        public  Kullanici? kullaniciGetirIdGore(int id)
         {
-            return await _kullaniciRepository.kullaniciGetirIdGore(id);
+            return _kullaniciRepository.kullaniciGetirIdGore(id);
         }
 
 
 
 
-        public async Task<KullaniciResponse> kullaniciSilIdGore(int id)
+        public KullaniciResponse kullaniciSilIdGore(int id)
         {
             KullaniciResponse kullaniciResponse = new();
 
-            int sonuc = await _kullaniciRepository.kullaniciSilIdGore(id);
+            int sonuc =  _kullaniciRepository.kullaniciSilIdGore(id);
 
             if (sonuc > 0)
             {
@@ -72,11 +72,11 @@ namespace BankaSimulasyon.Services
 
 
 
-        public async Task<KullaniciResponse> kullaniciHesapEkle(int kullaniciId, string hesapsifresi)
+        public  KullaniciResponse kullaniciHesapEkle(int kullaniciId)
         {
             KullaniciResponse kullaniciResponse = new();
 
-            var kullanici = await _kullaniciRepository.kullaniciGetirIdGore(kullaniciId);
+            var kullanici = _kullaniciRepository.kullaniciGetirIdGore(kullaniciId);
 
             if (kullanici == null)
             {
@@ -89,7 +89,7 @@ namespace BankaSimulasyon.Services
             int hesapNumarasi = random.Next(100000, 999999);
 
 
-            int sonuc = await _kullaniciRepository.kullaniciHesapEkle(kullaniciId,hesapNumarasi,0,hesapsifresi);
+            int sonuc = _kullaniciRepository.kullaniciHesapEkle(kullaniciId,hesapNumarasi,0);
 
             if (sonuc > 0)
             {

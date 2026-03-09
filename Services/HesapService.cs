@@ -23,10 +23,7 @@ namespace BankaSimulasyon.Services
             _kullaniciRepository = kullaniciRepository;
         }
 
-        public bool hesapSifresiDogruMu(KullaniciHesap hesap, string sifre)
-        {
-            return hesap.Sifre == sifre;
-        }
+
 
         public bool hesaptaYeterinceParaVarmi(KullaniciHesap hesap, int tutar)
         {
@@ -35,12 +32,12 @@ namespace BankaSimulasyon.Services
 
 
 
-        public async Task<KullaniciResponse> ParaCek(int hesapNumarasi, string girilenSifre, int atmId, int cekilecekTutar)
+        public  KullaniciResponse ParaCek(int hesapNumarasi,int atmId, int cekilecekTutar)
         {
 
             KullaniciResponse kullaniciResponse = new();
 
-            var hesap = await _hesapRepository.kullanicininHessabiniBulAsync(hesapNumarasi);
+            var hesap = _hesapRepository.kullanicininHessabiniBul(hesapNumarasi);
             if (hesap == null)
             {
                 kullaniciResponse.IslemBasariliMi = false;
@@ -48,12 +45,7 @@ namespace BankaSimulasyon.Services
                 return kullaniciResponse;
             }
 
-            if (!hesapSifresiDogruMu(hesap, girilenSifre))
-            {
-                kullaniciResponse.IslemBasariliMi = false;
-                kullaniciResponse.Mesaj = "Sifre yanlis";
-                return kullaniciResponse;
-            }
+
 
 
             if (!hesaptaYeterinceParaVarmi(hesap, cekilecekTutar))
@@ -63,7 +55,7 @@ namespace BankaSimulasyon.Services
                 return kullaniciResponse;
             }
 
-            var atmSonuc = await _atmService.AtmdenParaCekAsync(atmId, cekilecekTutar);
+            var atmSonuc =  _atmService.AtmdenParaCek(atmId, cekilecekTutar);
             if (!atmSonuc.IslemBasariliMi)
             {
                 kullaniciResponse.IslemBasariliMi = false;
@@ -72,7 +64,7 @@ namespace BankaSimulasyon.Services
             }
 
             hesap.Bakiye -= cekilecekTutar;
-            await _hesapRepository.hesapGuncelleAsync(hesap);
+             _hesapRepository.hesapGuncelleAsync(hesap);
 
             kullaniciResponse.IslemBasariliMi = true;
             kullaniciResponse.Mesaj = "Para basariyla cekildi";
