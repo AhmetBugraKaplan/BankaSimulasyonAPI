@@ -10,7 +10,11 @@ namespace BankaSimulasyon.Repositories
     {
         public KullaniciHesap? kullanicininHessabiniBul(int hesapNumarasi);
 
-        public  void hesapGuncelleAsync(KullaniciHesap kullaniciHesap);
+        public void hesapGuncelleAsync(KullaniciHesap kullaniciHesap);
+
+        public int kullaniciHesapLimitGuncelle(int kullaniciId, decimal kullaniciHesapLimit);
+
+        public decimal kullaniciHesapLimitGetir(int kullaniciId);
 
     }
 }

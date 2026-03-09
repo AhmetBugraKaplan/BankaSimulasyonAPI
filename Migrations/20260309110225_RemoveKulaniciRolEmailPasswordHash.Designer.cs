@@ -3,6 +3,7 @@ using BankaSimulasyon.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankaSimulasyon.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260309110225_RemoveKulaniciRolEmailPasswordHash")]
+    partial class RemoveKulaniciRolEmailPasswordHash
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,9 +89,6 @@ namespace BankaSimulasyon.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("KartLimit")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("KartNumara")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -101,12 +101,12 @@ namespace BankaSimulasyon.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("KullaniciId")
+                    b.Property<int>("KullaniciHesapId")
                         .HasColumnType("int");
 
                     b.HasKey("id");
 
-                    b.HasIndex("KullaniciId");
+                    b.HasIndex("KullaniciHesapId");
 
                     b.ToTable("Kartlar");
                 });
@@ -155,9 +155,6 @@ namespace BankaSimulasyon.Migrations
                     b.Property<decimal>("Bakiye")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("HesapLimit")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("HesapNumarasi")
                         .HasColumnType("int");
 
@@ -184,13 +181,13 @@ namespace BankaSimulasyon.Migrations
 
             modelBuilder.Entity("BankaSimulasyon.Models.Entities.Kart", b =>
                 {
-                    b.HasOne("BankaSimulasyon.Models.Entities.Kullanici", "kullanici")
+                    b.HasOne("BankaSimulasyon.Models.Entities.KullaniciHesap", "kullaniciHesap")
                         .WithMany()
-                        .HasForeignKey("KullaniciId")
+                        .HasForeignKey("KullaniciHesapId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("kullanici");
+                    b.Navigation("kullaniciHesap");
                 });
 
             modelBuilder.Entity("BankaSimulasyon.Models.Entities.KullaniciHesap", b =>

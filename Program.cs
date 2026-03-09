@@ -24,6 +24,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
 {
+    /*
     c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
 {
     Name = "Authorization",
@@ -47,7 +48,7 @@ builder.Services.AddSwaggerGen(c =>
             },
             new string[] {}
         }
-    });
+    }); */
 });
 
 
@@ -62,10 +63,12 @@ builder.Services.AddScoped<IHesapRepository, HesapRepository>();
 builder.Services.AddScoped<IHesapServis,HesapService>();
 builder.Services.AddScoped<IKartRepository,KartRepository>();
 builder.Services.AddScoped<IKartService,KartService>();
-builder.Services.AddScoped<JwtService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
 
 
+//builder.Services.AddScoped<JwtService>();
+// builder.Services.AddScoped<IAuthService, AuthService>();
+
+/*
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -106,7 +109,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.InvokeHandlersAfterFailure = false;
 });
-
+*/
 
 builder.Services.AddCors(options =>
 {
@@ -135,9 +138,11 @@ app.UseMiddleware<ExceptionMiddleware>(); //Hata yakalama !!!HER ZAMAN EN USTTE 
 app.UseMiddleware<LoggingMiddleware>(); //Yapılan her isteği (get/post fark etmez) logluyoruz
 app.UseCors("AllowAngular");
 app.UseMiddleware<RateLimitingMiddleware>(); //İstek sınırla
+
+/* Authenticationu kapatıyoruz.
 app.UseAuthentication(); 
 app.UseAuthorization();
-
+*/
 
 //app.UseHttpsRedirection();
 app.MapControllers();

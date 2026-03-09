@@ -70,5 +70,30 @@ namespace BankaSimulasyon.Services
             kullaniciResponse.Mesaj = "Para basariyla cekildi";
             return kullaniciResponse;
         }
+    
+    
+        public KullaniciResponse kullaniciHesapLimitGuncelle(int kullaniciId, decimal kullaniciHesapLimit)
+        {
+            KullaniciResponse kullaniciResponse = new KullaniciResponse();
+
+            int sonuc = _hesapRepository.kullaniciHesapLimitGuncelle(kullaniciId,kullaniciHesapLimit);
+
+            if(sonuc > 0)
+            {
+                kullaniciResponse.IslemBasariliMi = true;
+                kullaniciResponse.Mesaj = "Kullanıcı hesap limit başarıyla güncellendi";
+            }
+            else
+            {
+                kullaniciResponse.IslemBasariliMi = false;
+                kullaniciResponse.Mesaj = "Girilen kullanıcı id ye ait kullanıcı bulunamadı";
+            }
+
+            return kullaniciResponse;
+        }
+
+        
+    
+
     }
 }

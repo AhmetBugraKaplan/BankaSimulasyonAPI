@@ -1,3 +1,5 @@
+/*
+
 using BankaSimulasyon.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,3 +31,4 @@ namespace BankaSimulasyon.Controllers
         }
     }
 }
+*/

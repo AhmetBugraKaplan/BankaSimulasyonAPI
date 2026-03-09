@@ -25,9 +25,17 @@ namespace BankaSimulasyon.Controllers
         [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("KartEkle")]
-        public IActionResult KartEkle(int kullaniciHesapId, string KartNumara, string KartSKT, string CVV,string KartTipi,bool AktifMi)
+        public IActionResult KartEkle(int kullaniciId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi)
         {
-            var sonuc = _kartService.KartEkle(kullaniciHesapId,KartNumara,KartSKT,CVV,KartTipi,AktifMi);
+            var sonuc = _kartService.KartEkle(kullaniciId, KartNumara, KartSKT, CVV, KartTipi, AktifMi);
+
+            return Ok(sonuc);
+        }
+
+        [HttpPost("KartHesapLimitGuncelle")]
+        public IActionResult KartHesapLimitiGuncelle(int kullaniciHesapId,decimal kullaniciHesapLimit)
+        {
+            var sonuc = _kartService.KullaniciKartLimitGuncelle(kullaniciHesapId,kullaniciHesapLimit);
 
             return Ok(sonuc);
         }

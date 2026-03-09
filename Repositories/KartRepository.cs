@@ -22,11 +22,11 @@ namespace BankaSimulasyon.Repositories
             _context = context;
         }
 
-        public int KartEkle(int KullaniciHesapId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi)
+        public int KartEkle(int KullaniciId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi)
         {
 
             //Önce input atamalarını yapıyoaruz her zaman
-            var kullaniciHesapIdParam = new SqlParameter("@KullaniciHesapId", KullaniciHesapId);
+            var kullaniciIdParam = new SqlParameter("@KullaniciId", KullaniciId);
             var kartNumaraParam = new SqlParameter("@KartNumara", KartNumara);
             var kartSktParam = new SqlParameter("@KartSKT", KartSKT);
             var cvvParam = new SqlParameter("@CVV", CVV);
@@ -38,8 +38,8 @@ namespace BankaSimulasyon.Repositories
             sonucParam.Direction = ParameterDirection.Output;
 
             _context.Database.ExecuteSqlRaw(
-            "EXEC SP_YeniKartEkle @KullaniciHesapId, @KartNumara, @KartSKT, @CVV, @KartTipi, @AktifMi, @Sonuc OUTPUT",
-            kullaniciHesapIdParam, kartNumaraParam, kartSktParam, cvvParam, kartTipiParam, aktifMiParam, sonucParam
+            "EXEC SP_YeniKartEkle @KullaniciId, @KartNumara, @KartSKT, @CVV, @KartTipi, @AktifMi, @Sonuc OUTPUT",
+            kullaniciIdParam, kartNumaraParam, kartSktParam, cvvParam, kartTipiParam, aktifMiParam, sonucParam
             );
 
 
@@ -48,5 +48,22 @@ namespace BankaSimulasyon.Repositories
 
             return sonuc;
         }
+
+
+
+        public int KullaniciKartLimitGuncelle(int kullaniciId, decimal kullaniciKartLimit)
+        {
+            var kullaniciIdParam = new SqlParameter("@KullaniciId",kullaniciId);
+            var kullaniciKartLimitParam = new SqlParameter("@KartLimit",kullaniciKartLimit);
+
+            var sonucParam = new SqlParameter("@Sonuc",SqlDbType.Int);
+            sonucParam.Direction = ParameterDirection.Output;
+
+            _context.Database.ExecuteSqlRaw(
+                "EXECUTE SP_KullaniciKartLimitGuncelle @KullaniciId,@KartLimit,@Sonuc OUTPUT",kullaniciIdParam,kullaniciKartLimitParam,sonucParam);
+
+            return (int)sonucParam.Value;            
+        }
+
     }
 }

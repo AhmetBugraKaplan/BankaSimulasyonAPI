@@ -1,3 +1,4 @@
+/*
 using BankaSimulasyon.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -37,3 +38,4 @@ namespace BankaSimulasyon.Services
         }
     }
 }
+*/

@@ -38,7 +38,7 @@ namespace BankaSimulasyon.Repositories
             var hesapNumarasiParam = new SqlParameter("@HesapNumarasi", kullaniciHesap.HesapNumarasi);
             var bakiyeParam = new SqlParameter("@Bakiye", kullaniciHesap.Bakiye);
 
-            var sonuc = new SqlParameter("Sonuc", SqlDbType.Int);
+            var sonuc = new SqlParameter("@Sonuc", SqlDbType.Int);
             sonuc.Direction = ParameterDirection.Output;
 
             _context.Database.ExecuteSqlRaw(
@@ -46,5 +46,35 @@ namespace BankaSimulasyon.Repositories
            idParam, hesapNumarasiParam, bakiyeParam, sonuc
            );
         }
+
+        public int kullaniciHesapLimitGuncelle(int kullaniciId, decimal kullaniciHesapLimit)
+        {
+            var kullaniciIdParam = new SqlParameter("@KullaniciId", kullaniciId);
+            var kullaniciHesapLimitParam = new SqlParameter("@HesapLimit", kullaniciHesapLimit);
+
+            var sonuc = new SqlParameter("@Sonuc", SqlDbType.Int);
+            sonuc.Direction = ParameterDirection.Output;
+
+            _context.Database.ExecuteSqlRaw("EXEC SP_KullaniciHesapLimitGuncelle @KullaniciId, @HesapLimit, @Sonuc OUTPUT"
+            , kullaniciIdParam, kullaniciHesapLimitParam, sonuc
+            );
+
+            return (int)sonuc.Value;
+        }
+
+        public decimal kullaniciHesapLimitGetir(int kullaniciId)
+        {
+            var kullaniciIdParam = new SqlParameter("@KullaniciId", kullaniciId);
+
+            var limit = _context.Database
+            .SqlQuery<Decimal>($"EXEC SP_KullaniciHesapLimitGetir {kullaniciId}")
+            .AsEnumerable()
+            .FirstOrDefault();
+
+            return limit;
+        }
+
+
+
     }
 }

@@ -15,5 +15,8 @@ namespace BankaSimulasyon.Models.Entities
         public Kullanici kullanici { get; set; } = null!;
         public int HesapNumarasi { get; set; } = 0;
         public decimal Bakiye { get; set; } = 0;
+        
+        //Hesap limiti bu kullanıcının max çekebileceği tutarı gösteriyor
+        public decimal HesapLimit { get; set; } = 0;
     }
 }

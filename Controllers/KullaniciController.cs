@@ -14,7 +14,6 @@ namespace BankaSimulasyon.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
     public class KullaniciController : ControllerBase
     {
         private readonly IKullaniciService _kullaniciService;
@@ -93,6 +92,13 @@ namespace BankaSimulasyon.Controllers
         }
 
 
+        [HttpPost("KullaniciHesapLimitGuncelle")]
+        public IActionResult KullaniciHesapLimitGuncelle(int kullaniciHesapId,decimal kullaniciHesapLimit)
+        {
+            var sonuc =  _hesapServis.kullaniciHesapLimitGuncelle(kullaniciHesapId,kullaniciHesapLimit);
+
+            return Ok(sonuc);
+        }
 
 
 
