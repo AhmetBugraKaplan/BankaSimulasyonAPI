@@ -12,9 +12,9 @@ namespace BankaSimulasyon.Repositories
 
         public void hesapGuncelleAsync(KullaniciHesap kullaniciHesap);
 
-        public int kullaniciHesapLimitGuncelle(int kullaniciId, decimal kullaniciHesapLimit);
+        public int HesapLimitGuncelle(int kullaniciId, decimal kullaniciHesapLimit);
 
-        public decimal kullaniciHesapLimitGetir(int kullaniciId);
+        public decimal HesapLimitGetir(int kullaniciId);
 
     }
 }

@@ -51,18 +51,42 @@ namespace BankaSimulasyon.Repositories
 
 
 
-        public int KullaniciKartLimitGuncelle(int kullaniciId, decimal kullaniciKartLimit)
+        public int KartLimitGuncelle(int kullaniciId, string kartNumara,decimal yeniKartLimit)
         {
-            var kullaniciIdParam = new SqlParameter("@KullaniciId",kullaniciId);
-            var kullaniciKartLimitParam = new SqlParameter("@KartLimit",kullaniciKartLimit);
+            var kullaniciIdParam = new SqlParameter("@KullaniciId", kullaniciId);
+            var kartNumaraParam = new SqlParameter("@KartNumara",kartNumara);
+            var kullaniciKartLimitParam = new SqlParameter("@KartLimit", yeniKartLimit);
 
-            var sonucParam = new SqlParameter("@Sonuc",SqlDbType.Int);
+            var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
             sonucParam.Direction = ParameterDirection.Output;
 
             _context.Database.ExecuteSqlRaw(
-                "EXECUTE SP_KullaniciKartLimitGuncelle @KullaniciId,@KartLimit,@Sonuc OUTPUT",kullaniciIdParam,kullaniciKartLimitParam,sonucParam);
+                "EXECUTE SP_KullaniciKartLimitGuncelle @KullaniciId,@KartNumara,@KartLimit,@Sonuc OUTPUT", kullaniciIdParam, kartNumaraParam,kullaniciKartLimitParam, sonucParam);
 
-            return (int)sonucParam.Value;            
+            return (int)sonucParam.Value;
+        }
+
+
+        public decimal KartLimitGetir(string kartNumara)
+        {
+            var kartNumaraParam = new SqlParameter("@KartNumara",kartNumara);
+
+            decimal kartLimit = _context.Database.SqlQuery<Decimal>
+            ($"EXEC SP_KullaniciKartLimitGetir {kartNumaraParam}")
+            .AsEnumerable()
+            .FirstOrDefault();
+
+            return kartLimit;
+        }
+
+
+        public List<Kart> TumKartlariGetir(int kullaniciId)
+        {
+            var kullaniciIdParam = new SqlParameter("@KullaniciId", kullaniciId);
+
+            var kartListesi = _context.Kartlar.FromSqlRaw("EXEC SP_TumKartlariGetir @KullaniciId",kullaniciIdParam).ToList();
+
+            return kartListesi;
         }
 
     }

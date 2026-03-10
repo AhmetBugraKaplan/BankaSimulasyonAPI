@@ -3,6 +3,7 @@ using BankaSimulasyon.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankaSimulasyon.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260310081511_AddedMaxLimitKalanLimit")]
+    partial class AddedMaxLimitKalanLimit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,9 +158,6 @@ namespace BankaSimulasyon.Migrations
                     b.Property<decimal>("Bakiye")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("HesapLimit")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("HesapNumarasi")
                         .HasColumnType("int");
 
@@ -166,6 +166,9 @@ namespace BankaSimulasyon.Migrations
 
                     b.Property<int>("KullaniciId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("MAX_HesapLimit")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("id");
 

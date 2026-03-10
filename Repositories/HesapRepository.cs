@@ -47,7 +47,7 @@ namespace BankaSimulasyon.Repositories
            );
         }
 
-        public int kullaniciHesapLimitGuncelle(int kullaniciId, decimal kullaniciHesapLimit)
+        public int HesapLimitGuncelle(int kullaniciId, decimal kullaniciHesapLimit)
         {
             var kullaniciIdParam = new SqlParameter("@KullaniciId", kullaniciId);
             var kullaniciHesapLimitParam = new SqlParameter("@HesapLimit", kullaniciHesapLimit);
@@ -62,16 +62,16 @@ namespace BankaSimulasyon.Repositories
             return (int)sonuc.Value;
         }
 
-        public decimal kullaniciHesapLimitGetir(int kullaniciId)
+        public decimal HesapLimitGetir(int kullaniciId)
         {
             var kullaniciIdParam = new SqlParameter("@KullaniciId", kullaniciId);
 
-            var limit = _context.Database
-            .SqlQuery<Decimal>($"EXEC SP_KullaniciHesapLimitGetir {kullaniciId}")
+            var hesapLimit = _context.Database
+            .SqlQuery<Decimal>($"EXEC SP_KullaniciHesapLimitGetir {kullaniciIdParam}")
             .AsEnumerable()
             .FirstOrDefault();
 
-            return limit;
+            return hesapLimit;
         }
 
 

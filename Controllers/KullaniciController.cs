@@ -93,9 +93,9 @@ namespace BankaSimulasyon.Controllers
 
 
         [HttpPost("KullaniciHesapLimitGuncelle")]
-        public IActionResult KullaniciHesapLimitGuncelle(int kullaniciHesapId,decimal kullaniciHesapLimit)
+        public IActionResult HesapLimitGuncelle(int kullaniciHesapId,decimal kullaniciHesapLimit)
         {
-            var sonuc =  _hesapServis.kullaniciHesapLimitGuncelle(kullaniciHesapId,kullaniciHesapLimit);
+            var sonuc =  _hesapServis.HesapLimitGuncelle(kullaniciHesapId,kullaniciHesapLimit);
 
             return Ok(sonuc);
         }

@@ -72,11 +72,11 @@ namespace BankaSimulasyon.Services
         }
     
     
-        public KullaniciResponse kullaniciHesapLimitGuncelle(int kullaniciId, decimal kullaniciHesapLimit)
+        public KullaniciResponse HesapLimitGuncelle(int kullaniciId, decimal kullaniciHesapLimit)
         {
             KullaniciResponse kullaniciResponse = new KullaniciResponse();
 
-            int sonuc = _hesapRepository.kullaniciHesapLimitGuncelle(kullaniciId,kullaniciHesapLimit);
+            int sonuc = _hesapRepository.HesapLimitGuncelle(kullaniciId,kullaniciHesapLimit);
 
             if(sonuc > 0)
             {

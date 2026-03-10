@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BankaSimulasyon.Models.Entities;
 using BankaSimulasyon.Models.Responses;
 using BankaSimulasyon.Repositories;
 
@@ -41,19 +42,43 @@ namespace BankaSimulasyon.Services
         }
 
 
-        public KullaniciResponse KullaniciKartLimitGuncelle(int kullaniciId, decimal kullaniciKartLimit)
+        public KullaniciResponse KartLimitGuncelle(int kullaniciId, string kartNumara, decimal yeniKartLimit)
         {
             KullaniciResponse kullaniciResponse = new();
-            decimal MusteriHesapLimit = _hesapRepository.kullaniciHesapLimitGetir(kullaniciId);  
+            decimal HesapLimit = _hesapRepository.HesapLimitGetir(kullaniciId);
+            decimal guncellemeOncesiKartLimit = _kartRepository.KartLimitGetir(kartNumara);
+            decimal ToplamKullanilanKartLimiti = 0;
+            decimal kalanKullanilabilirLimit;
 
-            int sonuc = _kartRepository.KullaniciKartLimitGuncelle(kullaniciId, kullaniciKartLimit);
 
-            if (sonuc > 0 && kullaniciKartLimit <= MusteriHesapLimit)
+            List<Kart> kartlar = _kartRepository.TumKartlariGetir(kullaniciId);
+
+            foreach (var kart in kartlar)
             {
-                kullaniciResponse.IslemBasariliMi = true;
-                kullaniciResponse.Mesaj = "Kart limitiniz başarıyla güncellendi";
+                ToplamKullanilanKartLimiti += kart.KartLimit;
             }
-            else if(sonuc > 0 && kullaniciKartLimit > MusteriHesapLimit)
+
+            //Hesabın total limitinden kartlarda aktif olarak kullanılan limiti çıkarıyoruz aşşağıda 
+            //limit karşılaştırmayı kalanKullanilabilirLimit üzerinden yapıcaz
+            kalanKullanilabilirLimit = HesapLimit - ToplamKullanilanKartLimiti + guncellemeOncesiKartLimit;
+
+
+            if (yeniKartLimit <= kalanKullanilabilirLimit)
+            {
+                if (yeniKartLimit != guncellemeOncesiKartLimit)
+                {
+                    _kartRepository.KartLimitGuncelle(kullaniciId, kartNumara,yeniKartLimit);
+                    kullaniciResponse.IslemBasariliMi = true;
+                    kullaniciResponse.Mesaj = "Kart limitiniz başarıyla güncellendi";
+                }
+                else
+                {
+                    kullaniciResponse.IslemBasariliMi = false;
+                    kullaniciResponse.Mesaj = "Güncellenecek limit aktif limitten farklı olmalıdır";
+                }
+
+            }
+            else if (yeniKartLimit > HesapLimit)
             {
                 kullaniciResponse.IslemBasariliMi = false;
                 kullaniciResponse.Mesaj = "Kartınızın limiti müşteri hesap limitinizden fazla olamaz";
@@ -61,12 +86,16 @@ namespace BankaSimulasyon.Services
             else
             {
                 kullaniciResponse.IslemBasariliMi = false;
-                kullaniciResponse.Mesaj = "Girilen kullanıcı id 'e ait kullanıcı bulunamadı";
+                kullaniciResponse.Mesaj = "Diğer kartlarınız hesap limitinizi kullandığından bu kart için yeterli limit bulunmamaktadır";
             }
 
             return kullaniciResponse;
-
         }
+
+
+
+
+
 
 
     }

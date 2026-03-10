@@ -32,10 +32,10 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
-        [HttpPost("KartHesapLimitGuncelle")]
-        public IActionResult KartHesapLimitiGuncelle(int kullaniciHesapId,decimal kullaniciHesapLimit)
+        [HttpPost("KartLimitGuncelle")]
+        public IActionResult KartLimitGuncelle(int kullaniciId,string kartNumara,decimal kartLimit)
         {
-            var sonuc = _kartService.KullaniciKartLimitGuncelle(kullaniciHesapId,kullaniciHesapLimit);
+            var sonuc = _kartService.KartLimitGuncelle(kullaniciId,kartNumara,kartLimit);
 
             return Ok(sonuc);
         }

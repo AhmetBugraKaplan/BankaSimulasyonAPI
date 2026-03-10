@@ -10,7 +10,8 @@ namespace BankaSimulasyon.Services
     {
         public KullaniciResponse KartEkle(int kullaniciId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi);
 
-        public KullaniciResponse KullaniciKartLimitGuncelle(int kullaniciId, decimal kullaniciKartLimit);
+        public KullaniciResponse KartLimitGuncelle(int kullaniciId, string kartNumara, decimal yeniKartLimit);
+
 
     }
 }
