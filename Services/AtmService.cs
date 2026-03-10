@@ -13,94 +13,87 @@ namespace BankaSimulasyon.Services
     {
         private readonly IAtmKasetRepository _atmKasetRepository;
         private readonly IAtmRepository _atmRepository;
+        private readonly IKartRepository _kartRepository;
+        private readonly IKartService _kartService;
 
-        public AtmService(IAtmKasetRepository atmKasetRepository, IAtmRepository atmRepository)
+
+        public AtmService(IAtmKasetRepository atmKasetRepository, IAtmRepository atmRepository, IKartRepository kartRepository, IKartService kartService)
         {
             _atmKasetRepository = atmKasetRepository;
             _atmRepository = atmRepository;
+            _kartRepository = kartRepository;
+            _kartService = kartService;
         }
 
 
 
-        public  AtmdenParaCekmeResponse AtmdenParaCek(int atmId, int cekilecekTutar)
+        public AtmdenParaCekmeResponse AtmdenParaCek(int atmId, int cekilecekTutar, string kartNumara)
         {
             AtmdenParaCekmeResponse atmdenParaCekmeResponse = new();
             List<AtmKaset> kasetDizisi = _atmKasetRepository.AtmdekiKasetleriGetir(atmId);
             int atmdeBulunanToplamPara = AtmdekiToplamParayiHesapla(kasetDizisi);
+            int orijinalCekilecekTutar = cekilecekTutar;
 
-            if (cekilecekTutar <= 0)
+            var kalanKullanilabilirHesapLimiti = _kartService.KalanKullanilabilirHesapLimit;
+
+            decimal KullanilanKartinLimiti = _kartRepository.KartLimitGetir(kartNumara);
+
+
+            if (cekilecekTutar <= KullanilanKartinLimiti)
             {
-                atmdenParaCekmeResponse.IslemBasariliMi = false;
-                atmdenParaCekmeResponse.Mesaj = "Cekilmek istenen tutar 0'dan buyuk olmalidir";
-                atmdenParaCekmeResponse.Kasetler = null!;
-                return atmdenParaCekmeResponse;
-            }
+                if (cekilecekTutar <= 0)
+                {
+                    atmdenParaCekmeResponse.IslemBasariliMi = false;
+                    atmdenParaCekmeResponse.Mesaj = "Cekilmek istenen tutar 0'dan buyuk olmalidir";
+                    atmdenParaCekmeResponse.Kasetler = null!;
+                    return atmdenParaCekmeResponse;
+                }
 
-            if (cekilecekTutar % 10 != 0)
-            {
-                atmdenParaCekmeResponse.IslemBasariliMi = false;
-                atmdenParaCekmeResponse.Mesaj = "Cekilmek istenen para 10TL'nin katlari olmalidir";
-                atmdenParaCekmeResponse.Kasetler = null!;
-                return atmdenParaCekmeResponse;
-            }
+                else if (cekilecekTutar % 10 != 0)
+                {
+                    atmdenParaCekmeResponse.IslemBasariliMi = false;
+                    atmdenParaCekmeResponse.Mesaj = "Cekilmek istenen para 10TL'nin katlari olmalidir";
+                    atmdenParaCekmeResponse.Kasetler = null!;
+                    return atmdenParaCekmeResponse;
+                }
 
-            if (cekilecekTutar > atmdeBulunanToplamPara)
-            {
-                atmdenParaCekmeResponse.IslemBasariliMi = false;
-                atmdenParaCekmeResponse.Mesaj = "ATM'de yeterli para bulunmuyor";
-                atmdenParaCekmeResponse.Kasetler = null!;
-                return atmdenParaCekmeResponse;
-            }
+                else if (cekilecekTutar > atmdeBulunanToplamPara)
+                {
+                    atmdenParaCekmeResponse.IslemBasariliMi = false;
+                    atmdenParaCekmeResponse.Mesaj = "ATM'de yeterli para bulunmuyor";
+                    atmdenParaCekmeResponse.Kasetler = null!;
+                    return atmdenParaCekmeResponse;
+                }
 
-            Dictionary<int, int> orijinalAdetler = kasetDizisi.ToDictionary(k => k.Id, k => k.Adet);
+                Dictionary<int, int> orijinalAdetler = kasetDizisi.ToDictionary(k => k.Id, k => k.Adet);
 
-            int toplamVerilenBanknot = 0;
-            AtmKaset sonKullanilanKaset = null!;
+                int toplamVerilenBanknot = 0;
+                AtmKaset sonKullanilanKaset = null!;
 
-            // ATM deki küpürler arasından en yüksek 2 küpür değeri belirliyoruz
-            // 200, 200, 100, 50 için = { 200, 100 }
-            var enYuksek2Kupur = kasetDizisi
-                .Select(k => k.Kupur)
-                .Distinct()
-                .OrderByDescending(k => k)
-                .Take(2)
-                .ToHashSet();
+                // ATM deki küpürler arasından en yüksek 2 küpür değeri belirliyoruz
+                // 200, 200, 100, 50 için = { 200, 100 }
+                var enYuksek2Kupur = kasetDizisi
+                    .Select(k => k.Kupur)
+                    .Distinct()
+                    .OrderByDescending(k => k)
+                    .Take(2)
+                    .ToHashSet();
 
-            // Kasetler sıralanırken önce top 2 küpüre sahip kasetler gelir, kendi aralarında adete göre sıralanır
-            // Top 2 dışındaki küpürler en sona eklenir, bu sayede örneğin 50 TL'de 200 adet olsa bile sıranın sonuna gider
-            var siraliKasetler = kasetDizisi
-                .OrderByDescending(k => enYuksek2Kupur.Contains(k.Kupur) ? 1 : 0)
-                .ThenByDescending(k => k.Kupur)
-                .ThenByDescending(k => k.Adet)
-                .ToList();
+                // Kasetler sıralanırken önce top 2 küpüre sahip kasetler gelir, kendi aralarında adete göre sıralanır
+                // Top 2 dışındaki küpürler en sona eklenir, bu sayede örneğin 50 TL'de 200 adet olsa bile sıranın sonuna gider
+                var siraliKasetler = kasetDizisi
+                    .OrderByDescending(k => enYuksek2Kupur.Contains(k.Kupur) ? 1 : 0)
+                    .ThenByDescending(k => k.Kupur)
+                    .ThenByDescending(k => k.Adet)
+                    .ToList();
 
-            foreach (AtmKaset kaset in siraliKasetler)
-            {
-                if (kaset.Kupur > cekilecekTutar) continue;
-
-                int maxAlinabilir = Math.Max(0, kaset.Adet - kaset.KritikDeger);
-                int gereken = cekilecekTutar / kaset.Kupur;
-                int alinacak = Math.Min(gereken, maxAlinabilir);
-
-                if (alinacak == 0) continue;
-
-                kaset.Adet -= alinacak;
-                cekilecekTutar -= alinacak * kaset.Kupur;
-                toplamVerilenBanknot += alinacak;
-                sonKullanilanKaset = kaset;
-
-                if (cekilecekTutar == 0) break;
-            }
-
-            //Yukarıda kritik değerden dolayı verilmeyen küpür mecbur kalınınca aşşağıdaki if döngüsü içinde verilecek.
-            if (cekilecekTutar > 0)
-            {
                 foreach (AtmKaset kaset in siraliKasetler)
                 {
                     if (kaset.Kupur > cekilecekTutar) continue;
 
+                    int maxAlinabilir = Math.Max(0, kaset.Adet - kaset.KritikDeger);
                     int gereken = cekilecekTutar / kaset.Kupur;
-                    int alinacak = Math.Min(gereken, kaset.Adet);
+                    int alinacak = Math.Min(gereken, maxAlinabilir);
 
                     if (alinacak == 0) continue;
 
@@ -111,75 +104,106 @@ namespace BankaSimulasyon.Services
 
                     if (cekilecekTutar == 0) break;
                 }
-            }
 
-            if (cekilecekTutar == 0 && sonKullanilanKaset != null)
-            {
-                AtmKaset? bozulacakKaset = sonKullanilanKaset;
-
-                while (bozulacakKaset != null)
+                //Yukarıda kritik değerden dolayı verilmeyen küpür mecbur kalınınca aşşağıdaki if döngüsü içinde verilecek.
+                if (cekilecekTutar > 0)
                 {
-                    int sonKupur = bozulacakKaset.Kupur;
-                    bozulacakKaset.Adet += 1;
-                    int bozulacak = sonKupur;
-
-                    Dictionary<int, int> bozmaOncesiAdetler = kasetDizisi.ToDictionary(k => k.Id, k => k.Adet);
-                    AtmKaset? buTurdakiSonKaset = null;
-
-                    foreach (AtmKaset kaset in kasetDizisi
-                        .OrderByDescending(k => k.Kupur)
-                        .ThenByDescending(k => k.Adet))
+                    foreach (AtmKaset kaset in siraliKasetler)
                     {
-                        if (kaset.Kupur < sonKupur && kaset.Kupur <= bozulacak && kaset.Adet > 0)
-                        {
-                            int kacKere = Math.Min(bozulacak / kaset.Kupur, kaset.Adet);
-                            bozulacak -= kaset.Kupur * kacKere;
-                            kaset.Adet -= kacKere;
-                            buTurdakiSonKaset = kaset;
-                        }
-                        if (bozulacak == 0) break;
-                    }
+                        if (kaset.Kupur > cekilecekTutar) continue;
 
-                    if (bozulacak != 0)
-                    {
-                        foreach (var kaset in kasetDizisi)
-                            kaset.Adet = bozmaOncesiAdetler[kaset.Id];
-                        bozulacakKaset.Adet -= 1;
-                        break;
-                    }
+                        int gereken = cekilecekTutar / kaset.Kupur;
+                        int alinacak = Math.Min(gereken, kaset.Adet);
 
-                    bozulacakKaset = buTurdakiSonKaset;
+                        if (alinacak == 0) continue;
+
+                        kaset.Adet -= alinacak;
+                        cekilecekTutar -= alinacak * kaset.Kupur;
+                        toplamVerilenBanknot += alinacak;
+                        sonKullanilanKaset = kaset;
+
+                        if (cekilecekTutar == 0) break;
+                    }
                 }
-            }
 
-            if (cekilecekTutar == 0)
-            {
-                foreach (var kaset in kasetDizisi)
-                    _atmKasetRepository.AtmKasetGuncelle(kaset);
+                if (cekilecekTutar == 0 && sonKullanilanKaset != null)
+                {
+                    AtmKaset? bozulacakKaset = sonKullanilanKaset;
 
-                var kullanilanKasetler = kasetDizisi
-                    .Where(k => k.Adet != orijinalAdetler[k.Id])
-                    .Select(k => new AtmKaset
+                    while (bozulacakKaset != null)
                     {
-                        Id = k.Id,
-                        AtmId = k.AtmId,
-                        SlotNumarasi = k.SlotNumarasi,
-                        Kupur = k.Kupur,
-                        Adet = orijinalAdetler[k.Id] - k.Adet
-                    })
-                    .OrderByDescending(k => k.Kupur)
-                    .ToList();
+                        int sonKupur = bozulacakKaset.Kupur;
+                        bozulacakKaset.Adet += 1;
+                        int bozulacak = sonKupur;
 
-                atmdenParaCekmeResponse.IslemBasariliMi = true;
-                atmdenParaCekmeResponse.Mesaj = "Para basariyla cekildi";
-                atmdenParaCekmeResponse.Kasetler = kullanilanKasetler;
+                        Dictionary<int, int> bozmaOncesiAdetler = kasetDizisi.ToDictionary(k => k.Id, k => k.Adet);
+                        AtmKaset? buTurdakiSonKaset = null;
+
+                        foreach (AtmKaset kaset in kasetDizisi
+                            .OrderByDescending(k => k.Kupur)
+                            .ThenByDescending(k => k.Adet))
+                        {
+                            if (kaset.Kupur < sonKupur && kaset.Kupur <= bozulacak && kaset.Adet > 0)
+                            {
+                                int kacKere = Math.Min(bozulacak / kaset.Kupur, kaset.Adet);
+                                bozulacak -= kaset.Kupur * kacKere;
+                                kaset.Adet -= kacKere;
+                                buTurdakiSonKaset = kaset;
+                            }
+                            if (bozulacak == 0) break;
+                        }
+
+                        if (bozulacak != 0)
+                        {
+                            foreach (var kaset in kasetDizisi)
+                                kaset.Adet = bozmaOncesiAdetler[kaset.Id];
+                            bozulacakKaset.Adet -= 1;
+                            break;
+                        }
+
+                        bozulacakKaset = buTurdakiSonKaset;
+                    }
+                }
+
+                if (cekilecekTutar == 0)
+                {
+                    foreach (var kaset in kasetDizisi)
+                        _atmKasetRepository.AtmKasetGuncelle(kaset);
+
+                    var kullanilanKasetler = kasetDizisi
+                        .Where(k => k.Adet != orijinalAdetler[k.Id])
+                        .Select(k => new AtmKaset
+                        {
+                            Id = k.Id,
+                            AtmId = k.AtmId,
+                            SlotNumarasi = k.SlotNumarasi,
+                            Kupur = k.Kupur,
+                            Adet = orijinalAdetler[k.Id] - k.Adet
+                        })
+                        .OrderByDescending(k => k.Kupur)
+                        .ToList();
+
+                    decimal yeniLimit = KullanilanKartinLimiti - orijinalCekilecekTutar;
+                    atmdenParaCekmeResponse.IslemBasariliMi = true;
+                    atmdenParaCekmeResponse.Mesaj = "Para basariyla cekildi";
+                    atmdenParaCekmeResponse.Kasetler = kullanilanKasetler;
+                    _kartRepository.KartLimitGuncelle(kartNumara,yeniLimit);
+                    return atmdenParaCekmeResponse;
+                }
+
+                atmdenParaCekmeResponse.IslemBasariliMi = false;
+                atmdenParaCekmeResponse.Mesaj = "Kupurler uyusmuyor, islem gerceklestirilemedi";
+                atmdenParaCekmeResponse.Kasetler = null!;
+                return atmdenParaCekmeResponse;
+
+            }
+            else
+            {
+                atmdenParaCekmeResponse.IslemBasariliMi = false;
+                atmdenParaCekmeResponse.Mesaj = "Kartınızda yeterli limit bulunmamaktadır";
+                atmdenParaCekmeResponse.Kasetler = null!;
                 return atmdenParaCekmeResponse;
             }
-
-            atmdenParaCekmeResponse.IslemBasariliMi = false;
-            atmdenParaCekmeResponse.Mesaj = "Kupurler uyusmuyor, islem gerceklestirilemedi";
-            atmdenParaCekmeResponse.Kasetler = null!;
-            return atmdenParaCekmeResponse;
         }
 
 
@@ -193,7 +217,7 @@ namespace BankaSimulasyon.Services
 
 
 
-        
+
         public int AtmdekiToplamParayiIdIleGetir(int atmId)
         {
             KasetGuncellemeResponse kasetGuncellemeResponse = new KasetGuncellemeResponse();
@@ -222,7 +246,7 @@ namespace BankaSimulasyon.Services
 
 
 
-        public  KasetGuncellemeResponse AtmKasetlerdekiKupurleriGuncelle(int atmId, int slotNumarasi, int adet, int kupur)
+        public KasetGuncellemeResponse AtmKasetlerdekiKupurleriGuncelle(int atmId, int slotNumarasi, int adet, int kupur)
         {
             KasetGuncellemeResponse kasetGuncellemeResponse = new KasetGuncellemeResponse();
             var kasetDizisi = _atmKasetRepository.AtmdekiKasetleriGetir(atmId);
@@ -237,7 +261,7 @@ namespace BankaSimulasyon.Services
                     hedefKaset.Adet = adet;
                     hedefKaset.Kupur = kupur;
                     kasetGuncellemeResponse.IslemBasariliMi = true;
-                     _atmKasetRepository.AtmKasetGuncelle(hedefKaset);
+                    _atmKasetRepository.AtmKasetGuncelle(hedefKaset);
 
                 }
                 else
@@ -286,7 +310,7 @@ namespace BankaSimulasyon.Services
 
 
 
-        public  List<ATM> AtmleriGetirAktifligeGore(bool aktifMi)
+        public List<ATM> AtmleriGetirAktifligeGore(bool aktifMi)
         {
 
             return _atmRepository.AtmleriGetirAktifligeGore(aktifMi);
@@ -294,9 +318,9 @@ namespace BankaSimulasyon.Services
 
 
 
-        public  List<ATM> TumAtmleriGetir()
+        public List<ATM> TumAtmleriGetir()
         {
-            return  _atmRepository.TumAtmleriGetir();
+            return _atmRepository.TumAtmleriGetir();
         }
 
     }

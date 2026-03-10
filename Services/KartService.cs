@@ -47,27 +47,16 @@ namespace BankaSimulasyon.Services
             KullaniciResponse kullaniciResponse = new();
             decimal HesapLimit = _hesapRepository.HesapLimitGetir(kullaniciId);
             decimal guncellemeOncesiKartLimit = _kartRepository.KartLimitGetir(kartNumara);
-            decimal ToplamKullanilanKartLimiti = 0;
             decimal kalanKullanilabilirLimit;
 
 
-            List<Kart> kartlar = _kartRepository.TumKartlariGetir(kullaniciId);
-
-            foreach (var kart in kartlar)
-            {
-                ToplamKullanilanKartLimiti += kart.KartLimit;
-            }
-
-            //Hesabın total limitinden kartlarda aktif olarak kullanılan limiti çıkarıyoruz aşşağıda 
-            //limit karşılaştırmayı kalanKullanilabilirLimit üzerinden yapıcaz
-            kalanKullanilabilirLimit = HesapLimit - ToplamKullanilanKartLimiti + guncellemeOncesiKartLimit;
-
+            kalanKullanilabilirLimit = KalanKullanilabilirHesapLimit(kullaniciId, kartNumara);
 
             if (yeniKartLimit <= kalanKullanilabilirLimit)
             {
                 if (yeniKartLimit != guncellemeOncesiKartLimit)
                 {
-                    _kartRepository.KartLimitGuncelle(kullaniciId, kartNumara,yeniKartLimit);
+                    _kartRepository.KartLimitGuncelle(kartNumara, yeniKartLimit);
                     kullaniciResponse.IslemBasariliMi = true;
                     kullaniciResponse.Mesaj = "Kart limitiniz başarıyla güncellendi";
                 }
@@ -93,6 +82,27 @@ namespace BankaSimulasyon.Services
         }
 
 
+        public decimal KalanKullanilabilirHesapLimit(int kullaniciId, string kartNumara)
+        {
+            decimal HesapLimit = _hesapRepository.HesapLimitGetir(kullaniciId);
+            decimal guncellemeOncesiKartLimit = _kartRepository.KartLimitGetir(kartNumara);
+            decimal ToplamKullanilanKartLimiti = 0;
+            decimal kalanKullanilabilirLimit;
+
+
+            List<Kart> kartlar = _kartRepository.TumKartlariGetir(kullaniciId);
+
+            foreach (var kart in kartlar)
+            {
+                ToplamKullanilanKartLimiti += kart.KartLimit;
+            }
+
+            //Hesabın total limitinden kartlarda aktif olarak kullanılan limiti çıkarıyoruz aşşağıda 
+            //limit karşılaştırmayı kalanKullanilabilirLimit üzerinden yapıcaz
+            kalanKullanilabilirLimit = HesapLimit - ToplamKullanilanKartLimiti + guncellemeOncesiKartLimit;
+            Console.WriteLine($"LOG:{kalanKullanilabilirLimit}");
+            return kalanKullanilabilirLimit;
+        }
 
 
 

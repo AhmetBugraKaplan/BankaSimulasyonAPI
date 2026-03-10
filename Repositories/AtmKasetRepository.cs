@@ -41,7 +41,7 @@ namespace BankaSimulasyon.Repositories
             var kupurParam = new SqlParameter("@Kupur", atmKaset.Kupur);
             var kritikDegerParam = new SqlParameter("@KritikDeger", atmKaset.KritikDeger);
 
-            _context.Database.ExecuteSqlRawAsync(
+            _context.Database.ExecuteSqlRaw(
                 "EXEC SP_ATMKasetleriGuncelle @AtmId, @SlotNumarasi, @Adet, @Kupur, @KritikDeger"
                 , atmIdParam, SlotNumarasiParam, adetParam, kupurParam, kritikDegerParam);
 

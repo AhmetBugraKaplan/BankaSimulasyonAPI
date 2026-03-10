@@ -61,9 +61,9 @@ namespace BankaSimulasyon.Controllers
         [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("KullaniciHesaptanParaCek")]
-        public  IActionResult KullaniciHesaptanParaCek(int hesapNumarasi, int atmId, int cekilecekTutar)
+        public  IActionResult KullaniciHesaptanParaCek(int hesapNumarasi, int atmId, int cekilecekTutar,string kartNumara)
         {
-            var sonuc = _hesapServis.ParaCek(hesapNumarasi, atmId, cekilecekTutar);
+            var sonuc = _hesapServis.ParaCek(hesapNumarasi, atmId, cekilecekTutar,kartNumara);
 
             return Ok(sonuc);
         }

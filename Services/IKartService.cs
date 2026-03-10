@@ -12,6 +12,8 @@ namespace BankaSimulasyon.Services
 
         public KullaniciResponse KartLimitGuncelle(int kullaniciId, string kartNumara, decimal yeniKartLimit);
 
+        public decimal KalanKullanilabilirHesapLimit(int kullaniciId, string kartNumara);
+
 
     }
 }

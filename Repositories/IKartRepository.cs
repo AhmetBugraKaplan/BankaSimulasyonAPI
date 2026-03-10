@@ -9,7 +9,7 @@ namespace BankaSimulasyon.Repositories
     public interface IKartRepository
     {
         public int KartEkle(int kullaniciId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi);
-        public int KartLimitGuncelle(int kullaniciId, string kartNumara, decimal yeniKartLimit);
+        public int KartLimitGuncelle( string kartNumara, decimal yeniKartLimit);
         public decimal KartLimitGetir(string kartNumara);
         public List<Kart> TumKartlariGetir(int kullaniciId);
 

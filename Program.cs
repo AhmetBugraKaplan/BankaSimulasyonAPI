@@ -157,8 +157,8 @@ app.Run();
 //Token-jvt
 
 
-//müşteri limiti ayarlıcaz kartların lşmiti olucak müşterinin toplam limiti kartların limtinden fazla olamaz
-//Top nokta müşteri limitine göre ayarlanacak kartın max limiti müşterinin limiti kadar olabilecek
+//müşteri limiti ayarlıcaz kartların lşmiti olucak müşterinin toplam limiti kartların limtinden fazla olamaz +++
+//Top nokta müşteri limitine göre ayarlanacak kartın max limiti müşterinin limiti kadar olabilecek +++
 //kartının limiti özel olarak belirlenebilecek
 
 //limit set eidlen ekranıız var para çekme işlemi limitkleri update edilecek ayrıca atm kasasıda güncellenecek

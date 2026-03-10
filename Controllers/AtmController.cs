@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using BankaSimulasyon.Models.Entities;
 using BankaSimulasyon.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -66,9 +67,9 @@ namespace BankaSimulasyon.Controllers
         [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("atmdenParaCek")]
-        public IActionResult AtmdenParaCek(int atmId, int cekilecekTutar)
+        public IActionResult AtmdenParaCek(int atmId, int cekilecekTutar,string kartNumara)
         {
-            var sonuc = _atmService.AtmdenParaCek(atmId, cekilecekTutar);
+            var sonuc = _atmService.AtmdenParaCek(atmId, cekilecekTutar,kartNumara);
 
             return Ok(sonuc);
         }
