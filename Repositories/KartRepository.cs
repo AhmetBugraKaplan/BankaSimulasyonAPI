@@ -22,7 +22,7 @@ namespace BankaSimulasyon.Repositories
             _context = context;
         }
 
-        public int KartEkle(int KullaniciId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi)
+        public int KartEkle(int KullaniciId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi,string KartSifre)
         {
 
             //Önce input atamalarını yapıyoaruz her zaman
@@ -32,14 +32,15 @@ namespace BankaSimulasyon.Repositories
             var cvvParam = new SqlParameter("@CVV", CVV);
             var kartTipiParam = new SqlParameter("@KartTipi", KartTipi);
             var aktifMiParam = new SqlParameter("@AktifMi", AktifMi);
+            var kartSifreParam = new SqlParameter("@SifreHash",KartSifre);
 
             //Sonrasında output atamasını yapıp direction ile bu değerin output olduğunu belirtiyoruz
             var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
             sonucParam.Direction = ParameterDirection.Output;
 
             _context.Database.ExecuteSqlRaw(
-            "EXEC SP_YeniKartEkle @KullaniciId, @KartNumara, @KartSKT, @CVV, @KartTipi, @AktifMi, @Sonuc OUTPUT",
-            kullaniciIdParam, kartNumaraParam, kartSktParam, cvvParam, kartTipiParam, aktifMiParam, sonucParam
+            "EXEC SP_YeniKartEkle @KullaniciId, @KartNumara, @KartSKT, @CVV, @KartTipi, @AktifMi,@SifreHash ,@Sonuc OUTPUT",
+            kullaniciIdParam, kartNumaraParam, kartSktParam, cvvParam, kartTipiParam, aktifMiParam,kartSifreParam ,sonucParam
             );
 
 
@@ -51,16 +52,17 @@ namespace BankaSimulasyon.Repositories
 
 
 
-        public int KartLimitGuncelle(string kartNumara, decimal yeniKartLimit)
+        public int KartLimitGuncelle(string kartNumara, decimal yeniKartLimit,int kullaniciId)
         {
             var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
             var kullaniciKartLimitParam = new SqlParameter("@KartLimit", yeniKartLimit);
+            var kullaniciIdParam = new SqlParameter("@KullaniciId",kullaniciId); 
 
             var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
             sonucParam.Direction = ParameterDirection.Output;
 
             _context.Database.ExecuteSqlRaw(
-                "EXECUTE SP_KullaniciKartLimitGuncelle @KartNumara,@KartLimit,@Sonuc OUTPUT", kartNumaraParam, kullaniciKartLimitParam, sonucParam);
+                "EXECUTE SP_KullaniciKartLimitGuncelle @KartNumara,@KartLimit,@KullaniciId,@Sonuc OUTPUT", kartNumaraParam, kullaniciKartLimitParam, kullaniciIdParam,sonucParam);
 
             return (int)sonucParam.Value;
         }
@@ -87,6 +89,27 @@ namespace BankaSimulasyon.Repositories
 
             return kartListesi;
         }
+
+
+
+        //SP_KartSifreGuncelle
+        public int KartSifreGuncelle(int yeniKartSifre,int kartId)
+        {
+            var yeniKartSifreParam = new SqlParameter("@KartSifre",yeniKartSifre);
+            var kartIdParam = new SqlParameter("@KartId",kartId);
+
+            var sonucParam = new SqlParameter("@Sonuc",SqlDbType.Int);
+            sonucParam.Direction = ParameterDirection.Output;
+
+            _context.Database.ExecuteSqlRaw(
+                "EXEC SP_KartSifreGuncelle @KartSifre,@KartId,@Sonuc OUTPUT",yeniKartSifreParam,kartIdParam,sonucParam);
+            
+            return (int)sonucParam.Value;
+        }
+
+
+
+
 
     }
 }

@@ -25,9 +25,9 @@ namespace BankaSimulasyon.Controllers
         [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("KartEkle")]
-        public IActionResult KartEkle(int kullaniciId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi)
+        public IActionResult KartEkle(int kullaniciId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi,string KartSifre)
         {
-            var sonuc = _kartService.KartEkle(kullaniciId, KartNumara, KartSKT, CVV, KartTipi, AktifMi);
+            var sonuc = _kartService.KartEkle(kullaniciId, KartNumara, KartSKT, CVV, KartTipi, AktifMi,KartSifre);
 
             return Ok(sonuc);
         }
@@ -39,6 +39,17 @@ namespace BankaSimulasyon.Controllers
 
             return Ok(sonuc);
         }
+
+
+        [HttpPost("KartSifreGuncelle")]
+        public IActionResult KartSifreGuncelle(int YeniKartSifre, int kartId)
+        {
+            var sonuc = _kartService.KartSifreGuncelle(YeniKartSifre, kartId);
+
+            return Ok(sonuc);
+        }
+
+        
 
 
 

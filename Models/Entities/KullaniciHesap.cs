@@ -18,7 +18,6 @@ namespace BankaSimulasyon.Models.Entities
         
         //Hesap limiti bu kullanıcının max çekebileceği tutarı gösteriyor
         public decimal HesapLimit { get; set; } = 0;
-        public decimal KalanLimit { get; set; } = 0;
 
     }
 }

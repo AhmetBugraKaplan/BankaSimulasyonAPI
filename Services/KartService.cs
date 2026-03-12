@@ -21,11 +21,11 @@ namespace BankaSimulasyon.Services
         }
 
 
-        public KullaniciResponse KartEkle(int kullaniciId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi)
+        public KullaniciResponse KartEkle(int kullaniciId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi, string KartSifre)
         {
             KullaniciResponse kullaniciResponse = new();
 
-            int sonuc = _kartRepository.KartEkle(kullaniciId, KartNumara, KartSKT, CVV, KartTipi, AktifMi);
+            int sonuc = _kartRepository.KartEkle(kullaniciId, KartNumara, KartSKT, CVV, KartTipi, AktifMi, KartSifre);
 
             if (sonuc > 0)
             {
@@ -45,38 +45,59 @@ namespace BankaSimulasyon.Services
         public KullaniciResponse KartLimitGuncelle(int kullaniciId, string kartNumara, decimal yeniKartLimit)
         {
             KullaniciResponse kullaniciResponse = new();
-            decimal HesapLimit = _hesapRepository.HesapLimitGetir(kullaniciId);
-            decimal guncellemeOncesiKartLimit = _kartRepository.KartLimitGetir(kartNumara);
-            decimal kalanKullanilabilirLimit;
 
-
-            kalanKullanilabilirLimit = KalanKullanilabilirHesapLimit(kullaniciId, kartNumara);
-
-            if (yeniKartLimit <= kalanKullanilabilirLimit)
+            try
             {
-                if (yeniKartLimit != guncellemeOncesiKartLimit)
+                decimal HesapLimit = _hesapRepository.HesapLimitGetir(kullaniciId);
+                decimal guncellemeOncesiKartLimit = _kartRepository.KartLimitGetir(kartNumara);
+                decimal kalanKullanilabilirLimit;
+                
+
+                kalanKullanilabilirLimit = KalanKullanilabilirHesapLimit(kullaniciId, kartNumara);
+
+                if (yeniKartLimit <= kalanKullanilabilirLimit)
                 {
-                    _kartRepository.KartLimitGuncelle(kartNumara, yeniKartLimit);
-                    kullaniciResponse.IslemBasariliMi = true;
-                    kullaniciResponse.Mesaj = "Kart limitiniz başarıyla güncellendi";
+                    if (yeniKartLimit != guncellemeOncesiKartLimit)
+                    {
+                        int sonuc = _kartRepository.KartLimitGuncelle(kartNumara, yeniKartLimit,kullaniciId);
+                        if (sonuc > 0)
+                        {
+                            kullaniciResponse.IslemBasariliMi = true;
+                            kullaniciResponse.Mesaj = "Kart limitiniz başarıyla güncellendi";
+                        }
+                        else
+                        {
+                            kullaniciResponse.IslemBasariliMi = false;
+                            kullaniciResponse.Mesaj = "Girdiğiniz kart numarasına ait kart bulunamadı";
+                        }
+                        
+                    }
+                    else
+                    {
+                        kullaniciResponse.IslemBasariliMi = false;
+                        kullaniciResponse.Mesaj = "Güncellenecek limit aktif limitten farklı olmalıdır";
+                    }
+
+                }
+                else if (yeniKartLimit > HesapLimit)
+                {
+                    kullaniciResponse.IslemBasariliMi = false;
+                    kullaniciResponse.Mesaj = "Kartınızın limiti müşteri hesap limitinizden fazla olamaz";
                 }
                 else
                 {
                     kullaniciResponse.IslemBasariliMi = false;
-                    kullaniciResponse.Mesaj = "Güncellenecek limit aktif limitten farklı olmalıdır";
+                    kullaniciResponse.Mesaj = "Diğer kartlarınız hesap limitinizi kullandığından bu kart için yeterli limit bulunmamaktadır";
                 }
+            }
+            catch (Exception ex)
+            {
+                kullaniciResponse.IslemBasariliMi = false;
+                kullaniciResponse.Mesaj = ex.Message; 
+                return kullaniciResponse;
+            }
 
-            }
-            else if (yeniKartLimit > HesapLimit)
-            {
-                kullaniciResponse.IslemBasariliMi = false;
-                kullaniciResponse.Mesaj = "Kartınızın limiti müşteri hesap limitinizden fazla olamaz";
-            }
-            else
-            {
-                kullaniciResponse.IslemBasariliMi = false;
-                kullaniciResponse.Mesaj = "Diğer kartlarınız hesap limitinizi kullandığından bu kart için yeterli limit bulunmamaktadır";
-            }
+
 
             return kullaniciResponse;
         }
@@ -104,6 +125,28 @@ namespace BankaSimulasyon.Services
             return kalanKullanilabilirLimit;
         }
 
+
+
+
+        public KullaniciResponse KartSifreGuncelle(int YeniKartSifre, int kartId)
+        {
+            KullaniciResponse kullaniciResponse = new();
+
+            int sonuc = _kartRepository.KartSifreGuncelle(YeniKartSifre, kartId);
+
+            if (sonuc > 0)
+            {
+                kullaniciResponse.IslemBasariliMi = true;
+                kullaniciResponse.Mesaj = "Şifre başarıyla güncellendi";
+            }
+            else
+            {
+                kullaniciResponse.IslemBasariliMi = false;
+                kullaniciResponse.Mesaj = "Şifre güncellenirken hata oluştu";
+            }
+
+            return kullaniciResponse;
+        }
 
 
 

@@ -17,7 +17,7 @@ namespace BankaSimulasyon.Models.Entities
         public string CVV { get; set; } = null!;
         public string KartTipi { get; set; } = null!;
         public bool AktifMi { get; set; } = false;
-        
         public decimal KartLimit { get; set; } = 0;
+        public KartSifre? KartSifre { get; set; }
     }
 }

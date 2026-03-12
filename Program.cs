@@ -161,4 +161,8 @@ app.Run();
 //Top nokta müşteri limitine göre ayarlanacak kartın max limiti müşterinin limiti kadar olabilecek +++
 //kartının limiti özel olarak belirlenebilecek
 
-//limit set eidlen ekranıız var para çekme işlemi limitkleri update edilecek ayrıca atm kasasıda güncellenecek
+//limit set eidlen ekranıız var para çekme işlemi limitkleri update edilecek ayrıca atm kasasıda güncellenecek ++
+
+//Kullanıcı eklenince otomatik olarak hesapda oluşsun ++
+
+// Kart numaraları aynı ise para çekme işlemine girmiyor o kısımda hem KartNo ile kullanıcıId kontrolü yapmamız gerekiyor. --

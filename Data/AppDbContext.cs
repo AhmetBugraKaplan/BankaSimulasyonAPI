@@ -14,6 +14,7 @@ namespace BankaSimulasyon.Data
         public DbSet<Kullanici> Kullanicilar { get; set; } = null!;
         public DbSet<KullaniciHesap> KullaniciHesaplari { get; set; } = null!;
         public DbSet<Kart> Kartlar { get; set; } = null!;
+        public DbSet<KartSifre> KartSifreleri { get; set; } = null!;
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -50,6 +51,6 @@ namespace BankaSimulasyon.Data
 
             base.OnModelCreating(modelBuilder); 
             */
-        }
-
     }
+
+}

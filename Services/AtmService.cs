@@ -27,7 +27,7 @@ namespace BankaSimulasyon.Services
 
 
 
-        public AtmdenParaCekmeResponse AtmdenParaCek(int atmId, int cekilecekTutar, string kartNumara)
+        public AtmdenParaCekmeResponse AtmdenParaCek(int atmId, int cekilecekTutar, string kartNumara,int kullaniciId)
         {
             AtmdenParaCekmeResponse atmdenParaCekmeResponse = new();
             List<AtmKaset> kasetDizisi = _atmKasetRepository.AtmdekiKasetleriGetir(atmId);
@@ -187,7 +187,7 @@ namespace BankaSimulasyon.Services
                     atmdenParaCekmeResponse.IslemBasariliMi = true;
                     atmdenParaCekmeResponse.Mesaj = "Para basariyla cekildi";
                     atmdenParaCekmeResponse.Kasetler = kullanilanKasetler;
-                    _kartRepository.KartLimitGuncelle(kartNumara,yeniLimit);
+                    _kartRepository.KartLimitGuncelle(kartNumara,yeniLimit,kullaniciId);
                     return atmdenParaCekmeResponse;
                 }
 

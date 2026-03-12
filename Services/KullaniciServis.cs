@@ -17,13 +17,13 @@ namespace BankaSimulasyon.Services
             _kullaniciRepository = kullaniciRepository;
         }
 
-        public  KullaniciResponse yeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet, string email, string sifre, string kullaniciRol)
+        public  KullaniciResponse yeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet)
         {
             KullaniciResponse kullaniciResponse = new();
 
-            string hashlenmisSfire = BCrypt.Net.BCrypt.HashPassword(sifre);
+            //string hashlenmisSfire = BCrypt.Net.BCrypt.HashPassword(sifre);
 
-            int sonuc = _kullaniciRepository.yeniKullaniciEkle(isim, soyisim, telefonNumarasi, adres, cinsiyet, email, hashlenmisSfire, kullaniciRol);
+            int sonuc = _kullaniciRepository.yeniKullaniciEkle(isim, soyisim, telefonNumarasi, adres, cinsiyet);
 
             if (sonuc > 0)
             {

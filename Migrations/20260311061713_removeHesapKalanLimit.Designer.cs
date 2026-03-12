@@ -3,6 +3,7 @@ using BankaSimulasyon.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankaSimulasyon.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260311061713_removeHesapKalanLimit")]
+    partial class removeHesapKalanLimit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,29 +114,6 @@ namespace BankaSimulasyon.Migrations
                     b.ToTable("Kartlar");
                 });
 
-            modelBuilder.Entity("BankaSimulasyon.Models.Entities.KartSifre", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<int>("KartId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SifreHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("KartId")
-                        .IsUnique();
-
-                    b.ToTable("KartSifreleri");
-                });
-
             modelBuilder.Entity("BankaSimulasyon.Models.Entities.Kullanici", b =>
                 {
                     b.Property<int>("id")
@@ -216,17 +196,6 @@ namespace BankaSimulasyon.Migrations
                     b.Navigation("kullanici");
                 });
 
-            modelBuilder.Entity("BankaSimulasyon.Models.Entities.KartSifre", b =>
-                {
-                    b.HasOne("BankaSimulasyon.Models.Entities.Kart", "Kart")
-                        .WithOne("KartSifre")
-                        .HasForeignKey("BankaSimulasyon.Models.Entities.KartSifre", "KartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Kart");
-                });
-
             modelBuilder.Entity("BankaSimulasyon.Models.Entities.KullaniciHesap", b =>
                 {
                     b.HasOne("BankaSimulasyon.Models.Entities.Kullanici", "kullanici")
@@ -241,12 +210,6 @@ namespace BankaSimulasyon.Migrations
             modelBuilder.Entity("BankaSimulasyon.Models.Entities.ATM", b =>
                 {
                     b.Navigation("Kasetler");
-                });
-
-            modelBuilder.Entity("BankaSimulasyon.Models.Entities.Kart", b =>
-                {
-                    b.Navigation("KartSifre")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("BankaSimulasyon.Models.Entities.Kullanici", b =>

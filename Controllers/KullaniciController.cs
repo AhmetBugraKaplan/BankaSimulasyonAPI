@@ -30,10 +30,11 @@ namespace BankaSimulasyon.Controllers
         [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("KullaniciEkle")]
-        public  IActionResult YeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet, string email, string sifre, string kullaniciRol)
+        public  IActionResult YeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet)
         {
 
-            var sonuc = _kullaniciService.yeniKullaniciEkle(isim, soyisim, telefonNumarasi, adres, cinsiyet, email, sifre, kullaniciRol);
+            
+            var sonuc = _kullaniciService.yeniKullaniciEkle(isim, soyisim, telefonNumarasi, adres, cinsiyet);
 
             return Ok(sonuc);
         }
@@ -61,9 +62,9 @@ namespace BankaSimulasyon.Controllers
         [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("KullaniciHesaptanParaCek")]
-        public  IActionResult KullaniciHesaptanParaCek(int hesapNumarasi, int atmId, int cekilecekTutar,string kartNumara)
+        public  IActionResult KullaniciHesaptanParaCek(int hesapNumarasi, int atmId, int cekilecekTutar,string kartNumara,int kullaniciId)
         {
-            var sonuc = _hesapServis.ParaCek(hesapNumarasi, atmId, cekilecekTutar,kartNumara);
+            var sonuc = _hesapServis.ParaCek(hesapNumarasi, atmId, cekilecekTutar,kartNumara,kullaniciId);
 
             return Ok(sonuc);
         }
@@ -93,9 +94,9 @@ namespace BankaSimulasyon.Controllers
 
 
         [HttpPost("KullaniciHesapLimitGuncelle")]
-        public IActionResult HesapLimitGuncelle(int kullaniciHesapId,decimal kullaniciHesapLimit)
+        public IActionResult HesapLimitGuncelle(int kullaniciId,decimal kullaniciHesapLimit)
         {
-            var sonuc =  _hesapServis.HesapLimitGuncelle(kullaniciHesapId,kullaniciHesapLimit);
+            var sonuc =  _hesapServis.HesapLimitGuncelle(kullaniciId,kullaniciHesapLimit);
 
             return Ok(sonuc);
         }

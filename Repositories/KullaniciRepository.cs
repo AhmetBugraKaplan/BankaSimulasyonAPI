@@ -21,24 +21,22 @@ namespace BankaSimulasyon.Repositories
             _context = context;
         }
 
-        public int yeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet, string email, string sifre, string kullaniciRol)
+        public int yeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet)
         {
             var isimParam = new SqlParameter("@Isim", isim);
             var soyisimParam = new SqlParameter("@Soyisim", soyisim);
             var telefonParam = new SqlParameter("@TelefonNumarasi", telefonNumarasi);
             var adresParam = new SqlParameter("@Adres", adres);
             var cinsiyetParam = new SqlParameter("@Cinsiyet", cinsiyet);
-            var emailParam = new SqlParameter("@Email", email);
-            var sifreParam = new SqlParameter("@Sifre", sifre);
-            var kullaniciRolParam = new SqlParameter("@KullaniciRol", kullaniciRol);
+           
 
 
             var etkilenenSatirParam = new SqlParameter("@EtkilenenSatir", SqlDbType.Int);
             etkilenenSatirParam.Direction = ParameterDirection.Output;
 
             _context.Database.ExecuteSqlRaw(
-               "EXEC SP_YeniMusteriEkle @Isim,  @Soyisim, @TelefonNumarasi, @Adres, @Cinsiyet, @Email, @Sifre,@KullaniciRol,@EtkilenenSatir OUTPUT",
-               isimParam, soyisimParam, telefonParam, adresParam, cinsiyetParam, emailParam, sifreParam, kullaniciRolParam, etkilenenSatirParam
+               "EXEC SP_YeniMusteriEkle @Isim,  @Soyisim, @TelefonNumarasi, @Adres, @Cinsiyet,@EtkilenenSatir OUTPUT",
+               isimParam, soyisimParam, telefonParam, adresParam, cinsiyetParam,etkilenenSatirParam
            );
 
             int sonuc = (int)etkilenenSatirParam.Value;
@@ -123,6 +121,15 @@ namespace BankaSimulasyon.Repositories
             return (int)sonuc.Value;
         }
 
+
+
+
+        public int HesapLimitGuncelle (int hesapNumarasi)
+        {
+            
+            
+            return 0;
+        }
 
 
 

@@ -32,7 +32,7 @@ namespace BankaSimulasyon.Services
 
 
 
-        public  KullaniciResponse ParaCek(int hesapNumarasi,int atmId, int cekilecekTutar,string kartNumara)
+        public  KullaniciResponse ParaCek(int hesapNumarasi,int atmId, int cekilecekTutar,string kartNumara,int kullaniciId)
         {
 
             KullaniciResponse kullaniciResponse = new();
@@ -55,7 +55,7 @@ namespace BankaSimulasyon.Services
                 return kullaniciResponse;
             }
 
-            var atmSonuc =  _atmService.AtmdenParaCek(atmId, cekilecekTutar,kartNumara);
+            var atmSonuc =  _atmService.AtmdenParaCek(atmId, cekilecekTutar,kartNumara,kullaniciId);
             if (!atmSonuc.IslemBasariliMi)
             {
                 kullaniciResponse.IslemBasariliMi = false;
