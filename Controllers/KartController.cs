@@ -32,6 +32,7 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        /*
         [HttpPost("KartLimitGuncelle")]
         public IActionResult KartLimitGuncelle(int kullaniciId,string kartNumara,decimal kartLimit)
         {
@@ -39,10 +40,11 @@ namespace BankaSimulasyon.Controllers
 
             return Ok(sonuc);
         }
+        */
 
 
         [HttpPost("KartSifreGuncelle")]
-        public IActionResult KartSifreGuncelle(int YeniKartSifre, int kartId)
+        public IActionResult KartSifreGuncelle(string YeniKartSifre, int kartId)
         {
             var sonuc = _kartService.KartSifreGuncelle(YeniKartSifre, kartId);
 

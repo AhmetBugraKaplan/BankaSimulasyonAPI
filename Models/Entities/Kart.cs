@@ -10,7 +10,7 @@ namespace BankaSimulasyon.Models.Entities
     {
         [Key]
         public int id { get; set; }
-        public Kullanici kullanici { get; set; } = null!;
+        public Musteri kullanici { get; set; } = null!;
         public int KullaniciId { get; set; }
         public string KartNumara { get; set; } = null!;
         public string KartSKT { get; set; } = null!;

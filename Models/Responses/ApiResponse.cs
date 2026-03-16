@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace BankaSimulasyon.Models.Responses
 {
-    public class KullaniciResponse
+    public class ApiResponse
     {
         public bool IslemBasariliMi { get; set; }
-        public string Mesaj { get; set; } = "Hata Kodu Yok";
+        public string Mesaj { get; set; } = "Hata Yok";
     }
 }

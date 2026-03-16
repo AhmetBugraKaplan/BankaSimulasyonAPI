@@ -28,7 +28,7 @@ builder.Services.AddSwaggerGen(c =>
     c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
 {
     Name = "Authorization",
-    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http, // ApiKey değil Http yap
+    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,  ApiKey değil Http yap
     Scheme = "Bearer",
     BearerFormat = "JWT",
     In = Microsoft.OpenApi.Models.ParameterLocation.Header,
@@ -57,10 +57,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IAtmKasetRepository,AtmKasetRepository>();
 builder.Services.AddScoped<IAtmService,AtmService>();
 builder.Services.AddScoped<IAtmRepository, AtmRepository>();
-builder.Services.AddScoped<IKullaniciRepository, KullaniciRepository>();
-builder.Services.AddScoped<IKullaniciService, KullaniciServis>();
-builder.Services.AddScoped<IHesapRepository, HesapRepository>();
-builder.Services.AddScoped<IHesapServis,HesapService>();
+builder.Services.AddScoped<IMusteriRepository, MusteriRepository>();
+builder.Services.AddScoped<IMusteriService, MusteriServis>();
 builder.Services.AddScoped<IKartRepository,KartRepository>();
 builder.Services.AddScoped<IKartService,KartService>();
 
@@ -150,19 +148,46 @@ app.MapControllers();
 app.Run();
 
 
-//veri tabanı erişimleri store prosedürler ile yapılacak
+/*  1.Toplantı
+veri tabanı erişimleri store prosedürler ile yapılacak
 
-//Bir uygulama yapıyoruz her tutarı tekr tekr kendisi istiyor ve sonuçları listeliyor. 10 liradan 1000tl ye kadar teker teker çeksin
+Bir uygulama yapıyoruz her tutarı tekr tekr kendisi istiyor ve sonuçları listeliyor. 10 liradan 1000tl ye kadar teker teker çeksin
 
-//Token-jvt
+Token-jvt
+*/
 
+/* 2.Toplantı
+müşteri limiti ayarlıcaz kartların lşmiti olucak müşterinin toplam limiti kartların limtinden fazla olamaz +++
+Top nokta müşteri limitine göre ayarlanacak kartın max limiti müşterinin limiti kadar olabilecek +++
+kartının limiti özel olarak belirlenebilecek
 
-//müşteri limiti ayarlıcaz kartların lşmiti olucak müşterinin toplam limiti kartların limtinden fazla olamaz +++
-//Top nokta müşteri limitine göre ayarlanacak kartın max limiti müşterinin limiti kadar olabilecek +++
-//kartının limiti özel olarak belirlenebilecek
+limit set eidlen ekranıız var para çekme işlemi limitkleri update edilecek ayrıca atm kasasıda güncellenecek ++
 
-//limit set eidlen ekranıız var para çekme işlemi limitkleri update edilecek ayrıca atm kasasıda güncellenecek ++
+Kullanıcı eklenince otomatik olarak hesapda oluşsun ++
 
-//Kullanıcı eklenince otomatik olarak hesapda oluşsun ++
+Kart numaraları aynı ise para çekme işlemine girmiyor o kısımda hem KartNo ile kullanıcıId kontrolü yapmamız gerekiyor.
+Kart şifrelerini hashlememiz lazım ++
+Para çekerken kartın şifresini de girmemiz lazım eğer şifre doğru ise para çekicek.
 
-// Kart numaraları aynı ise para çekme işlemine girmiyor o kısımda hem KartNo ile kullanıcıId kontrolü yapmamız gerekiyor. --
+*/
+
+/* 3.Toplantı
+Kullanicilar tablosundan Adres cinsiyet  telefon numarası bilgilerini çıkart.
+Kullanıcılar tablosunun ismini müşteriler olarak değiştiricez.
+KullanıcıHesapları aıdndaki tabloyu ... olarak değiştireceğiz.
+
+para çekerken restful servis olarak yazıcaz. Bir server bir de client olucak. İstek beklyecek sürekli servis çağırılıcak sürekli 
+ Kasayı ve limitleri burada güncelle 
+
+Atm numarası , kart numarası ve kart şifresi giirlecek login olucaz. 3 denem hakkı => Burada giriş yaptığımız zaman jwt ile tokenlerımız kaydolsun 
+tüm işlemlerde bizim hesabımıza göre işelm yaplaım
+
+ Sonraki ekranda tutar girilecek ve para çekme işlemi yapacağız. (Arkaplanda restful servis oluşturacak) 
+
+Kulanici hesapları tablosunu sil komple 
+
+Limit günlük ya da aylık olabilir, sen kalan limit adında bir değişken daha oluşturacaksın tabloya o değişken kalan limitini tutarken
+diğeri gün sonu ya da ay sonu sıfırlanacak.
+
+*/
+

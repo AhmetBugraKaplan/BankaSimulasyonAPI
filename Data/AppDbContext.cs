@@ -11,8 +11,7 @@ namespace BankaSimulasyon.Data
     {
         public DbSet<ATM> AtmLer { get; set; } = null!;
         public DbSet<AtmKaset> AtmKasetler { get; set; } = null!;
-        public DbSet<Kullanici> Kullanicilar { get; set; } = null!;
-        public DbSet<KullaniciHesap> KullaniciHesaplari { get; set; } = null!;
+        public DbSet<Musteri> Musteriler { get; set; } = null!;
         public DbSet<Kart> Kartlar { get; set; } = null!;
         public DbSet<KartSifre> KartSifreleri { get; set; } = null!;
 

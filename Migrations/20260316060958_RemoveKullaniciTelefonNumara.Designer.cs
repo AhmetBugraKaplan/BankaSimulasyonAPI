@@ -3,6 +3,7 @@ using BankaSimulasyon.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankaSimulasyon.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260316060958_RemoveKullaniciTelefonNumara")]
+    partial class RemoveKullaniciTelefonNumara
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,7 +137,7 @@ namespace BankaSimulasyon.Migrations
                     b.ToTable("KartSifreleri");
                 });
 
-            modelBuilder.Entity("BankaSimulasyon.Models.Entities.Musteri", b =>
+            modelBuilder.Entity("BankaSimulasyon.Models.Entities.Kullanici", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -152,7 +155,34 @@ namespace BankaSimulasyon.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Musteriler");
+                    b.ToTable("Kullanicilar");
+                });
+
+            modelBuilder.Entity("BankaSimulasyon.Models.Entities.KullaniciHesap", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<decimal>("Bakiye")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("HesapLimit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("HesapNumarasi")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KullaniciId")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("KullaniciId");
+
+                    b.ToTable("KullaniciHesaplari");
                 });
 
             modelBuilder.Entity("BankaSimulasyon.Models.Entities.AtmKaset", b =>
@@ -168,7 +198,7 @@ namespace BankaSimulasyon.Migrations
 
             modelBuilder.Entity("BankaSimulasyon.Models.Entities.Kart", b =>
                 {
-                    b.HasOne("BankaSimulasyon.Models.Entities.Musteri", "kullanici")
+                    b.HasOne("BankaSimulasyon.Models.Entities.Kullanici", "kullanici")
                         .WithMany()
                         .HasForeignKey("KullaniciId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -188,6 +218,17 @@ namespace BankaSimulasyon.Migrations
                     b.Navigation("Kart");
                 });
 
+            modelBuilder.Entity("BankaSimulasyon.Models.Entities.KullaniciHesap", b =>
+                {
+                    b.HasOne("BankaSimulasyon.Models.Entities.Kullanici", "kullanici")
+                        .WithMany("KullaniciHesapListesi")
+                        .HasForeignKey("KullaniciId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("kullanici");
+                });
+
             modelBuilder.Entity("BankaSimulasyon.Models.Entities.ATM", b =>
                 {
                     b.Navigation("Kasetler");
@@ -196,6 +237,11 @@ namespace BankaSimulasyon.Migrations
             modelBuilder.Entity("BankaSimulasyon.Models.Entities.Kart", b =>
                 {
                     b.Navigation("KartSifre");
+                });
+
+            modelBuilder.Entity("BankaSimulasyon.Models.Entities.Kullanici", b =>
+                {
+                    b.Navigation("KullaniciHesapListesi");
                 });
 #pragma warning restore 612, 618
         }

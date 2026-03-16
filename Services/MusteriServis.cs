@@ -8,53 +8,67 @@ using BankaSimulasyon.Repositories;
 
 namespace BankaSimulasyon.Services
 {
-    public class KullaniciServis : IKullaniciService
+    public class MusteriServis : IMusteriService
     {
 
-        private readonly IKullaniciRepository _kullaniciRepository;
-        public KullaniciServis(IKullaniciRepository kullaniciRepository)
+        private readonly IMusteriRepository _kullaniciRepository;
+        public MusteriServis(IMusteriRepository kullaniciRepository)
         {
             _kullaniciRepository = kullaniciRepository;
         }
 
-        public  KullaniciResponse yeniKullaniciEkle(string isim, string soyisim, string telefonNumarasi, string adres, string cinsiyet)
+        public ApiResponse YeniMusteriEkle(string isim, string soyisim)
         {
-            KullaniciResponse kullaniciResponse = new();
+            ApiResponse apiResponse = new();
 
             //string hashlenmisSfire = BCrypt.Net.BCrypt.HashPassword(sifre);
 
-            int sonuc = _kullaniciRepository.yeniKullaniciEkle(isim, soyisim, telefonNumarasi, adres, cinsiyet);
+            int sonuc = _kullaniciRepository.YeniMusteriEkle(isim, soyisim);
 
             if (sonuc > 0)
             {
-                kullaniciResponse.IslemBasariliMi = true;
-                kullaniciResponse.Mesaj = "Kullanici başarıyla eklendi";
+                apiResponse.IslemBasariliMi = true;
+                apiResponse.Mesaj = "Kullanici başarıyla eklendi";
             }
             else
             {
-                kullaniciResponse.IslemBasariliMi = false;
-                kullaniciResponse.Mesaj = "Kullanıcı ekleme hatası";
+                apiResponse.IslemBasariliMi = false;
+                apiResponse.Mesaj = "Kullanıcı ekleme hatası";
             }
 
-            return kullaniciResponse;
+            return apiResponse;
+        }
+
+
+        public ApiResponse MusteriGetirIdGore(int id)
+        {
+            ApiResponse apiResponse = new();
+
+            var musteri = _kullaniciRepository.MusteriGetirIdGore(id);
+
+            if (musteri != null)
+            {
+                apiResponse.IslemBasariliMi = true;
+                apiResponse.Mesaj = "Muşteri bulundu";
+                //apiResponse.Data = musteri;
+            }
+            else
+            {
+                apiResponse.IslemBasariliMi = false;
+                apiResponse.Mesaj = "Müşteri bulunamadı";
+
+            }
+
+            return apiResponse;
         }
 
 
 
-
-        public  Kullanici? kullaniciGetirIdGore(int id)
+        public ApiResponse MusteriSilIdGore(int id)
         {
-            return _kullaniciRepository.kullaniciGetirIdGore(id);
-        }
+            ApiResponse kullaniciResponse = new();
 
-
-
-
-        public KullaniciResponse kullaniciSilIdGore(int id)
-        {
-            KullaniciResponse kullaniciResponse = new();
-
-            int sonuc =  _kullaniciRepository.kullaniciSilIdGore(id);
+            int sonuc = _kullaniciRepository.MusteriSilIdGore(id);
 
             if (sonuc > 0)
             {
@@ -71,12 +85,12 @@ namespace BankaSimulasyon.Services
 
 
 
-
-        public  KullaniciResponse kullaniciHesapEkle(int kullaniciId)
+        /*
+        public ApiResponse MusteriHesapEkle(int kullaniciId)
         {
-            KullaniciResponse kullaniciResponse = new();
+            ApiResponse kullaniciResponse = new();
 
-            var kullanici = _kullaniciRepository.kullaniciGetirIdGore(kullaniciId);
+            var kullanici = _kullaniciRepository.MusteriGetirIdGore(kullaniciId);
 
             if (kullanici == null)
             {
@@ -89,7 +103,7 @@ namespace BankaSimulasyon.Services
             int hesapNumarasi = random.Next(100000, 999999);
 
 
-            int sonuc = _kullaniciRepository.kullaniciHesapEkle(kullaniciId,hesapNumarasi,0);
+            int sonuc = _kullaniciRepository.MusteriHesapEkle(kullaniciId, hesapNumarasi, 0);
 
             if (sonuc > 0)
             {
@@ -104,7 +118,7 @@ namespace BankaSimulasyon.Services
 
             return kullaniciResponse;
         }
-
+        */
 
 
     }

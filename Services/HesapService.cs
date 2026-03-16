@@ -1,3 +1,5 @@
+/*
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +15,10 @@ namespace BankaSimulasyon.Services
     public class HesapService : IHesapServis
     {
         private readonly IHesapRepository _hesapRepository;
-        private readonly IKullaniciRepository _kullaniciRepository;
+        private readonly IMusteriRepository _kullaniciRepository;
         private readonly IAtmService _atmService;
 
-        public HesapService(IHesapRepository hesapRepository, IAtmService atmService, IKullaniciRepository kullaniciRepository)
+        public HesapService(IHesapRepository hesapRepository, IAtmService atmService, IMusteriRepository kullaniciRepository)
         {
             _hesapRepository = hesapRepository;
             _atmService = atmService;
@@ -32,10 +34,10 @@ namespace BankaSimulasyon.Services
 
 
 
-        public  KullaniciResponse ParaCek(int hesapNumarasi,int atmId, int cekilecekTutar,string kartNumara,int kullaniciId)
+        public  ApiResponse ParaCek(int hesapNumarasi,int atmId, int cekilecekTutar,string kartNumara,int kullaniciId)
         {
 
-            KullaniciResponse kullaniciResponse = new();
+            ApiResponse kullaniciResponse = new();
 
             var hesap = _hesapRepository.kullanicininHessabiniBul(hesapNumarasi);
             if (hesap == null)
@@ -72,9 +74,9 @@ namespace BankaSimulasyon.Services
         }
     
     
-        public KullaniciResponse HesapLimitGuncelle(int kullaniciId, decimal kullaniciHesapLimit)
+        public ApiResponse HesapLimitGuncelle(int kullaniciId, decimal kullaniciHesapLimit)
         {
-            KullaniciResponse kullaniciResponse = new KullaniciResponse();
+            ApiResponse kullaniciResponse = new ApiResponse();
 
             int sonuc = _hesapRepository.HesapLimitGuncelle(kullaniciId,kullaniciHesapLimit);
 
@@ -97,3 +99,5 @@ namespace BankaSimulasyon.Services
 
     }
 }
+
+*/

@@ -12,18 +12,16 @@ namespace BankaSimulasyon.Services
     {
 
         private readonly IKartRepository _kartRepository;
-        private readonly IHesapRepository _hesapRepository;
 
-        public KartService(IKartRepository kartRepository, IHesapRepository hesapRepository)
+        public KartService(IKartRepository kartRepository)
         {
             _kartRepository = kartRepository;
-            _hesapRepository = hesapRepository;
         }
 
 
-        public KullaniciResponse KartEkle(int kullaniciId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi, string KartSifre)
+        public ApiResponse KartEkle(int kullaniciId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi, string KartSifre)
         {
-            KullaniciResponse kullaniciResponse = new();
+            ApiResponse kullaniciResponse = new();
 
             int sonuc = _kartRepository.KartEkle(kullaniciId, KartNumara, KartSKT, CVV, KartTipi, AktifMi, KartSifre);
 
@@ -42,9 +40,10 @@ namespace BankaSimulasyon.Services
         }
 
 
-        public KullaniciResponse KartLimitGuncelle(int kullaniciId, string kartNumara, decimal yeniKartLimit)
+        /*
+        public ApiResponse KartLimitGuncelle(int kullaniciId, string kartNumara, decimal yeniKartLimit)
         {
-            KullaniciResponse kullaniciResponse = new();
+            ApiResponse kullaniciResponse = new();
 
             try
             {
@@ -100,9 +99,10 @@ namespace BankaSimulasyon.Services
 
 
             return kullaniciResponse;
-        }
+        } */
 
 
+        /*
         public decimal KalanKullanilabilirHesapLimit(int kullaniciId, string kartNumara)
         {
             decimal HesapLimit = _hesapRepository.HesapLimitGetir(kullaniciId);
@@ -123,16 +123,19 @@ namespace BankaSimulasyon.Services
             kalanKullanilabilirLimit = HesapLimit - ToplamKullanilanKartLimiti + guncellemeOncesiKartLimit;
             Console.WriteLine($"LOG:{kalanKullanilabilirLimit}");
             return kalanKullanilabilirLimit;
-        }
+        } 
+        */
 
 
 
 
-        public KullaniciResponse KartSifreGuncelle(int YeniKartSifre, int kartId)
+        public ApiResponse KartSifreGuncelle(string YeniKartSifre, int kartId)
         {
-            KullaniciResponse kullaniciResponse = new();
+            ApiResponse kullaniciResponse = new();
 
-            int sonuc = _kartRepository.KartSifreGuncelle(YeniKartSifre, kartId);
+            string hashlenmisSifre = BCrypt.Net.BCrypt.HashPassword(YeniKartSifre.ToString());
+
+            int sonuc = _kartRepository.KartSifreGuncelle(hashlenmisSifre, kartId);
 
             if (sonuc > 0)
             {

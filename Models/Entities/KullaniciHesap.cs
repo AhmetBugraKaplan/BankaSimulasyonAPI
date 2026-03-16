@@ -1,4 +1,4 @@
-using System;
+/* using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,7 +12,7 @@ namespace BankaSimulasyon.Models.Entities
         [Key]
         public int id { get; set; }
         public int KullaniciId { get; set; }
-        public Kullanici kullanici { get; set; } = null!;
+        public Musteri kullanici { get; set; } = null!;
         public int HesapNumarasi { get; set; } = 0;
         public decimal Bakiye { get; set; } = 0;
         
@@ -21,3 +21,5 @@ namespace BankaSimulasyon.Models.Entities
 
     }
 }
+
+*/

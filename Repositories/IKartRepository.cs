@@ -12,7 +12,8 @@ namespace BankaSimulasyon.Repositories
         public int KartLimitGuncelle( string kartNumara, decimal yeniKartLimit,int kullaniciId);
         public decimal KartLimitGetir(string kartNumara);
         public List<Kart> TumKartlariGetir(int kullaniciId);
-        public int KartSifreGuncelle(int YeniKartSifre,int kartId); 
+        public int KartSifreGuncelle(string YeniKartSifre,int kartId); 
+        public int KartSifreGetir(int kullaniciId,string kartNumara);
 
     }
 }

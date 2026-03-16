@@ -26,7 +26,7 @@ namespace BankaSimulasyon.Services
         }
 
 
-
+        
         public AtmdenParaCekmeResponse AtmdenParaCek(int atmId, int cekilecekTutar, string kartNumara,int kullaniciId)
         {
             AtmdenParaCekmeResponse atmdenParaCekmeResponse = new();
@@ -34,9 +34,11 @@ namespace BankaSimulasyon.Services
             int atmdeBulunanToplamPara = AtmdekiToplamParayiHesapla(kasetDizisi);
             int orijinalCekilecekTutar = cekilecekTutar;
 
-            var kalanKullanilabilirHesapLimiti = _kartService.KalanKullanilabilirHesapLimit;
+           // var kalanKullanilabilirHesapLimiti = _kartService.KalanKullanilabilirHesapLimit;
 
+            var kalanKullanilabilirHesapLimiti = 100;
             decimal KullanilanKartinLimiti = _kartRepository.KartLimitGetir(kartNumara);
+
 
 
             if (cekilecekTutar <= KullanilanKartinLimiti)
