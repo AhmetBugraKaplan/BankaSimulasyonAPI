@@ -9,7 +9,7 @@ namespace BankaSimulasyon.Models.Entities
     public class KartSifre
     {
         [Key]
-        public int id { get; set; }
+        public int Id { get; set; }
         //FK-KartId
         public int KartId { get; set; }
         public string SifreHash { get; set; } = "şifre yok";

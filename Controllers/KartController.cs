@@ -45,9 +45,9 @@ namespace BankaSimulasyon.Controllers
 
 
         [HttpPost("KartSifreGuncelle")]
-        public IActionResult KartSifreGuncelle(string YeniKartSifre, int kartId)
+        public IActionResult KartSifreGuncelle(string YeniKartSifre, string kartNumara)
         {
-            var sonuc = _kartService.KartSifreGuncelle(YeniKartSifre, kartId);
+            var sonuc = _kartService.KartSifreGuncelle(YeniKartSifre, kartNumara);
 
             return Ok(sonuc);
         }
@@ -57,6 +57,13 @@ namespace BankaSimulasyon.Controllers
         {
             var sonuc = _kartService.ParaCek(kartNumara,atmId,cekilecekTutar,kullaniciId);
 
+            return Ok(sonuc);
+        }
+
+        [HttpPost("KartDogrula")]
+        public IActionResult KartDogrula(string kartNumara,string kartSifre)
+        {
+            var sonuc = _kartService.KartDogrula(kartNumara,kartSifre);
             return Ok(sonuc);
         }
 

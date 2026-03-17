@@ -14,7 +14,7 @@ namespace BankaSimulasyon.Services
         private readonly IKartRepository _kartRepository;
         private readonly IAtmService _atmService;
 
-        public KartService(IKartRepository kartRepository,IAtmService atmService)
+        public KartService(IKartRepository kartRepository, IAtmService atmService)
         {
             _kartRepository = kartRepository;
             _atmService = atmService;
@@ -25,7 +25,9 @@ namespace BankaSimulasyon.Services
         {
             ApiResponse<object> kullaniciResponse = new();
 
-            int sonuc = _kartRepository.KartEkle(kullaniciId, kartNumara, kartGunlukLimit, kartSifre);
+            string hashlenmisSifre = BCrypt.Net.BCrypt.HashPassword(kartSifre);
+
+            int sonuc = _kartRepository.KartEkle(kullaniciId, kartNumara, kartGunlukLimit, hashlenmisSifre);
 
             if (sonuc > 0)
             {
@@ -34,7 +36,7 @@ namespace BankaSimulasyon.Services
             }
             else
             {
-                kullaniciResponse.IslemBasariliMi = true;
+                kullaniciResponse.IslemBasariliMi = false;
                 kullaniciResponse.Mesaj = "Kart eklenirken bir hata gerçekleşti.";
             }
 
@@ -131,13 +133,13 @@ namespace BankaSimulasyon.Services
 
 
 
-        public ApiResponse<object> KartSifreGuncelle(string YeniKartSifre, int kartId)
+        public ApiResponse<object> KartSifreGuncelle(string YeniKartSifre, string kartNumara)
         {
             ApiResponse<object> kullaniciResponse = new();
 
             string hashlenmisSifre = BCrypt.Net.BCrypt.HashPassword(YeniKartSifre.ToString());
 
-            int sonuc = _kartRepository.KartSifreGuncelle(hashlenmisSifre, kartId);
+            int sonuc = _kartRepository.KartSifreGuncelle(hashlenmisSifre, kartNumara);
 
             if (sonuc > 0)
             {
@@ -164,11 +166,11 @@ namespace BankaSimulasyon.Services
             {
                 decimal yeniKalanLimit = (kartKalanLimit - cekilecekTutar);
 
-                _kartRepository.KartKalanLimitGuncelle(kartNumara,yeniKalanLimit);
-                AtmdenParaCekmeResponse AtmParaCekmeDonenDeger = _atmService.AtmdenParaCek(atmId,cekilecekTutar,kartNumara,kullaniciId);
+                _kartRepository.KartKalanLimitGuncelle(kartNumara, yeniKalanLimit);
+                AtmdenParaCekmeResponse AtmParaCekmeDonenDeger = _atmService.AtmdenParaCek(atmId, cekilecekTutar, kartNumara, kullaniciId);
 
                 List<AtmKaset> DonenListe = AtmParaCekmeDonenDeger.Kasetler;
-                
+
                 ParaCekApiResponse.Data = DonenListe;
                 ParaCekApiResponse.IslemBasariliMi = true;
                 ParaCekApiResponse.Mesaj = "Para çekme işlemi başarıyla gerçekleştirildi.";
@@ -185,7 +187,34 @@ namespace BankaSimulasyon.Services
 
 
 
+        public ApiResponse<object> KartDogrula(string kartNumara, string kartSifre)
+        {
+            ApiResponse<object> kartDogrulaApiResponse = new();
 
+            var sifreHash = _kartRepository.KartSifreGetir(kartNumara);
+
+            if (sifreHash == null)
+            {
+                kartDogrulaApiResponse.Mesaj = "Girilen numaraya ait kart bulunamadı";
+                kartDogrulaApiResponse.IslemBasariliMi = false;
+                return kartDogrulaApiResponse;
+            }
+
+            bool sifreDogruMu = BCrypt.Net.BCrypt.Verify(kartSifre, sifreHash);
+
+            if (sifreDogruMu)
+            {
+                kartDogrulaApiResponse.Mesaj = "Giriş başarıyla yapıldı";
+                kartDogrulaApiResponse.IslemBasariliMi = true;
+            }
+            else
+            {
+                kartDogrulaApiResponse.Mesaj = "Yanlış Şifre";
+                kartDogrulaApiResponse.IslemBasariliMi = false;
+            }
+
+            return kartDogrulaApiResponse;
+        }
 
 
     }

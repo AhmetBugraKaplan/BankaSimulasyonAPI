@@ -15,8 +15,10 @@ namespace BankaSimulasyon.Services
 
         //public decimal KalanKullanilabilirHesapLimit(int kullaniciId, string kartNumara);
 
-        public ApiResponse<object> KartSifreGuncelle(string yeniKartSifre,int kartId);
+        public ApiResponse<object> KartSifreGuncelle(string yeniKartSifre,string kartNumara);
         public ApiResponse<List<AtmKaset>> ParaCek(string kartNumara,int atmId, int cekilecekTutar,int kullaniciId);
+
+        public ApiResponse<object> KartDogrula(string kartNumara,string kartSifre);
 
 
     }

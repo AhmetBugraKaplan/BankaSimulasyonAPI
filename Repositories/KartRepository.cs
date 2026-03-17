@@ -85,16 +85,16 @@ namespace BankaSimulasyon.Repositories
 
 
         //SP_KartSifreGuncelle
-        public int KartSifreGuncelle(string yeniKartSifre, int kartId)
+        public int KartSifreGuncelle(string yeniKartSifre, string kartNumara)
         {
             var yeniKartSifreParam = new SqlParameter("@KartSifre", yeniKartSifre);
-            var kartIdParam = new SqlParameter("@KartId", kartId);
+            var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
 
             var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
             sonucParam.Direction = ParameterDirection.Output;
 
             _context.Database.ExecuteSqlRaw(
-                "EXEC SP_KartSifreGuncelle @KartSifre,@KartId,@Sonuc OUTPUT", yeniKartSifreParam, kartIdParam, sonucParam);
+                "EXEC SP_KartSifreGuncelle @KartSifre,@KartNumara,@Sonuc OUTPUT", yeniKartSifreParam, kartNumaraParam, sonucParam);
 
             return (int)sonucParam.Value;
         }
@@ -103,22 +103,15 @@ namespace BankaSimulasyon.Repositories
 
 
         //Burası düzenlenecek
-        public int KartSifreGetir(int kullaniciId, string kartNumara)
+        public string? KartSifreGetir(string kartNumara)
         {
-            var kullaniciIdParam = new SqlParameter("@KullaniciId", kullaniciId);
             var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
 
-            var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
-            sonucParam.Direction = ParameterDirection.Output;
-
-
-
-
-
-
-            return 1;
+            return _context.Database.SqlQuery<string>(
+                $"EXEC SP_KartSifreGetir {kartNumaraParam}")
+                .AsEnumerable()
+                .FirstOrDefault();
         }
-
 
 
 

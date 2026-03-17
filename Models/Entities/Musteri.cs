@@ -9,7 +9,7 @@ namespace BankaSimulasyon.Models.Entities
     public class Musteri
     {
         [Key]
-        public int id { get; set; }
+        public int Id { get; set; }
         public String Isim { get; set; } = "İsim değeri girilmedi";
         public String Soyisim { get; set; } = "Soyisim girilmedi";
         
