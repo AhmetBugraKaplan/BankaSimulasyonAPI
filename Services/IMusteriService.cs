@@ -9,11 +9,11 @@ namespace BankaSimulasyon.Services
 {
     public interface IMusteriService
     {
-        ApiResponse YeniMusteriEkle(string isim, string soyisim);
+        ApiResponse<object> YeniMusteriEkle(string isim, string soyisim);
 
-        ApiResponse MusteriGetirIdGore(int id);
+        ApiResponse<Musteri> MusteriGetirIdGore(int id);
 
-        ApiResponse MusteriSilIdGore(int id);
+        ApiResponse<object> MusteriSilIdGore(int id);
 
     }
 }

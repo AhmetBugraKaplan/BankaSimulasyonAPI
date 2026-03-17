@@ -172,22 +172,20 @@ Para çekerken kartın şifresini de girmemiz lazım eğer şifre doğru ise par
 */
 
 /* 3.Toplantı
-Kullanicilar tablosundan Adres cinsiyet  telefon numarası bilgilerini çıkart.
-Kullanıcılar tablosunun ismini müşteriler olarak değiştiricez.
-KullanıcıHesapları aıdndaki tabloyu ... olarak değiştireceğiz.
+Kullanicilar tablosundan Adres cinsiyet  telefon numarası bilgilerini çıkart. (+)
+Kullanıcılar tablosunun ismini müşteriler olarak değiştiricez. (+)
+KullanıcıHesapları aıdndaki tabloyu sileceğiz. (+)
 
 para çekerken restful servis olarak yazıcaz. Bir server bir de client olucak. İstek beklyecek sürekli servis çağırılıcak sürekli 
- Kasayı ve limitleri burada güncelle 
+Kasayı ve limitleri burada güncelle 
 
 Atm numarası , kart numarası ve kart şifresi giirlecek login olucaz. 3 denem hakkı => Burada giriş yaptığımız zaman jwt ile tokenlerımız kaydolsun 
 tüm işlemlerde bizim hesabımıza göre işelm yaplaım
 
- Sonraki ekranda tutar girilecek ve para çekme işlemi yapacağız. (Arkaplanda restful servis oluşturacak) 
-
-Kulanici hesapları tablosunu sil komple 
+Sonraki ekranda tutar girilecek ve para çekme işlemi yapacağız. (Arkaplanda restful servis oluşturacak) 
 
 Limit günlük ya da aylık olabilir, sen kalan limit adında bir değişken daha oluşturacaksın tabloya o değişken kalan limitini tutarken
-diğeri gün sonu ya da ay sonu sıfırlanacak.
+diğeri gün sonu ya da ay sonu sıfırlanacak.(Kalan limit oluşturuldu fakat gün sonu sıfırlanma işlemini daha yapmadık.)
 
 */
 

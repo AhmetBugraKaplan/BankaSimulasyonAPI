@@ -10,14 +10,11 @@ namespace BankaSimulasyon.Models.Entities
     {
         [Key]
         public int id { get; set; }
-        public Musteri kullanici { get; set; } = null!;
-        public int KullaniciId { get; set; }
+        public Musteri musteri { get; set; } = null!;
+        public int MusteriId { get; set; }
         public string KartNumara { get; set; } = null!;
-        public string KartSKT { get; set; } = null!;
-        public string CVV { get; set; } = null!;
-        public string KartTipi { get; set; } = null!;
-        public bool AktifMi { get; set; } = false;
-        public decimal KartLimit { get; set; } = 0;
+        public decimal KartGunlukLimit { get; set; } = 0;
+        public decimal KartKalanLimit{ get; set; } = 0;
         public KartSifre? KartSifre { get; set; }
     }
 }

@@ -17,9 +17,9 @@ namespace BankaSimulasyon.Services
             _kullaniciRepository = kullaniciRepository;
         }
 
-        public ApiResponse YeniMusteriEkle(string isim, string soyisim)
+        public ApiResponse<object> YeniMusteriEkle(string isim, string soyisim)
         {
-            ApiResponse apiResponse = new();
+            ApiResponse<object> apiResponse = new();
 
             //string hashlenmisSfire = BCrypt.Net.BCrypt.HashPassword(sifre);
 
@@ -40,9 +40,9 @@ namespace BankaSimulasyon.Services
         }
 
 
-        public ApiResponse MusteriGetirIdGore(int id)
+        public ApiResponse<Musteri> MusteriGetirIdGore(int id)
         {
-            ApiResponse apiResponse = new();
+            ApiResponse<Musteri> apiResponse = new();
 
             var musteri = _kullaniciRepository.MusteriGetirIdGore(id);
 
@@ -50,7 +50,7 @@ namespace BankaSimulasyon.Services
             {
                 apiResponse.IslemBasariliMi = true;
                 apiResponse.Mesaj = "Muşteri bulundu";
-                //apiResponse.Data = musteri;
+                apiResponse.Data = musteri;
             }
             else
             {
@@ -64,9 +64,9 @@ namespace BankaSimulasyon.Services
 
 
 
-        public ApiResponse MusteriSilIdGore(int id)
+        public ApiResponse<object> MusteriSilIdGore(int id)
         {
-            ApiResponse kullaniciResponse = new();
+            ApiResponse<object>  kullaniciResponse = new();
 
             int sonuc = _kullaniciRepository.MusteriSilIdGore(id);
 

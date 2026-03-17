@@ -14,35 +14,30 @@ namespace BankaSimulasyon.Services
         private readonly IAtmKasetRepository _atmKasetRepository;
         private readonly IAtmRepository _atmRepository;
         private readonly IKartRepository _kartRepository;
-        private readonly IKartService _kartService;
 
 
-        public AtmService(IAtmKasetRepository atmKasetRepository, IAtmRepository atmRepository, IKartRepository kartRepository, IKartService kartService)
+        public AtmService(IAtmKasetRepository atmKasetRepository, IAtmRepository atmRepository, IKartRepository kartRepository)
         {
             _atmKasetRepository = atmKasetRepository;
             _atmRepository = atmRepository;
             _kartRepository = kartRepository;
-            _kartService = kartService;
         }
 
 
-        
-        public AtmdenParaCekmeResponse AtmdenParaCek(int atmId, int cekilecekTutar, string kartNumara,int kullaniciId)
+
+        public AtmdenParaCekmeResponse AtmdenParaCek(int atmId, int cekilecekTutar, string kartNumara, int kullaniciId)
         {
             AtmdenParaCekmeResponse atmdenParaCekmeResponse = new();
             List<AtmKaset> kasetDizisi = _atmKasetRepository.AtmdekiKasetleriGetir(atmId);
             int atmdeBulunanToplamPara = AtmdekiToplamParayiHesapla(kasetDizisi);
             int orijinalCekilecekTutar = cekilecekTutar;
 
-           // var kalanKullanilabilirHesapLimiti = _kartService.KalanKullanilabilirHesapLimit;
+            // var kalanKullanilabilirHesapLimiti = _kartService.KalanKullanilabilirHesapLimit;
 
-            var kalanKullanilabilirHesapLimiti = 100;
-            decimal KullanilanKartinLimiti = _kartRepository.KartLimitGetir(kartNumara);
+            //var kalanKullanilabilirHesapLimiti = 100;
+            //decimal KullanilanKartinLimiti = _kartRepository.KartKalanLimitGetir(kartNumara);
 
 
-
-            if (cekilecekTutar <= KullanilanKartinLimiti)
-            {
                 if (cekilecekTutar <= 0)
                 {
                     atmdenParaCekmeResponse.IslemBasariliMi = false;
@@ -185,11 +180,9 @@ namespace BankaSimulasyon.Services
                         .OrderByDescending(k => k.Kupur)
                         .ToList();
 
-                    decimal yeniLimit = KullanilanKartinLimiti - orijinalCekilecekTutar;
                     atmdenParaCekmeResponse.IslemBasariliMi = true;
                     atmdenParaCekmeResponse.Mesaj = "Para basariyla cekildi";
                     atmdenParaCekmeResponse.Kasetler = kullanilanKasetler;
-                    _kartRepository.KartLimitGuncelle(kartNumara,yeniLimit,kullaniciId);
                     return atmdenParaCekmeResponse;
                 }
 
@@ -199,14 +192,8 @@ namespace BankaSimulasyon.Services
                 return atmdenParaCekmeResponse;
 
             }
-            else
-            {
-                atmdenParaCekmeResponse.IslemBasariliMi = false;
-                atmdenParaCekmeResponse.Mesaj = "Kartınızda yeterli limit bulunmamaktadır";
-                atmdenParaCekmeResponse.Kasetler = null!;
-                return atmdenParaCekmeResponse;
-            }
-        }
+          
+        
 
 
 
@@ -218,11 +205,9 @@ namespace BankaSimulasyon.Services
 
 
 
-
-
-        public int AtmdekiToplamParayiIdIleGetir(int atmId)
+        public ApiResponse<int> AtmdekiToplamParayiIdIleGetir(int atmId)
         {
-            KasetGuncellemeResponse kasetGuncellemeResponse = new KasetGuncellemeResponse();
+            ApiResponse<int> toplamParayiGetirApiResponse = new ApiResponse<int>();
             int AtmKasetlerToplamPara = 0;
 
             var kasetDizisi = _atmKasetRepository.AtmdekiKasetleriGetir(atmId);
@@ -231,26 +216,26 @@ namespace BankaSimulasyon.Services
             {
                 foreach (AtmKaset kaset in kasetDizisi)
                 {
-                    AtmKasetlerToplamPara += (kaset.Kupur * kaset.Adet);
+                    toplamParayiGetirApiResponse.IslemBasariliMi = true;
+                    toplamParayiGetirApiResponse.Mesaj = "Toplam para getirildi";
+                    toplamParayiGetirApiResponse.Data = AtmKasetlerToplamPara += (kaset.Kupur * kaset.Adet);
                 }
             }
             else
             {
-                AtmKasetlerToplamPara = 0;
+                toplamParayiGetirApiResponse.IslemBasariliMi = true;
+                toplamParayiGetirApiResponse.Mesaj = "ATM de para yok";
+                toplamParayiGetirApiResponse.Data = 0;
 
             }
 
-
-
-            return AtmKasetlerToplamPara;
+            return toplamParayiGetirApiResponse;
         }
 
 
-
-
-        public KasetGuncellemeResponse AtmKasetlerdekiKupurleriGuncelle(int atmId, int slotNumarasi, int adet, int kupur)
+        public ApiResponse<object> AtmKasetlerdekiKupurleriGuncelle(int atmId, int slotNumarasi, int adet, int kupur)
         {
-            KasetGuncellemeResponse kasetGuncellemeResponse = new KasetGuncellemeResponse();
+            ApiResponse<object> kasetGuncellemeApiResponse = new ApiResponse<object>();
             var kasetDizisi = _atmKasetRepository.AtmdekiKasetleriGetir(atmId);
 
 
@@ -262,67 +247,68 @@ namespace BankaSimulasyon.Services
                 {
                     hedefKaset.Adet = adet;
                     hedefKaset.Kupur = kupur;
-                    kasetGuncellemeResponse.IslemBasariliMi = true;
+                    kasetGuncellemeApiResponse.IslemBasariliMi = true;
                     _atmKasetRepository.AtmKasetGuncelle(hedefKaset);
 
                 }
                 else
                 {
-                    kasetGuncellemeResponse.IslemBasariliMi = false;
-                    kasetGuncellemeResponse.HataKodu = "Girilen slot numarasına ait slot bulunamadı";
+                    kasetGuncellemeApiResponse.IslemBasariliMi = false;
+                    kasetGuncellemeApiResponse.Mesaj = "Girilen slot numarasına ait slot bulunamadı";
 
                 }
             }
             else
             {
-                kasetGuncellemeResponse.IslemBasariliMi = false;
-                kasetGuncellemeResponse.HataKodu = "Girilen atmId'e ait atm bulunamadı";
+                kasetGuncellemeApiResponse.IslemBasariliMi = false;
+                kasetGuncellemeApiResponse.Mesaj = "Girilen atmId'e ait atm bulunamadı";
 
             }
 
 
 
-            return kasetGuncellemeResponse;
+            return kasetGuncellemeApiResponse;
         }
 
 
-
-
-        public AtmEklemeResponse AtmEkle(string konum, bool aktifMi)
+        public ApiResponse<object> AtmEkle(string konum, bool aktifMi)
         {
-            AtmEklemeResponse atmEklemeResponse = new();
+            ApiResponse<object> atmEklemeApiResponse = new();
 
             int sonuc = _atmRepository.AtmEkle(konum, aktifMi);
 
             if (sonuc > 0)
             {
-                atmEklemeResponse.IslemBasariliMi = true;
-                atmEklemeResponse.Mesaj = "ATM başarıyla eklendi.";
+                atmEklemeApiResponse.IslemBasariliMi = true;
+                atmEklemeApiResponse.Mesaj = "ATM başarıyla eklendi.";
 
             }
             else
             {
-                atmEklemeResponse.IslemBasariliMi = false;
-                atmEklemeResponse.Mesaj = "ATM eklenemedi";
+                atmEklemeApiResponse.IslemBasariliMi = false;
+                atmEklemeApiResponse.Mesaj = "ATM eklenemedi";
             }
 
-            return atmEklemeResponse;
+            return atmEklemeApiResponse;
         }
 
 
-
-
-        public List<ATM> AtmleriGetirAktifligeGore(bool aktifMi)
+        public ApiResponse<List<ATM>> TumAtmleriGetir()
         {
-
-            return _atmRepository.AtmleriGetirAktifligeGore(aktifMi);
-        }
-
-
-
-        public List<ATM> TumAtmleriGetir()
-        {
-            return _atmRepository.TumAtmleriGetir();
+            ApiResponse<List<ATM>> tumAtmleriGetirApiResponse = new ApiResponse<List<ATM>>();
+            
+            var gelenAtmListesi = tumAtmleriGetirApiResponse.Data = _atmRepository.TumAtmleriGetir();
+            if(gelenAtmListesi != null)
+            {
+                tumAtmleriGetirApiResponse.IslemBasariliMi = true;
+                tumAtmleriGetirApiResponse.Mesaj = "Tüm ATM ler getirildi.";
+            }
+            else
+            {
+                tumAtmleriGetirApiResponse.IslemBasariliMi = false;
+                tumAtmleriGetirApiResponse.Mesaj = "ATM listesi boş";
+            }
+            return tumAtmleriGetirApiResponse;
         }
 
     }

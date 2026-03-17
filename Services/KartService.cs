@@ -12,18 +12,20 @@ namespace BankaSimulasyon.Services
     {
 
         private readonly IKartRepository _kartRepository;
+        private readonly IAtmService _atmService;
 
-        public KartService(IKartRepository kartRepository)
+        public KartService(IKartRepository kartRepository,IAtmService atmService)
         {
             _kartRepository = kartRepository;
+            _atmService = atmService;
         }
 
 
-        public ApiResponse KartEkle(int kullaniciId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi, string KartSifre)
+        public ApiResponse<object> KartEkle(int kullaniciId, string kartNumara, decimal kartGunlukLimit, string kartSifre)
         {
-            ApiResponse kullaniciResponse = new();
+            ApiResponse<object> kullaniciResponse = new();
 
-            int sonuc = _kartRepository.KartEkle(kullaniciId, KartNumara, KartSKT, CVV, KartTipi, AktifMi, KartSifre);
+            int sonuc = _kartRepository.KartEkle(kullaniciId, kartNumara, kartGunlukLimit, kartSifre);
 
             if (sonuc > 0)
             {
@@ -129,9 +131,9 @@ namespace BankaSimulasyon.Services
 
 
 
-        public ApiResponse KartSifreGuncelle(string YeniKartSifre, int kartId)
+        public ApiResponse<object> KartSifreGuncelle(string YeniKartSifre, int kartId)
         {
-            ApiResponse kullaniciResponse = new();
+            ApiResponse<object> kullaniciResponse = new();
 
             string hashlenmisSifre = BCrypt.Net.BCrypt.HashPassword(YeniKartSifre.ToString());
 
@@ -150,6 +152,38 @@ namespace BankaSimulasyon.Services
 
             return kullaniciResponse;
         }
+
+
+        public ApiResponse<List<AtmKaset>> ParaCek(string kartNumara, int atmId, int cekilecekTutar, int kullaniciId)
+        {
+            ApiResponse<List<AtmKaset>> ParaCekApiResponse = new();
+
+            decimal kartKalanLimit = _kartRepository.KartKalanLimitGetir(kartNumara);
+
+            if (cekilecekTutar <= kartKalanLimit)
+            {
+                decimal yeniKalanLimit = (kartKalanLimit - cekilecekTutar);
+
+                _kartRepository.KartKalanLimitGuncelle(kartNumara,yeniKalanLimit);
+                AtmdenParaCekmeResponse AtmParaCekmeDonenDeger = _atmService.AtmdenParaCek(atmId,cekilecekTutar,kartNumara,kullaniciId);
+
+                List<AtmKaset> DonenListe = AtmParaCekmeDonenDeger.Kasetler;
+                
+                ParaCekApiResponse.Data = DonenListe;
+                ParaCekApiResponse.IslemBasariliMi = true;
+                ParaCekApiResponse.Mesaj = "Para çekme işlemi başarıyla gerçekleştirildi.";
+            }
+            else
+            {
+                ParaCekApiResponse.IslemBasariliMi = false;
+                ParaCekApiResponse.Mesaj = "Kartınızın limiti yetersiz.";
+            }
+
+            return ParaCekApiResponse;
+        }
+
+
+
 
 
 

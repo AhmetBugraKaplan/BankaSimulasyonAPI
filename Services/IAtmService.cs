@@ -10,13 +10,11 @@ namespace BankaSimulasyon.Services
     public interface IAtmService
     {
         AtmdenParaCekmeResponse AtmdenParaCek(int atmId, int cekilecekTutar,string kartNumara,int kullaniciId);
-        int AtmdekiToplamParayiIdIleGetir(int atmId);
-        KasetGuncellemeResponse AtmKasetlerdekiKupurleriGuncelle(int atmId, int slotNumarasi, int adet, int kupur);
+        ApiResponse<int> AtmdekiToplamParayiIdIleGetir(int atmId);
+        ApiResponse<object> AtmKasetlerdekiKupurleriGuncelle(int atmId, int slotNumarasi, int adet, int kupur);
+        ApiResponse<List<ATM>> TumAtmleriGetir();
+        ApiResponse<object> AtmEkle(string konum, bool aktifMi);
         int AtmdekiToplamParayiHesapla(List<AtmKaset> kasetDizisi);
-        List<ATM> TumAtmleriGetir();
-        AtmEklemeResponse AtmEkle(string konum, bool aktifMi);
-        List<ATM> AtmleriGetirAktifligeGore(bool aktifMi);
-
 
 
     }

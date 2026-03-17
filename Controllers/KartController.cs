@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using BankaSimulasyon.Models.Entities;
 using BankaSimulasyon.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,9 +26,9 @@ namespace BankaSimulasyon.Controllers
         [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("KartEkle")]
-        public IActionResult KartEkle(int kullaniciId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi,string KartSifre)
+        public IActionResult KartEkle(int kullaniciId, string kartNumara, decimal kartGunlukLimit, string kartSifre)
         {
-            var sonuc = _kartService.KartEkle(kullaniciId, KartNumara, KartSKT, CVV, KartTipi, AktifMi,KartSifre);
+            var sonuc = _kartService.KartEkle(kullaniciId, kartNumara, kartGunlukLimit, kartSifre);
 
             return Ok(sonuc);
         }
@@ -51,7 +52,15 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
-        
+        [HttpPost("ParaÇek")]
+        public IActionResult KarttanParaCek(string kartNumara, int atmId, int cekilecekTutar, int kullaniciId)
+        {
+            var sonuc = _kartService.ParaCek(kartNumara,atmId,cekilecekTutar,kullaniciId);
+
+            return Ok(sonuc);
+        }
+
+
 
 
 

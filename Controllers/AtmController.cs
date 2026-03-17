@@ -31,11 +31,11 @@ namespace BankaSimulasyon.Controllers
         {
             var sonuc = _atmService.AtmdekiToplamParayiIdIleGetir(atmId);
 
-            if (sonuc > 0)
+            if (sonuc.Data > 0)
             {
                 return Ok(sonuc);
             }
-            else if (sonuc == 0)
+            else if (sonuc.Data == 0)
             {
                 return Ok("ATM KASETLERİ TAMAMEN BOŞ");
             }
@@ -83,19 +83,6 @@ namespace BankaSimulasyon.Controllers
         public IActionResult AtmEkle(string konum, bool aktifMi)
         {
             var sonuc = _atmService.AtmEkle(konum, aktifMi);
-
-            return Ok(sonuc);
-        }
-
-
-
-
-        [AllowAnonymous]
-        [Authorize(Roles = "admin,gelistirici")]
-        [HttpPost("atmleriListeseAktifligeGore")]
-        public IActionResult aktifligeGoreAtmListele(bool aktifMi)
-        {
-            var sonuc = _atmService.AtmleriGetirAktifligeGore(aktifMi);
 
             return Ok(sonuc);
         }

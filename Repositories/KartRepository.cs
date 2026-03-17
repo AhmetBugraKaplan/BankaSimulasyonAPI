@@ -22,16 +22,12 @@ namespace BankaSimulasyon.Repositories
             _context = context;
         }
 
-        public int KartEkle(int KullaniciId, string KartNumara, string KartSKT, string CVV, string KartTipi, bool AktifMi, string KartSifre)
+        public int KartEkle(int KullaniciId, string KartNumara, decimal kartGunlukLimit, string KartSifre)
         {
 
             //Önce input atamalarını yapıyoaruz her zaman
             var kullaniciIdParam = new SqlParameter("@KullaniciId", KullaniciId);
             var kartNumaraParam = new SqlParameter("@KartNumara", KartNumara);
-            var kartSktParam = new SqlParameter("@KartSKT", KartSKT);
-            var cvvParam = new SqlParameter("@CVV", CVV);
-            var kartTipiParam = new SqlParameter("@KartTipi", KartTipi);
-            var aktifMiParam = new SqlParameter("@AktifMi", AktifMi);
             var kartSifreParam = new SqlParameter("@SifreHash", KartSifre);
 
             //Sonrasında output atamasını yapıp direction ile bu değerin output olduğunu belirtiyoruz
@@ -39,45 +35,41 @@ namespace BankaSimulasyon.Repositories
             sonucParam.Direction = ParameterDirection.Output;
 
             _context.Database.ExecuteSqlRaw(
-            "EXEC SP_YeniKartEkle @KullaniciId, @KartNumara, @KartSKT, @CVV, @KartTipi, @AktifMi,@SifreHash ,@Sonuc OUTPUT",
-            kullaniciIdParam, kartNumaraParam, kartSktParam, cvvParam, kartTipiParam, aktifMiParam, kartSifreParam, sonucParam
+            "EXEC SP_YeniKartEkle @KullaniciId, @KartNumara,@SifreHash ,@Sonuc OUTPUT",
+            kullaniciIdParam, kartNumaraParam, kartSifreParam, sonucParam
             );
 
-
-            int sonuc = (int)sonucParam.Value;
-
-
-            return sonuc;
-        }
-
-
-
-        public int KartLimitGuncelle(string kartNumara, decimal yeniKartLimit, int kullaniciId)
-        {
-            var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
-            var kullaniciKartLimitParam = new SqlParameter("@KartLimit", yeniKartLimit);
-            var kullaniciIdParam = new SqlParameter("@KullaniciId", kullaniciId);
-
-            var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
-            sonucParam.Direction = ParameterDirection.Output;
-
-            _context.Database.ExecuteSqlRaw(
-                "EXECUTE SP_KullaniciKartLimitGuncelle @KartNumara,@KartLimit,@KullaniciId,@Sonuc OUTPUT", kartNumaraParam, kullaniciKartLimitParam, kullaniciIdParam, sonucParam);
 
             return (int)sonucParam.Value;
         }
 
 
-        public decimal KartLimitGetir(string kartNumara)
+
+        public int KartKalanLimitGuncelle(string kartNumara, decimal yeniKartLimit)
+        {
+            var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
+            var yeniKartLimitParam = new SqlParameter("@YeniKartLimit", yeniKartLimit);
+
+            var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
+            sonucParam.Direction = ParameterDirection.Output;
+
+            _context.Database.ExecuteSqlRaw(
+                "EXECUTE SP_KartKalanLimitGuncelle @KartNumara,@YeniKartLimit,@Sonuc OUTPUT", kartNumaraParam, yeniKartLimitParam, sonucParam);
+
+            return (int)sonucParam.Value;
+        }
+
+
+        public decimal KartKalanLimitGetir(string kartNumara)
         {
             var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
 
-            decimal kartLimit = _context.Database.SqlQuery<Decimal>
-            ($"EXEC SP_KullaniciKartLimitGetir {kartNumaraParam}")
+            decimal kartKalanLimit = _context.Database.SqlQuery<Decimal>
+            ($"EXEC SP_KalanKartLimitGetir {kartNumaraParam}")
             .AsEnumerable()
             .FirstOrDefault();
 
-            return kartLimit;
+            return kartKalanLimit;
         }
 
 
@@ -113,13 +105,13 @@ namespace BankaSimulasyon.Repositories
         //Burası düzenlenecek
         public int KartSifreGetir(int kullaniciId, string kartNumara)
         {
-            var kullaniciIdParam = new SqlParameter("@KullaniciId",kullaniciId);
+            var kullaniciIdParam = new SqlParameter("@KullaniciId", kullaniciId);
             var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
 
-            var sonucParam = new SqlParameter("@Sonuc",SqlDbType.Int);
+            var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
             sonucParam.Direction = ParameterDirection.Output;
 
-            
+
 
 
 
