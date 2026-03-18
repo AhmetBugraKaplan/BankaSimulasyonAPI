@@ -52,23 +52,27 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
-        [HttpPost("ParaÇek")]
-        public IActionResult KarttanParaCek(string kartNumara, int atmId, int cekilecekTutar, int kullaniciId)
+        [HttpPost("ParaCek")]
+        public IActionResult KarttanParaCek(string kartNumara, int atmId, int cekilecekTutar)
         {
-            var sonuc = _kartService.ParaCek(kartNumara,atmId,cekilecekTutar,kullaniciId);
+            var sonuc = _kartService.ParaCek(kartNumara,atmId,cekilecekTutar);
 
             return Ok(sonuc);
         }
 
         [HttpPost("KartDogrula")]
-        public IActionResult KartDogrula(string kartNumara,string kartSifre)
+        public IActionResult KartDogrula(string kartNumara,string kartSifre,int atmId)
         {
-            var sonuc = _kartService.KartDogrula(kartNumara,kartSifre);
+            var sonuc = _kartService.KartDogrula(kartNumara,kartSifre,atmId);
             return Ok(sonuc);
         }
 
-
-
+        [HttpPost("KartGunlukLimitGuncelle")]
+        public IActionResult KartGunlukLimitGuncelle(string KartNumara,decimal yeniKartLimit)
+        {
+            var sonuc = _kartService.KartGunlukLimitGuncelle(KartNumara,yeniKartLimit);
+            return Ok(sonuc);
+        }
 
 
 

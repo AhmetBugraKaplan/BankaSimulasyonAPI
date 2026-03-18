@@ -63,10 +63,10 @@ builder.Services.AddScoped<IKartRepository,KartRepository>();
 builder.Services.AddScoped<IKartService,KartService>();
 
 
-//builder.Services.AddScoped<JwtService>();
-// builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<JwtService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
-/*
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -107,7 +107,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.InvokeHandlersAfterFailure = false;
 });
-*/
+
 
 builder.Services.AddCors(options =>
 {
@@ -137,10 +137,9 @@ app.UseMiddleware<LoggingMiddleware>(); //Yapılan her isteği (get/post fark et
 app.UseCors("AllowAngular");
 app.UseMiddleware<RateLimitingMiddleware>(); //İstek sınırla
 
-/* Authenticationu kapatıyoruz.
 app.UseAuthentication(); 
 app.UseAuthorization();
-*/
+
 
 //app.UseHttpsRedirection();
 app.MapControllers();
@@ -163,7 +162,7 @@ kartının limiti özel olarak belirlenebilecek
 
 limit set eidlen ekranıız var para çekme işlemi limitkleri update edilecek ayrıca atm kasasıda güncellenecek ++
 
-Kullanıcı eklenince otomatik olarak hesapda oluşsun ++
+Kullanıcı eklenince otomatik olarak hesapda oluşsun (Hesap tablosunu sildik :D)
 
 Kart numaraları aynı ise para çekme işlemine girmiyor o kısımda hem KartNo ile kullanıcıId kontrolü yapmamız gerekiyor.
 Kart şifrelerini hashlememiz lazım ++
@@ -177,15 +176,57 @@ Kullanıcılar tablosunun ismini müşteriler olarak değiştiricez. (+)
 KullanıcıHesapları aıdndaki tabloyu sileceğiz. (+)
 
 para çekerken restful servis olarak yazıcaz. Bir server bir de client olucak. İstek beklyecek sürekli servis çağırılıcak sürekli 
-Kasayı ve limitleri burada güncelle 
+Kasayı ve limitleri burada güncelle (+)
 
-Atm numarası , kart numarası ve kart şifresi giirlecek login olucaz. 3 denem hakkı => Burada giriş yaptığımız zaman jwt ile tokenlerımız kaydolsun 
-tüm işlemlerde bizim hesabımıza göre işelm yaplaım
+Atm numarası , kart numarası ve kart şifresi girilecek login olucaz. 3 denem hakkı => Burada giriş yaptığımız zaman jwt ile tokenlerımız kaydolsun 
+tüm işlemlerde bizim hesabımıza göre işelm yaplaım (+)
 
-Sonraki ekranda tutar girilecek ve para çekme işlemi yapacağız. (Arkaplanda restful servis oluşturacak) 
+Sonraki ekranda tutar girilecek ve para çekme işlemi yapacağız. (Arkaplanda restful servis oluşturacak) (+) 
 
 Limit günlük ya da aylık olabilir, sen kalan limit adında bir değişken daha oluşturacaksın tabloya o değişken kalan limitini tutarken
-diğeri gün sonu ya da ay sonu sıfırlanacak.(Kalan limit oluşturuldu fakat gün sonu sıfırlanma işlemini daha yapmadık.)
+diğeri gün sonu ya da ay sonu sıfırlanacak.(Kalan limit oluşturuldu fakat gün sonu sıfırlanma işlemini daha yapmadık.) (-)
+
+kalan Limitimiz gun sonunda tekrardan sıfırlanmalı bir kartın birden fazla limiti olabilir o mevzuyu çöz.
+
+//restful servis protol öğren
+//wcf seris ile web servis restful servis farkı nelerdir
+//neden web servis kullanırız neden restful servis kullanırız.
+
+
+//bodyla veriyi gönder
+
+/web servisleri json-datayı body nin içine nasıl göndereiblirim
+
+sonrasında json datayı ihtiyacımız olan alanlarda parse edeceğiz.
+
+JWT bir middle ware aracılığyla auth m.ware ile nasıl kullanılır bunu araştır.
+Ürettiğimiz token angular tarafında header 'a eklememiz gerekiyor restful servisin
+oauth2.0 bearer token
+
+claimiçine ip port ekle  tokenı localstorage de çalıştır
+
+
+AUTH MV
+mw localde var mı
+
+tokenı claımlerıne ayır
+
+claimleri kontrol ediyoruz requestlerin ipsi ile cliam içi ip aynı mı
+
+expire date geçti mi
+------------
+
+
+
+lifetimelera çaloş
+
+
+loogout localden bu tokenı silicez
+
+
+
+kötü niyetli bi bankanın komisyon ödemeedne nasıl para çekersin
+token manipüle
 
 */
 

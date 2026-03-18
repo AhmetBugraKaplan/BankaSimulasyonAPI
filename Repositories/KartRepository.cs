@@ -48,14 +48,28 @@ namespace BankaSimulasyon.Repositories
         public int KartKalanLimitGuncelle(string kartNumara, decimal yeniKartLimit)
         {
             var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
-            var yeniKartLimitParam = new SqlParameter("@YeniKartLimit", yeniKartLimit);
+            var yeniKartKalanLimitParam = new SqlParameter("@YeniKartLimit", yeniKartLimit);
 
             var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
             sonucParam.Direction = ParameterDirection.Output;
 
             _context.Database.ExecuteSqlRaw(
-                "EXECUTE SP_KartKalanLimitGuncelle @KartNumara,@YeniKartLimit,@Sonuc OUTPUT", kartNumaraParam, yeniKartLimitParam, sonucParam);
+                "EXECUTE SP_KartKalanLimitGuncelle @KartNumara,@YeniKartLimit,@Sonuc OUTPUT", kartNumaraParam, yeniKartKalanLimitParam, sonucParam);
 
+            return (int)sonucParam.Value;
+        }
+
+        public int KartGunlukLimitGuncelle(string kartNumara, decimal yeniKartLimit)
+        {
+            var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
+            var yeniKartGunlukLimitParam = new SqlParameter("@KartGunlukLimit", yeniKartLimit);
+
+            var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
+            sonucParam.Direction = ParameterDirection.Output;
+
+            _context.Database.ExecuteSqlRaw(
+                "EXEC SP_KartGunlukKalanLimitGuncelle @KartNumara, @KartGunlukLimit, @Sonuc OUTPUT",kartNumaraParam,yeniKartGunlukLimitParam,sonucParam);
+            
             return (int)sonucParam.Value;
         }
 
@@ -113,6 +127,27 @@ namespace BankaSimulasyon.Repositories
                 .FirstOrDefault();
         }
 
+        public void YanlisGirisSayisiniArttir(string kartNumara)
+        {
+            var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
+
+            _context.Database.ExecuteSqlRaw("EXEC SP_KartYanlisGirisSayisiArttir @KartNumara", kartNumaraParam);
+        }
+
+        public int YanlisGirisSayisiGetir(string kartNumara)
+        {
+            var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
+            return _context.Database.SqlQuery<int>($"EXEC SP_KartYanlisGirisSayisiGetir {kartNumaraParam}")
+            .AsEnumerable()
+            .FirstOrDefault();
+        }
+
+
+        public void YanlisGirisSayisiSifirla(string kartNumara)
+        {
+            var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
+            _context.Database.ExecuteSqlRaw("EXEC SP_KartYanlisGirisSayisiSifirla @KartNumara", kartNumaraParam);
+        }
 
 
     }

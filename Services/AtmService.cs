@@ -25,7 +25,7 @@ namespace BankaSimulasyon.Services
 
 
 
-        public AtmdenParaCekmeResponse AtmdenParaCek(int atmId, int cekilecekTutar, string kartNumara, int kullaniciId)
+        public AtmdenParaCekmeResponse AtmdenParaCek(int atmId, int cekilecekTutar, string kartNumara)
         {
             AtmdenParaCekmeResponse atmdenParaCekmeResponse = new();
             List<AtmKaset> kasetDizisi = _atmKasetRepository.AtmdekiKasetleriGetir(atmId);

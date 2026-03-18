@@ -67,9 +67,9 @@ namespace BankaSimulasyon.Controllers
         [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("atmdenParaCek")]
-        public IActionResult AtmdenParaCek(int atmId, int cekilecekTutar,string kartNumara,int kullaniciId)
+        public IActionResult AtmdenParaCek(int atmId, int cekilecekTutar,string kartNumara)
         {
-            var sonuc = _atmService.AtmdenParaCek(atmId, cekilecekTutar,kartNumara,kullaniciId);
+            var sonuc = _atmService.AtmdenParaCek(atmId, cekilecekTutar,kartNumara);
 
             return Ok(sonuc);
         }

@@ -1,4 +1,3 @@
-/*
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -20,15 +19,14 @@ namespace BankaSimulasyon.Services
             _configuration = configuration;
         }
 
-        public string TokenUret(Kullanici kullanici)
+        public string TokenUret(string kartNumara, int atmId)
         {
             //Claimler tokenlerin içine gömülü olan bilgilerdir ve bu kısımda oluşturuyoruz.
             //bilgileri bizim kullanici entitymizden alıyor.
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, kullanici.id.ToString()),
-                new Claim(ClaimTypes.Email,kullanici.Email),
-                new Claim(ClaimTypes.Role, kullanici.KullaniciRol)
+                new Claim("kartNumara",kartNumara),
+                new Claim("atmId",atmId.ToString())
             };
 
             var key = new SymmetricSecurityKey(
@@ -51,4 +49,4 @@ namespace BankaSimulasyon.Services
         }
 
     }
-}*/
+}

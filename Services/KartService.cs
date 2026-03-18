@@ -13,11 +13,13 @@ namespace BankaSimulasyon.Services
 
         private readonly IKartRepository _kartRepository;
         private readonly IAtmService _atmService;
+        private readonly IAuthService _authService;
 
-        public KartService(IKartRepository kartRepository, IAtmService atmService)
+        public KartService(IKartRepository kartRepository, IAtmService atmService,IAuthService authService)
         {
             _kartRepository = kartRepository;
             _atmService = atmService;
+            _authService = authService;
         }
 
 
@@ -45,9 +47,9 @@ namespace BankaSimulasyon.Services
 
 
         /*
-        public ApiResponse KartLimitGuncelle(int kullaniciId, string kartNumara, decimal yeniKartLimit)
+        public ApiResponse<object> KartKalanLimitGuncelle(int kullaniciId, string kartNumara, decimal yeniKartLimit)
         {
-            ApiResponse kullaniciResponse = new();
+            ApiResponse<object> kullaniciResponse = new();
 
             try
             {
@@ -103,8 +105,8 @@ namespace BankaSimulasyon.Services
 
 
             return kullaniciResponse;
-        } */
-
+        }
+         */
 
         /*
         public decimal KalanKullanilabilirHesapLimit(int kullaniciId, string kartNumara)
@@ -131,7 +133,20 @@ namespace BankaSimulasyon.Services
         */
 
 
+        public ApiResponse<object> KartGunlukLimitGuncelle(string kartNumara, decimal yeniKartLimit)
+        {
+            ApiResponse<object> kartGunlukLimitApiResponse = new();
 
+            var yeniKartGunlukLimit = _kartRepository.KartGunlukLimitGuncelle(kartNumara,yeniKartLimit);
+
+            kartGunlukLimitApiResponse.Data = yeniKartGunlukLimit;
+            kartGunlukLimitApiResponse.IslemBasariliMi = true;
+            kartGunlukLimitApiResponse.Mesaj = "Limit güncellendi";
+            
+            return kartGunlukLimitApiResponse;
+        }
+
+        
 
         public ApiResponse<object> KartSifreGuncelle(string YeniKartSifre, string kartNumara)
         {
@@ -143,6 +158,7 @@ namespace BankaSimulasyon.Services
 
             if (sonuc > 0)
             {
+                _kartRepository.YanlisGirisSayisiSifirla(kartNumara);
                 kullaniciResponse.IslemBasariliMi = true;
                 kullaniciResponse.Mesaj = "Şifre başarıyla güncellendi";
             }
@@ -156,7 +172,8 @@ namespace BankaSimulasyon.Services
         }
 
 
-        public ApiResponse<List<AtmKaset>> ParaCek(string kartNumara, int atmId, int cekilecekTutar, int kullaniciId)
+
+        public ApiResponse<List<AtmKaset>> ParaCek(string kartNumara, int atmId, int cekilecekTutar)
         {
             ApiResponse<List<AtmKaset>> ParaCekApiResponse = new();
 
@@ -167,7 +184,7 @@ namespace BankaSimulasyon.Services
                 decimal yeniKalanLimit = (kartKalanLimit - cekilecekTutar);
 
                 _kartRepository.KartKalanLimitGuncelle(kartNumara, yeniKalanLimit);
-                AtmdenParaCekmeResponse AtmParaCekmeDonenDeger = _atmService.AtmdenParaCek(atmId, cekilecekTutar, kartNumara, kullaniciId);
+                AtmdenParaCekmeResponse AtmParaCekmeDonenDeger = _atmService.AtmdenParaCek(atmId, cekilecekTutar, kartNumara);
 
                 List<AtmKaset> DonenListe = AtmParaCekmeDonenDeger.Kasetler;
 
@@ -187,7 +204,7 @@ namespace BankaSimulasyon.Services
 
 
 
-        public ApiResponse<object> KartDogrula(string kartNumara, string kartSifre)
+        public ApiResponse<object> KartDogrula(string kartNumara, string kartSifre,int atmId)
         {
             ApiResponse<object> kartDogrulaApiResponse = new();
 
@@ -204,18 +221,35 @@ namespace BankaSimulasyon.Services
 
             if (sifreDogruMu)
             {
+                _kartRepository.YanlisGirisSayisiSifirla(kartNumara);
+                string? token = _authService.TokenUret(kartNumara,atmId);
                 kartDogrulaApiResponse.Mesaj = "Giriş başarıyla yapıldı";
                 kartDogrulaApiResponse.IslemBasariliMi = true;
+                kartDogrulaApiResponse.Data = token;
             }
             else
             {
+                _kartRepository.YanlisGirisSayisiniArttir(kartNumara);
+                int yanlisGirisSayisi = _kartRepository.YanlisGirisSayisiGetir(kartNumara);
                 kartDogrulaApiResponse.Mesaj = "Yanlış Şifre";
                 kartDogrulaApiResponse.IslemBasariliMi = false;
+                kartDogrulaApiResponse.Data = yanlisGirisSayisi;
             }
 
             return kartDogrulaApiResponse;
         }
 
+
+        public ApiResponse<int> YanlisGirisSayisiGetir(string kartNumara)
+        {
+            ApiResponse<int> yanlisGirisSayisiApiResponse = new();
+
+            int kartYanlisGirisSayisi = _kartRepository.YanlisGirisSayisiGetir(kartNumara);
+
+            yanlisGirisSayisiApiResponse.Data = kartYanlisGirisSayisi;
+
+            return yanlisGirisSayisiApiResponse;  
+        }
 
     }
 }

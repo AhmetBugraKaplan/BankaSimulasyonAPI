@@ -9,16 +9,19 @@ namespace BankaSimulasyon.Services
 {
     public interface IKartService
     {
-        public ApiResponse<object> KartEkle(int kullaniciId, string KartNumara, decimal kartGunlukLimit,string kartSifre);
-
-        //public ApiResponse KartLimitGuncelle(int kullaniciId, string kartNumara, decimal yeniKartLimit);
+        public ApiResponse<object> KartEkle(int kullaniciId, string KartNumara, decimal kartGunlukLimit, string kartSifre);
+        public ApiResponse<object> KartGunlukLimitGuncelle(string kartNumara, decimal yeniKartLimit);
+        
+        //public ApiResponse<object> KartKalanLimitGuncelle(int kullaniciId, string kartNumara, decimal yeniKartLimit);
 
         //public decimal KalanKullanilabilirHesapLimit(int kullaniciId, string kartNumara);
+        public ApiResponse<object> KartSifreGuncelle(string yeniKartSifre, string kartNumara);
+        public ApiResponse<List<AtmKaset>> ParaCek(string kartNumara, int atmId, int cekilecekTutar);
 
-        public ApiResponse<object> KartSifreGuncelle(string yeniKartSifre,string kartNumara);
-        public ApiResponse<List<AtmKaset>> ParaCek(string kartNumara,int atmId, int cekilecekTutar,int kullaniciId);
+        public ApiResponse<object> KartDogrula(string kartNumara, string kartSifre, int atmId);
 
-        public ApiResponse<object> KartDogrula(string kartNumara,string kartSifre);
+        public ApiResponse<int> YanlisGirisSayisiGetir(string kartNumara);
+
 
 
     }
