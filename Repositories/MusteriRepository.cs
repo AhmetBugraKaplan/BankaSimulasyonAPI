@@ -74,9 +74,27 @@ namespace BankaSimulasyon.Repositories
 
         }
 
+        public decimal MusteriLimitGetirIdGore(int musteriId)
+        {
+            var musteriIdParam = new SqlParameter("@MusteriId", musteriId);
 
+            var sonuc = _context.Database.SqlQuery<decimal>(
+                $"EXEC SP_MusteriLimitGetir {musteriIdParam}").AsEnumerable().FirstOrDefault();
 
+            return sonuc;
+        }
 
+        public decimal MusteriKullanilanLimitGetirIdGore(int musteriId)
+        {
+            var musteriIdParam = new SqlParameter("@MusteriId",musteriId);
+
+            var sonucParam = new SqlParameter("@Sonuc",SqlDbType.Decimal);
+            sonucParam.Direction = ParameterDirection.Output;
+
+            _context.Database.ExecuteSqlRaw("EXEC SP_MusteriKullanilanLimitGetir @MusteriId,@Sonuc OUTPUT",musteriIdParam,sonucParam);
+
+            return (decimal)sonucParam.Value;
+        }
 
 
     }

@@ -12,6 +12,7 @@ namespace BankaSimulasyon.Models.Entities
         public int Id { get; set; }
         public String Isim { get; set; } = "İsim değeri girilmedi";
         public String Soyisim { get; set; } = "Soyisim girilmedi";
+        public decimal MusteriLimit { get; set; } = 0;
         
         /*
         public String TelefonNumarasi { get; set; } = "Telefon numarası girilmedi";
@@ -20,7 +21,7 @@ namespace BankaSimulasyon.Models.Entities
         public string Email { get; set; } = null!;
         public string PasswordHash { get; set; } = null!;
         public string KullaniciRol { get; set; } = null!;
-        */
+        */ 
 
     }
 }

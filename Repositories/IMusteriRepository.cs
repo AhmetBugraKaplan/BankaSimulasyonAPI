@@ -12,6 +12,8 @@ namespace BankaSimulasyon.Repositories
         public int YeniMusteriEkle(string isim,string soyisim);
         public Musteri? MusteriGetirIdGore(int id);
         public int MusteriSilIdGore(int id);
+        public decimal MusteriLimitGetirIdGore(int musteriId);
+        public decimal MusteriKullanilanLimitGetirIdGore(int musteriId);
 
     }
 }

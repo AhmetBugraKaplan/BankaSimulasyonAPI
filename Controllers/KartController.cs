@@ -68,9 +68,9 @@ namespace BankaSimulasyon.Controllers
         }
 
         [HttpPost("KartGunlukLimitGuncelle")]
-        public IActionResult KartGunlukLimitGuncelle(string KartNumara,decimal yeniKartLimit)
+        public IActionResult KartGunlukLimitGuncelle(string KartNumara,decimal yeniKartLimit,int musteriId)
         {
-            var sonuc = _kartService.KartGunlukLimitGuncelle(KartNumara,yeniKartLimit);
+            var sonuc = _kartService.KartGunlukLimitGuncelle(KartNumara,yeniKartLimit,musteriId);
             return Ok(sonuc);
         }
 

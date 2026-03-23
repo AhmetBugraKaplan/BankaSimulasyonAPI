@@ -22,13 +22,13 @@ namespace BankaSimulasyon.Repositories
             _context = context;
         }
 
-        public int KartEkle(int KullaniciId, string KartNumara, decimal kartGunlukLimit, string KartSifre)
+        public int KartEkle(int musteriId, string kartNumara, decimal kartGunlukLimit, string kartSifre)
         {
 
             //Önce input atamalarını yapıyoaruz her zaman
-            var kullaniciIdParam = new SqlParameter("@KullaniciId", KullaniciId);
-            var kartNumaraParam = new SqlParameter("@KartNumara", KartNumara);
-            var kartSifreParam = new SqlParameter("@SifreHash", KartSifre);
+            var kullaniciIdParam = new SqlParameter("@KullaniciId", musteriId);
+            var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
+            var kartSifreParam = new SqlParameter("@SifreHash", kartSifre);
 
             //Sonrasında output atamasını yapıp direction ile bu değerin output olduğunu belirtiyoruz
             var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
@@ -42,8 +42,6 @@ namespace BankaSimulasyon.Repositories
 
             return (int)sonucParam.Value;
         }
-
-
 
         public int KartKalanLimitGuncelle(string kartNumara, decimal yeniKartLimit)
         {
@@ -73,7 +71,6 @@ namespace BankaSimulasyon.Repositories
             return (int)sonucParam.Value;
         }
 
-
         public decimal KartKalanLimitGetir(string kartNumara)
         {
             var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
@@ -86,6 +83,17 @@ namespace BankaSimulasyon.Repositories
             return kartKalanLimit;
         }
 
+        public decimal KartGunlukLimitGetir(string kartNumara)
+        {
+            var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
+
+            decimal kartGunlukLimit = _context.Database.SqlQuery<Decimal>
+            ($"EXEC SP_KartGunlukLimitGetir {kartNumaraParam}")
+            .AsEnumerable()
+            .FirstOrDefault();
+
+            return kartGunlukLimit;
+        }
 
         public List<Kart> TumKartlariGetir(int kullaniciId)
         {
@@ -95,8 +103,6 @@ namespace BankaSimulasyon.Repositories
 
             return kartListesi;
         }
-
-
 
         //SP_KartSifreGuncelle
         public int KartSifreGuncelle(string yeniKartSifre, string kartNumara)
@@ -112,9 +118,6 @@ namespace BankaSimulasyon.Repositories
 
             return (int)sonucParam.Value;
         }
-
-
-
 
         //Burası düzenlenecek
         public string? KartSifreGetir(string kartNumara)
@@ -142,13 +145,16 @@ namespace BankaSimulasyon.Repositories
             .FirstOrDefault();
         }
 
-
         public void YanlisGirisSayisiSifirla(string kartNumara)
         {
             var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
             _context.Database.ExecuteSqlRaw("EXEC SP_KartYanlisGirisSayisiSifirla @KartNumara", kartNumaraParam);
         }
 
+
+        public void TumKartlarinLimitleriniSifirla(){
+            _context.Database.ExecuteSqlRaw("EXEC SP_TumKartlarinLimitleriniSifirla");
+        }
 
     }
 }

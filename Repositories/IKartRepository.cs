@@ -12,12 +12,15 @@ namespace BankaSimulasyon.Repositories
         public int KartKalanLimitGuncelle(string kartNumara, decimal yeniKartLimit);
         public int KartGunlukLimitGuncelle(string kartNumara, decimal yeniKartLimit);
         public decimal KartKalanLimitGetir(string kartNumara);
+        public decimal KartGunlukLimitGetir(string kartNumara);
         public List<Kart> TumKartlariGetir(int kullaniciId);
         public int KartSifreGuncelle(string yeniKartSifre, string kartNumara);
         public string? KartSifreGetir(string kartNumara);
         public void YanlisGirisSayisiniArttir(string kartNumara);
         public int YanlisGirisSayisiGetir(string kartNumara);
         public void YanlisGirisSayisiSifirla(string kartNumara);
+        public void TumKartlarinLimitleriniSifirla();
+   
 
 
     }

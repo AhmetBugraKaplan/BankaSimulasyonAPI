@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BankaSimulasyon.Models.Entities;
 using BankaSimulasyon.Models.Responses;
 using BankaSimulasyon.Repositories;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BankaSimulasyon.Services
 {
@@ -12,24 +13,26 @@ namespace BankaSimulasyon.Services
     {
 
         private readonly IKartRepository _kartRepository;
+        private readonly IMusteriRepository _musteriRepository;
         private readonly IAtmService _atmService;
         private readonly IAuthService _authService;
 
-        public KartService(IKartRepository kartRepository, IAtmService atmService,IAuthService authService)
+        public KartService(IKartRepository kartRepository, IAtmService atmService, IAuthService authService, IMusteriRepository musteriRepository)
         {
             _kartRepository = kartRepository;
             _atmService = atmService;
             _authService = authService;
+            _musteriRepository = musteriRepository;
         }
 
 
-        public ApiResponse<object> KartEkle(int kullaniciId, string kartNumara, decimal kartGunlukLimit, string kartSifre)
+        public ApiResponse<object> KartEkle(int kullaniciId, string KartNumara, decimal kartGunlukLimit, string kartSifre)
         {
             ApiResponse<object> kullaniciResponse = new();
 
             string hashlenmisSifre = BCrypt.Net.BCrypt.HashPassword(kartSifre);
 
-            int sonuc = _kartRepository.KartEkle(kullaniciId, kartNumara, kartGunlukLimit, hashlenmisSifre);
+            int sonuc = _kartRepository.KartEkle(kullaniciId, KartNumara, kartGunlukLimit, hashlenmisSifre);
 
             if (sonuc > 0)
             {
@@ -132,27 +135,62 @@ namespace BankaSimulasyon.Services
         } 
         */
 
-
-        public ApiResponse<object> KartGunlukLimitGuncelle(string kartNumara, decimal yeniKartLimit)
+        //Gunluk limitini güncellerken müşteri limitini geçmemesi gerekiyor.
+        public ApiResponse<object> KartGunlukLimitGuncelle(string kartNumara, decimal yeniKartLimit, int musteriId)
         {
             ApiResponse<object> kartGunlukLimitApiResponse = new();
 
-            var yeniKartGunlukLimit = _kartRepository.KartGunlukLimitGuncelle(kartNumara,yeniKartLimit);
+            decimal musteriLimit = _musteriRepository.MusteriLimitGetirIdGore(musteriId);
+            decimal musteriKullanilanToplamLimit = _musteriRepository.MusteriKullanilanLimitGetirIdGore(musteriId);
+            decimal kartMevcutLimit = _kartRepository.KartGunlukLimitGetir(kartNumara);
 
-            kartGunlukLimitApiResponse.Data = yeniKartGunlukLimit;
-            kartGunlukLimitApiResponse.IslemBasariliMi = true;
-            kartGunlukLimitApiResponse.Mesaj = "Limit güncellendi";
-            
+            decimal musteriKalanKullanilabilirLimit = musteriLimit - musteriKullanilanToplamLimit + kartMevcutLimit;
+
+            // Limiti yükseltiyoruz → müşteri limiti kontrolü gerekli
+            if (kartMevcutLimit < yeniKartLimit)
+            {
+                if (yeniKartLimit <= musteriKalanKullanilabilirLimit)
+                {
+                    _kartRepository.KartGunlukLimitGuncelle(kartNumara, yeniKartLimit);
+                    _kartRepository.KartKalanLimitGuncelle(kartNumara, yeniKartLimit);
+                    kartGunlukLimitApiResponse.IslemBasariliMi = true;
+                    kartGunlukLimitApiResponse.Mesaj = "Limit güncellendi";
+                }
+                else
+                {
+                    kartGunlukLimitApiResponse.IslemBasariliMi = false;
+                    kartGunlukLimitApiResponse.Mesaj = "Yetersiz Müşteri Limiti!";
+                }
+            }
+            // Limiti düşürüyoruz → müşteri limiti kontrolüne gerek yok
+            else if (kartMevcutLimit > yeniKartLimit)
+            {
+                _kartRepository.KartGunlukLimitGuncelle(kartNumara, yeniKartLimit);
+                _kartRepository.KartKalanLimitGuncelle(kartNumara, yeniKartLimit);
+                kartGunlukLimitApiResponse.IslemBasariliMi = true;
+                kartGunlukLimitApiResponse.Mesaj = "Limit güncellendi";
+            }
+            // Aynı limit
+            else
+            {
+                kartGunlukLimitApiResponse.IslemBasariliMi = false;
+                kartGunlukLimitApiResponse.Mesaj = "Yeni limit mevcut limitten farklı olmalıdır!";
+            }
+
             return kartGunlukLimitApiResponse;
         }
 
-        
+        public void TumKartLimitleriniSifirla()
+        {
+            _kartRepository.TumKartlarinLimitleriniSifirla();
+        }
 
-        public ApiResponse<object> KartSifreGuncelle(string YeniKartSifre, string kartNumara)
+
+        public ApiResponse<object> KartSifreGuncelle(string yeniKartSifre, string kartNumara)
         {
             ApiResponse<object> kullaniciResponse = new();
 
-            string hashlenmisSifre = BCrypt.Net.BCrypt.HashPassword(YeniKartSifre.ToString());
+            string hashlenmisSifre = BCrypt.Net.BCrypt.HashPassword(yeniKartSifre.ToString());
 
             int sonuc = _kartRepository.KartSifreGuncelle(hashlenmisSifre, kartNumara);
 
@@ -188,9 +226,18 @@ namespace BankaSimulasyon.Services
 
                 List<AtmKaset> DonenListe = AtmParaCekmeDonenDeger.Kasetler;
 
-                ParaCekApiResponse.Data = DonenListe;
-                ParaCekApiResponse.IslemBasariliMi = true;
-                ParaCekApiResponse.Mesaj = "Para çekme işlemi başarıyla gerçekleştirildi.";
+
+                if (AtmParaCekmeDonenDeger.IslemBasariliMi == true)
+                {
+                    ParaCekApiResponse.Data = DonenListe;
+                    ParaCekApiResponse.IslemBasariliMi = true;
+                    ParaCekApiResponse.Mesaj = "Para çekme işlemi başarıyla gerçekleştirildi.";
+                }
+                else
+                {
+                    ParaCekApiResponse.IslemBasariliMi = false;
+                    ParaCekApiResponse.Mesaj = AtmParaCekmeDonenDeger.Mesaj;
+                }
             }
             else
             {
@@ -202,9 +249,7 @@ namespace BankaSimulasyon.Services
         }
 
 
-
-
-        public ApiResponse<object> KartDogrula(string kartNumara, string kartSifre,int atmId)
+        public ApiResponse<object> KartDogrula(string kartNumara, string kartSifre, int atmId)
         {
             ApiResponse<object> kartDogrulaApiResponse = new();
 
@@ -222,7 +267,7 @@ namespace BankaSimulasyon.Services
             if (sifreDogruMu)
             {
                 _kartRepository.YanlisGirisSayisiSifirla(kartNumara);
-                string? token = _authService.TokenUret(kartNumara,atmId);
+                string? token = _authService.TokenUret(kartNumara, atmId);
                 kartDogrulaApiResponse.Mesaj = "Giriş başarıyla yapıldı";
                 kartDogrulaApiResponse.IslemBasariliMi = true;
                 kartDogrulaApiResponse.Data = token;
@@ -248,7 +293,7 @@ namespace BankaSimulasyon.Services
 
             yanlisGirisSayisiApiResponse.Data = kartYanlisGirisSayisi;
 
-            return yanlisGirisSayisiApiResponse;  
+            return yanlisGirisSayisiApiResponse;
         }
 
     }

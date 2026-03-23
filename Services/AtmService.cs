@@ -292,7 +292,6 @@ namespace BankaSimulasyon.Services
             return atmEklemeApiResponse;
         }
 
-
         public ApiResponse<List<ATM>> TumAtmleriGetir()
         {
             ApiResponse<List<ATM>> tumAtmleriGetirApiResponse = new ApiResponse<List<ATM>>();
@@ -310,6 +309,8 @@ namespace BankaSimulasyon.Services
             }
             return tumAtmleriGetirApiResponse;
         }
+
+        
 
     }
 }

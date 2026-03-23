@@ -7,6 +7,7 @@ using BankaSimulasyon.Models.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Hangfire;
 
 
 
@@ -119,6 +120,11 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddHangfire(config =>
+config.UseSqlServerStorage(builder.Configuration.GetConnectionString("database")));
+
+builder.Services.AddHangfireServer();
+
 
 
 
@@ -130,6 +136,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseHangfireDashboard("/hangfire");
+
+RecurringJob.AddOrUpdate<IKartService>(
+    "limit-sifirla",
+    service => service.TumKartLimitleriniSifirla(),
+    "0 0 * * *"
+);
 
 //Middleware ekliyoruz
 app.UseMiddleware<ExceptionMiddleware>(); //Hata yakalama !!!HER ZAMAN EN USTTE OLMALI!!!
@@ -186,7 +199,10 @@ Sonraki ekranda tutar girilecek ve para çekme işlemi yapacağız. (Arkaplanda 
 Limit günlük ya da aylık olabilir, sen kalan limit adında bir değişken daha oluşturacaksın tabloya o değişken kalan limitini tutarken
 diğeri gün sonu ya da ay sonu sıfırlanacak.(Kalan limit oluşturuldu fakat gün sonu sıfırlanma işlemini daha yapmadık.) (-)
 
-kalan Limitimiz gun sonunda tekrardan sıfırlanmalı bir kartın birden fazla limiti olabilir o mevzuyu çöz.
+
+
+---4.Toplantı---
+kalan Limitimiz gun sonunda tekrardan sıfırlanmalı bir kartın birden fazla limiti olabilir o mevzuyu çöz. (+)
 
 //restful servis protol öğren
 //wcf seris ile web servis restful servis farkı nelerdir
