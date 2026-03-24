@@ -8,6 +8,6 @@ namespace BankaSimulasyon.Services
 {
     public interface IAuthService
     {
-        string? TokenUret(string kartNumara, int atmId);
+        string? TokenUret(string kartNumara, int atmId,string ipAdresi);
     }
 }

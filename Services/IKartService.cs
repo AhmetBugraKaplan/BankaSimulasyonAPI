@@ -18,7 +18,7 @@ namespace BankaSimulasyon.Services
         public ApiResponse<object> KartSifreGuncelle(string yeniKartSifre, string kartNumara);
         public ApiResponse<List<AtmKaset>> ParaCek(string kartNumara, int atmId, int cekilecekTutar);
 
-        public ApiResponse<object> KartDogrula(string kartNumara, string kartSifre, int atmId);
+        public ApiResponse<object> KartDogrula(string kartNumara, string kartSifre, int atmId,string ipAdresi);
 
         public ApiResponse<int> YanlisGirisSayisiGetir(string kartNumara);
         public void TumKartLimitleriniSifirla();

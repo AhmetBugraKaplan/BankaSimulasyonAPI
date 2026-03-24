@@ -14,9 +14,9 @@ namespace BankaSimulasyon.Services
             _jwtService = jwtService;
         }
 
-        public string TokenUret(string kartNumara,int atmId)
+        public string TokenUret(string kartNumara,int atmId,string ipAdresi)
         {
-            return _jwtService.TokenUret(kartNumara,atmId);
+            return _jwtService.TokenUret(kartNumara,atmId,ipAdresi);
         }
     }
 }

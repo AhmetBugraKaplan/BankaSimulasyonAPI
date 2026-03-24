@@ -19,20 +19,23 @@ namespace BankaSimulasyon.Services
             _configuration = configuration;
         }
 
-        public string TokenUret(string kartNumara, int atmId)
+        public string TokenUret(string kartNumara, int atmId,string ipAdresi)
         {
             //Claimler tokenlerin içine gömülü olan bilgilerdir ve bu kısımda oluşturuyoruz.
             //bilgileri bizim kullanici entitymizden alıyor.
             var claims = new[]
             {
                 new Claim("kartNumara",kartNumara),
-                new Claim("atmId",atmId.ToString())
+                new Claim("atmId",atmId.ToString()),
+                new Claim("ipAdresi",ipAdresi)
             };
 
+            //appsetting.json dosyasından JWT keyi okuyor
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!)
             );
 
+            //Tokenin imzalanma yöntemi ve keyi verilir.
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(

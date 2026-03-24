@@ -249,7 +249,7 @@ namespace BankaSimulasyon.Services
         }
 
 
-        public ApiResponse<object> KartDogrula(string kartNumara, string kartSifre, int atmId)
+        public ApiResponse<object> KartDogrula(string kartNumara, string kartSifre, int atmId,string ipAdresi)
         {
             ApiResponse<object> kartDogrulaApiResponse = new();
 
@@ -262,12 +262,15 @@ namespace BankaSimulasyon.Services
                 return kartDogrulaApiResponse;
             }
 
+            //Aslında yukarıda aldığımız sifreHash şifreli şifre :D ama aşşağıdaki 
+            // BCrypt fonksiyonu onu açıyor ve bizim girdiğimiz şifreye eşit olup olmadığına bakıyor.
+            
             bool sifreDogruMu = BCrypt.Net.BCrypt.Verify(kartSifre, sifreHash);
 
             if (sifreDogruMu)
             {
                 _kartRepository.YanlisGirisSayisiSifirla(kartNumara);
-                string? token = _authService.TokenUret(kartNumara, atmId);
+                string? token = _authService.TokenUret(kartNumara, atmId,ipAdresi);
                 kartDogrulaApiResponse.Mesaj = "Giriş başarıyla yapıldı";
                 kartDogrulaApiResponse.IslemBasariliMi = true;
                 kartDogrulaApiResponse.Data = token;
