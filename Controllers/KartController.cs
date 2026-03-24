@@ -8,6 +8,9 @@ using BankaSimulasyon.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using BankaSimulasyon.Models.Requests;
+using BankaSimulasyon.Models.Dtos.Requests;
+
 
 namespace BankaSimulasyon.Controllers
 {
@@ -26,51 +29,78 @@ namespace BankaSimulasyon.Controllers
         [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici,musteri")]
         [HttpPost("KartEkle")]
-        public IActionResult KartEkle(int kullaniciId, string kartNumara, decimal kartGunlukLimit, string kartSifre)
+        public IActionResult KartEkle([FromBody] KartEkleRequest request)
         {
-            var sonuc = _kartService.KartEkle(kullaniciId, kartNumara, kartGunlukLimit, kartSifre);
+            //Aşşağıdaki if bloğu requestteki requried içerisindekiş şartlar sağlanmayınca patlıyor ve errormesage'ı döndürüyor.
+            if (!ModelState.IsValid)
+                return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
+
+            var sonuc = _kartService.KartEkle(
+                request.KullaniciId,
+                 request.KartNumara,
+                 request.KartGunlukLimit,
+                 request.KartSifre
+                 );
 
             return Ok(sonuc);
         }
-
-        /*
-        [HttpPost("KartLimitGuncelle")]
-        public IActionResult KartLimitGuncelle(int kullaniciId,string kartNumara,decimal kartLimit)
-        {
-            var sonuc = _kartService.KartLimitGuncelle(kullaniciId,kartNumara,kartLimit);
-
-            return Ok(sonuc);
-        }
-        */
-
 
         [HttpPost("KartSifreGuncelle")]
-        public IActionResult KartSifreGuncelle(string YeniKartSifre, string kartNumara)
+        public IActionResult KartSifreGuncelle([FromBody] KartSifreGuncelleRequest request)
         {
-            var sonuc = _kartService.KartSifreGuncelle(YeniKartSifre, kartNumara);
+            if (!ModelState.IsValid)
+                return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
+
+            var sonuc = _kartService.KartSifreGuncelle(
+                request.YeniKartSifre,
+                request.KartNumara
+                );
 
             return Ok(sonuc);
         }
 
         [HttpPost("ParaCek")]
-        public IActionResult KarttanParaCek(string kartNumara, int atmId, int cekilecekTutar)
+        public IActionResult ParaCek([FromBody] ParaCekRequest request)
         {
-            var sonuc = _kartService.ParaCek(kartNumara,atmId,cekilecekTutar);
+            if (!ModelState.IsValid)
+                return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
+
+            var sonuc = _kartService.ParaCek(
+                request.KartNumara,
+                request.AtmId,
+                request.CekilecekTutar
+            );
 
             return Ok(sonuc);
         }
 
         [HttpPost("KartDogrula")]
-        public IActionResult KartDogrula(string kartNumara,string kartSifre,int atmId)
+        public IActionResult KartDogrula([FromBody] KartDogrulaRequest request)
         {
-            var sonuc = _kartService.KartDogrula(kartNumara,kartSifre,atmId);
+            //Aşşağıdaki if bloğu requestteki requried içerisindekiş şartlar sağlanmayınca patlıyor ve errormesage'ı döndürüyor.
+            if (!ModelState.IsValid)
+                return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
+
+            var sonuc = _kartService.KartDogrula(
+                request.KartNumara,
+                request.KartSifre,
+                request.AtmId);
+
             return Ok(sonuc);
         }
 
         [HttpPost("KartGunlukLimitGuncelle")]
-        public IActionResult KartGunlukLimitGuncelle(string KartNumara,decimal yeniKartLimit,int musteriId)
+        public IActionResult KartGunlukLimitGuncelle([FromBody] KartGunlukLimitGuncelleRequest request)
         {
-            var sonuc = _kartService.KartGunlukLimitGuncelle(KartNumara,yeniKartLimit,musteriId);
+            if (!ModelState.IsValid)
+                return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
+
+            var sonuc = _kartService.KartGunlukLimitGuncelle(
+                request.KartNumara,
+                request.YeniKartLimit,
+                request.MusteriId
+            );
+
             return Ok(sonuc);
         }
 

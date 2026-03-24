@@ -1,97 +1,75 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+using BankaSimulasyon.Models.Dtos.Requests.Musteri;
 using BankaSimulasyon.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace BankaSimulasyon.Controllers
 {
-
     [ApiController]
     [Route("api/[controller]")]
     public class MusteriController : ControllerBase
     {
         private readonly IMusteriService _musteriService;
 
-
         public MusteriController(IMusteriService musteriService)
         {
             _musteriService = musteriService;
         }
 
-
-        [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici")]
         [HttpPost("MusteriEkle")]
-        public IActionResult YeniMusteriEkle(string isim, string soyisim)
+        public IActionResult YeniMusteriEkle([FromBody] MusteriEkleRequest request)
         {
-            var sonuc = _musteriService.YeniMusteriEkle(isim, soyisim);
+            if (!ModelState.IsValid)
+                return BadRequest(new 
+                { 
+                    basarili = false,
+                    hatalar = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
+                });
 
-            return Ok(sonuc);
+            var sonuc = _musteriService.YeniMusteriEkle(request.Isim, request.Soyisim);
+            return Ok(sonuc);  
         }
 
-        [AllowAnonymous]
-        [Authorize(Roles = "admin,gelistirici")]
-        [HttpPost("MusteriGetirIdGore")]
-        public IActionResult MusteriGetirIdGore(int id)
-        {
-            var sonuc = _musteriService.MusteriGetirIdGore(id);
-
-            return Ok(sonuc);
-        }
-
-        [AllowAnonymous]
-        [Authorize(Roles = "admin,gelistirici")]
-        [HttpPost("MusteriSilIdGore")]
-        public IActionResult MusteriSilIdGore(int id)
-        {
-            var sonuc = _musteriService.MusteriSilIdGore(id);
-
-            return Ok(sonuc);
-        }
-
-
-        /*
-        [AllowAnonymous]
         [Authorize(Roles = "admin,gelistirici,musteri")]
-        [HttpPost("MusteriHesaptanParaCek")]
-        public  IActionResult MusteriHesaptanParaCek(int hesapNumarasi, int atmId, int cekilecekTutar,string kartNumara,int MusteriId)
+        [HttpPost("MusteriGetirIdGore")]
+        public IActionResult MusteriGetirIdGore([FromBody] MusteriGetirIdGoreRequest request)
         {
-            var sonuc = _hesapServis.ParaCek(hesapNumarasi, atmId, cekilecekTutar,kartNumara,MusteriId);
+            if (!ModelState.IsValid)
+                return BadRequest(new 
+                { 
+                    basarili = false,
+                    hatalar = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
+                });
 
-            return Ok(sonuc);
+            var sonuc = _musteriService.MusteriGetirIdGore(request.Id);
+            return Ok(sonuc);  
         }
-        */
 
+        [Authorize(Roles = "admin")]
+        [HttpPost("MusteriSilIdGore")]
+        public IActionResult MusteriSilIdGore([FromBody] MusteriSilIdGoreRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new 
+                { 
+                    basarili = false,
+                    hatalar = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
+                });
+
+            var sonuc = _musteriService.MusteriSilIdGore(request.Id);
+            return Ok(sonuc);  
+        }
 
         [AllowAnonymous]
-        [Authorize(Roles = "admin,gelistirici")]
         [HttpGet("MusteriTestHata")]
         public IActionResult MusteriTestHata()
         {
-            throw new Exception("Bu bir test hatasıdır!");
+            var sonuc = _musteriService.MusteriGetirIdGore(0);
+            return Ok(sonuc);  
         }
-
-
-        /*
-        [AllowAnonymous]
-        [Authorize(Roles = "admin,gelistirici,musteri")]
-        [HttpPost("HesapEkle")]
-        public IActionResult HesapEkle()
-        {
-
-            var MusteriId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
-            var sonuc = _musteriService.MusteriHesapEkle(MusteriId);
-
-            return Ok(sonuc);
-        }
-        */
-
     }
 }

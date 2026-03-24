@@ -209,9 +209,9 @@ kalan Limitimiz gun sonunda tekrardan sıfırlanmalı bir kartın birden fazla l
 //neden web servis kullanırız neden restful servis kullanırız.
 
 
-//bodyla veriyi gönder
+//bodyla veriyi gönder (+) --> Bu işlem için DTO katmanına requestler ekledik FromBody ile request nesneleri body içinde dönüyor.
 
-/web servisleri json-datayı body nin içine nasıl göndereiblirim
+/web servisleri json-datayı body nin içine nasıl göndereiblirim (+)
 
 sonrasında json datayı ihtiyacımız olan alanlarda parse edeceğiz.
 
