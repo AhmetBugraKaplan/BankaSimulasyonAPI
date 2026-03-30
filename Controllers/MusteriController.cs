@@ -19,49 +19,49 @@ namespace BankaSimulasyon.Controllers
             _musteriService = musteriService;
         }
 
-        [Authorize(Roles = "admin,gelistirici")]
+        [Authorize]
         [HttpPost("MusteriEkle")]
         public IActionResult YeniMusteriEkle([FromBody] MusteriEkleRequest request)
         {
             if (!ModelState.IsValid)
-                return BadRequest(new 
-                { 
+                return BadRequest(new
+                {
                     basarili = false,
                     hatalar = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
                 });
 
             var sonuc = _musteriService.YeniMusteriEkle(request.Isim, request.Soyisim);
-            return Ok(sonuc);  
+            return Ok(sonuc);
         }
 
-        [Authorize(Roles = "admin,gelistirici,musteri")]
+        [Authorize]
         [HttpPost("MusteriGetirIdGore")]
         public IActionResult MusteriGetirIdGore([FromBody] MusteriGetirIdGoreRequest request)
         {
             if (!ModelState.IsValid)
-                return BadRequest(new 
-                { 
+                return BadRequest(new
+                {
                     basarili = false,
                     hatalar = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
                 });
 
             var sonuc = _musteriService.MusteriGetirIdGore(request.Id);
-            return Ok(sonuc);  
+            return Ok(sonuc);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize]
         [HttpPost("MusteriSilIdGore")]
         public IActionResult MusteriSilIdGore([FromBody] MusteriSilIdGoreRequest request)
         {
             if (!ModelState.IsValid)
-                return BadRequest(new 
-                { 
+                return BadRequest(new
+                {
                     basarili = false,
                     hatalar = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
                 });
 
             var sonuc = _musteriService.MusteriSilIdGore(request.Id);
-            return Ok(sonuc);  
+            return Ok(sonuc);
         }
 
         [AllowAnonymous]
@@ -69,7 +69,10 @@ namespace BankaSimulasyon.Controllers
         public IActionResult MusteriTestHata()
         {
             var sonuc = _musteriService.MusteriGetirIdGore(0);
-            return Ok(sonuc);  
+            return Ok(sonuc);
         }
+
+
+
     }
 }

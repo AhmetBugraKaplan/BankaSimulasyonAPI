@@ -59,15 +59,19 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        [Authorize]
         [HttpPost("ParaCek")]
         public IActionResult ParaCek([FromBody] ParaCekRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
 
+            var kartNumara = User.FindFirst("kartNumara")!.Value;
+            var atmId = int.Parse(User.FindFirst("atmId")!.Value);
+
             var sonuc = _kartService.ParaCek(
-                request.KartNumara,
-                request.AtmId,
+                kartNumara,
+                atmId,
                 request.CekilecekTutar
             );
 
@@ -106,6 +110,26 @@ namespace BankaSimulasyon.Controllers
 
             return Ok(sonuc);
         }
+
+        [HttpPost("KartKalanLimitGetir")]
+        public IActionResult KartKalanLimitGetir()
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
+
+            var kartNumara = User.FindFirst("kartNumara")!.Value;
+
+            var sonuc = _kartService.KartKalanLimitGetir(
+                kartNumara
+            );
+
+            return Ok(sonuc);
+        }
+
+        
+
+
+
 
 
 

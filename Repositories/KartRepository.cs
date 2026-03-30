@@ -26,17 +26,18 @@ namespace BankaSimulasyon.Repositories
         {
 
             //Önce input atamalarını yapıyoaruz her zaman
-            var kullaniciIdParam = new SqlParameter("@KullaniciId", musteriId);
+            var MusteriIdParam = new SqlParameter("@KullaniciId", musteriId);
             var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
             var kartSifreParam = new SqlParameter("@SifreHash", kartSifre);
+            var kartGunlukLimitParam = new SqlParameter("@KartGunlukLimit",kartGunlukLimit);
 
             //Sonrasında output atamasını yapıp direction ile bu değerin output olduğunu belirtiyoruz
             var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
             sonucParam.Direction = ParameterDirection.Output;
 
             _context.Database.ExecuteSqlRaw(
-            "EXEC SP_YeniKartEkle @KullaniciId, @KartNumara,@SifreHash ,@Sonuc OUTPUT",
-            kullaniciIdParam, kartNumaraParam, kartSifreParam, sonucParam
+            "EXEC SP_YeniKartEkle @KullaniciId, @KartNumara,@SifreHash, @KartGunlukLimit,@Sonuc OUTPUT",
+            MusteriIdParam, kartNumaraParam, kartSifreParam, kartGunlukLimitParam,sonucParam
             );
 
 
@@ -154,6 +155,18 @@ namespace BankaSimulasyon.Repositories
 
         public void TumKartlarinLimitleriniSifirla(){
             _context.Database.ExecuteSqlRaw("EXEC SP_TumKartlarinLimitleriniSifirla");
+        }
+
+        public bool AyniNumaradaKartVarMi(string kartNumara)
+        {
+            var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
+
+            var sonucParam = new SqlParameter("@Sonuc",SqlDbType.Bit);
+            sonucParam.Direction = ParameterDirection.Output;
+
+           _context.Database.ExecuteSqlRaw("EXEC SP_AyniNumaradaKartVarMi @KartNumara, @Sonuc OUTPUT",kartNumaraParam,sonucParam);
+
+            return (bool)sonucParam.Value;
         }
 
     }

@@ -25,14 +25,36 @@ namespace BankaSimulasyon.Services
             _musteriRepository = musteriRepository;
         }
 
-
-        public ApiResponse<object> KartEkle(int kullaniciId, string KartNumara, decimal kartGunlukLimit, string kartSifre)
+        //Bu fonksiyonda 2 aşamalı bir kontrolden geçiyoruz öncelikle aynı numarada kart var mı
+        //sonrasında istenen limit kalanMüşteri limitinden az mı 
+        public ApiResponse<object> KartEkle(int musteriId, string kartNumara, decimal kartGunlukLimit, string kartSifre)
         {
             ApiResponse<object> kullaniciResponse = new();
 
+            var kontrolResponse = AyniNumaradaKartVarMi(kartNumara);
+
+            if (kontrolResponse.IslemBasariliMi == false)
+            {
+                kullaniciResponse.IslemBasariliMi = false;
+                kullaniciResponse.Mesaj = kontrolResponse.Mesaj; // "Aynı numarada kart sistemde mevcut..."
+                return kullaniciResponse;
+            }
+
+            decimal musteriLimit = _musteriRepository.MusteriLimitGetirIdGore(musteriId);
+            decimal musteriKullanilanToplamLimit = _musteriRepository.MusteriKullanilanLimitGetirIdGore(musteriId);
+            decimal musteriKalanKullanilabilirLimit = musteriLimit - musteriKullanilanToplamLimit;
+
+            if (kartGunlukLimit > musteriKalanKullanilabilirLimit)
+            {
+                kullaniciResponse.IslemBasariliMi = false;
+                kullaniciResponse.Mesaj = $"Yetersiz müşteri limiti! Kalan kullanılabilir limit: {musteriKalanKullanilabilirLimit:C}";
+                return kullaniciResponse;
+            }
+
             string hashlenmisSifre = BCrypt.Net.BCrypt.HashPassword(kartSifre);
 
-            int sonuc = _kartRepository.KartEkle(kullaniciId, KartNumara, kartGunlukLimit, hashlenmisSifre);
+            int sonuc = _kartRepository.KartEkle(musteriId, kartNumara, kartGunlukLimit, hashlenmisSifre);
+
 
             if (sonuc > 0)
             {
@@ -45,7 +67,7 @@ namespace BankaSimulasyon.Services
                 kullaniciResponse.Mesaj = "Kart eklenirken bir hata gerçekleşti.";
             }
 
-            return kullaniciResponse!;
+            return kullaniciResponse;
         }
 
 
@@ -249,7 +271,7 @@ namespace BankaSimulasyon.Services
         }
 
 
-        public ApiResponse<object> KartDogrula(string kartNumara, string kartSifre, int atmId,string ipAdresi)
+        public ApiResponse<object> KartDogrula(string kartNumara, string kartSifre, int atmId, string ipAdresi)
         {
             ApiResponse<object> kartDogrulaApiResponse = new();
 
@@ -264,13 +286,13 @@ namespace BankaSimulasyon.Services
 
             //Aslında yukarıda aldığımız sifreHash şifreli şifre :D ama aşşağıdaki 
             // BCrypt fonksiyonu onu açıyor ve bizim girdiğimiz şifreye eşit olup olmadığına bakıyor.
-            
+
             bool sifreDogruMu = BCrypt.Net.BCrypt.Verify(kartSifre, sifreHash);
 
             if (sifreDogruMu)
             {
                 _kartRepository.YanlisGirisSayisiSifirla(kartNumara);
-                string? token = _authService.TokenUret(kartNumara, atmId,ipAdresi);
+                string? token = _authService.TokenUret(kartNumara, atmId, ipAdresi);
                 kartDogrulaApiResponse.Mesaj = "Giriş başarıyla yapıldı";
                 kartDogrulaApiResponse.IslemBasariliMi = true;
                 kartDogrulaApiResponse.Data = token;
@@ -297,6 +319,41 @@ namespace BankaSimulasyon.Services
             yanlisGirisSayisiApiResponse.Data = kartYanlisGirisSayisi;
 
             return yanlisGirisSayisiApiResponse;
+        }
+
+        public ApiResponse<decimal> KartKalanLimitGetir(string kartNumara)
+        {
+            ApiResponse<decimal> kartKalanLimitGetirApiResponse = new();
+
+            decimal kalanLimit = _kartRepository.KartKalanLimitGetir(kartNumara);
+
+            kartKalanLimitGetirApiResponse.IslemBasariliMi = true;
+            kartKalanLimitGetirApiResponse.Mesaj = "Limit Getirildi";
+            kartKalanLimitGetirApiResponse.Data = kalanLimit;
+
+            return kartKalanLimitGetirApiResponse;
+        }
+
+        public ApiResponse<bool> AyniNumaradaKartVarMi(string kartNumara)
+        {
+            ApiResponse<bool> ayniNumaradaKartVarMiApiResponse = new();
+
+            bool sonuc = _kartRepository.AyniNumaradaKartVarMi(kartNumara);
+
+            if (sonuc == false)
+            {
+                ayniNumaradaKartVarMiApiResponse.IslemBasariliMi = true;
+                ayniNumaradaKartVarMiApiResponse.Mesaj = "Ayni Numarada Kart Yok Sonraki İşleme Geçiliyor";
+                ayniNumaradaKartVarMiApiResponse.Data = sonuc;
+            }
+            else
+            {
+                ayniNumaradaKartVarMiApiResponse.IslemBasariliMi = false;
+                ayniNumaradaKartVarMiApiResponse.Mesaj = "Ayni numarada kart var böyle bir kart oluşturulamaz";
+                ayniNumaradaKartVarMiApiResponse.Data = sonuc;
+            }
+
+            return ayniNumaradaKartVarMiApiResponse;
         }
 
     }

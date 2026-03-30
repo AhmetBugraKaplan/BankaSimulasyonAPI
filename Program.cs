@@ -138,6 +138,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHangfireDashboard("/hangfire");
 
+
+//Güncellemeyi kart kart yapmamız gerekyior. Son işlem yapılan tarih bir yerde tutulacak değiştiğinde güncellencek
+//kalan lımıtı kullanılan tarih olarka değiştir ve son işlem tarihi ekle her limit güncellemede son işlem tarihi değişiyor
+// gün değişince otomatik algılıyoruz zaten orda işlemden önce limiti güncelleyecğiz. 
+
+//Ara server katmanı oluşturacağım bu sadece server olacak istek atıcaz oraya 
 RecurringJob.AddOrUpdate<IKartService>(
     "limit-sifirla",
     service => service.TumKartLimitleriniSifirla(),
@@ -149,7 +155,7 @@ app.UseMiddleware<ExceptionMiddleware>(); //Hata yakalama !!!HER ZAMAN EN USTTE 
 app.UseMiddleware<LoggingMiddleware>(); //Yapılan her isteği (get/post fark etmez) logluyoruz
 app.UseCors("AllowAngular");
 app.UseMiddleware<RateLimitingMiddleware>(); //İstek sınırla
-
+app.UseMiddleware<AuthMiddleware>();
 app.UseAuthentication(); 
 app.UseAuthorization();
 
