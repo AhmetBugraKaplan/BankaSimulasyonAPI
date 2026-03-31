@@ -1,0 +1,38 @@
+<div class="para-cek-container">
+
+  <div class="header">
+    <h1>🏦 VakıfBank</h1>
+    <p>Para Çekme İşlemi</p>
+  </div>
+
+  <div class="form-area">
+    <label>Çekilecek Tutar (₺)</label>
+    <input type="number" placeholder="Tutar giriniz" [(ngModel)]="cekilecekTutar" />
+    <button class="btn-cek" (click)="paraCek()">Para Çek</button>
+    <button class="btn-geri" (click)="geriDon()">← Geri</button>
+  </div>
+
+  <div class="sonuc-area" *ngIf="sonuclar.length > 0">
+    <h3>Verilen Banknotlar</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Kupür</th>
+          <th>Adet</th>
+          <th>Tutar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of sonuclar">
+          <td>{{ item.kupur }} ₺</td>
+          <td>{{ item.adet }}</td>
+          <td>{{ item.kupur * item.adet }} ₺</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="toplam">Toplam: {{ cekilecekTutar }} ₺</p>
+  </div>
+
+  <p class="hata" *ngIf="hataMesaji">{{ hataMesaji }}</p>
+
+</div>

@@ -1,0 +1,67 @@
+.limit-container {
+  width: 420px;
+  margin: 60px auto;
+  background: linear-gradient(145deg, #f5a623, #e8820c);
+  border-radius: 20px;
+  padding: 48px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  text-align: center;
+}
+
+.header h1 {
+  color: white;
+  font-size: 26px;
+  font-weight: bold;
+  margin: 0 0 8px 0;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+}
+
+.header p {
+  color: white;
+  font-size: 16px;
+  margin: 0 0 32px 0;
+}
+
+.limit-card {
+  background: rgba(255,255,255,0.2);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 24px;
+}
+
+.limit-label {
+  color: white;
+  font-size: 16px;
+  margin: 0 0 12px 0;
+}
+
+.limit-deger {
+  color: white;
+  font-size: 48px;
+  font-weight: bold;
+  margin: 0;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+}
+
+.btn-geri {
+  padding: 12px 32px;
+  font-size: 15px;
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-geri:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.hata {
+  color: white;
+  background: rgba(255,0,0,0.3);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}

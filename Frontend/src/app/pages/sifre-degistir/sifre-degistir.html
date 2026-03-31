@@ -1,0 +1,14 @@
+<p>sifre-degistir works!</p>
+<div>
+  <h2>Şifre Değiştir</h2>
+  <p>3 kez yanlış şifre girdiniz. Lütfen yeni şifrenizi belirleyin.</p>
+
+  <input type="text" placeholder="Kart No" [(ngModel)]="kartNo" />
+  <input type="password" placeholder="Yeni Şifre" [(ngModel)]="yeniSifre" />
+  <input type="password" placeholder="Yeni Şifre Tekrar" [(ngModel)]="yeniSifreTekrar" />
+
+  <p *ngIf="hataMesaji">{{ hataMesaji }}</p>
+  <p *ngIf="basariMesaji">{{ basariMesaji }}</p>
+
+  <button (click)="sifreDegistir()">Şifreyi Güncelle</button>
+</div>

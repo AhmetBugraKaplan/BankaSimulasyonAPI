@@ -1,0 +1,127 @@
+.para-cek-container {
+  width: 540px;
+  margin: 60px auto;
+  background: linear-gradient(145deg, #f5a623, #e8820c);
+  border-radius: 20px;
+  padding: 48px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.header h1 {
+  color: white;
+  font-size: 26px;
+  margin: 0 0 8px 0;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+}
+
+.header p {
+  color: white;
+  font-size: 16px;
+  margin: 0;
+}
+
+.form-area {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+label {
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+input {
+  padding: 16px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+}
+
+.btn-cek {
+  padding: 16px;
+  font-size: 18px;
+  font-weight: bold;
+  background: white;
+  color: #e8820c;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cek:hover {
+  background: #fff3e0;
+  transform: scale(1.02);
+}
+
+.btn-geri {
+  padding: 12px;
+  font-size: 15px;
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-geri:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.sonuc-area {
+  background: rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 24px;
+  color: white;
+}
+
+.sonuc-area h3 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+}
+
+th {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+td {
+  font-size: 15px;
+}
+
+.toplam {
+  text-align: right;
+  font-weight: bold;
+  font-size: 18px;
+  margin: 16px 0 0 0;
+}
+
+.hata {
+  color: white;
+  background: rgba(255,0,0,0.3);
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 16px;
+}

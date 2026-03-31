@@ -1,0 +1,11 @@
+<div>
+  <h2>ATM Giriş</h2>
+
+  <input type="text" placeholder="Kart No" [(ngModel)]="kartNo" />
+  <input type="password" placeholder="Kart Şifre" [(ngModel)]="kartSifre" />
+  <input type="text" placeholder="ATM ID" [(ngModel)]="atmId" />
+
+  <p *ngIf="hataMesaji">{{ hataMesaji }}</p>
+
+  <button (click)="girisYap()">Giriş Yap</button>
+</div>

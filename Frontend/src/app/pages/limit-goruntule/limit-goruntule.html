@@ -1,0 +1,17 @@
+<div class="limit-container">
+
+  <div class="header">
+    <h1>🏦 VakıfBank</h1>
+    <p>Limit Görüntüle</p>
+  </div>
+
+  <div class="limit-card">
+    <p class="limit-label">Kalan Günlük Limitiniz</p>
+    <h2 class="limit-deger">{{ kalanLimit }} ₺</h2>
+  </div>
+
+  <p class="hata" *ngIf="hataMesaji">{{ hataMesaji }}</p>
+
+  <button class="btn-geri" (click)="geriDon()">← Geri</button>
+
+</div>

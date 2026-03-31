@@ -1,0 +1,6 @@
+@BankaSimulasyon.AraKatman_HostAddress = http://localhost:5032
+
+GET {{BankaSimulasyon.AraKatman_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

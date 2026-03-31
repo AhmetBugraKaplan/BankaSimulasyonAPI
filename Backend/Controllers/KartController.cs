@@ -98,6 +98,9 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+
+
+
         [HttpPost("KartGunlukLimitGuncelle")]
         public IActionResult KartGunlukLimitGuncelle([FromBody] KartGunlukLimitGuncelleRequest request)
         {
