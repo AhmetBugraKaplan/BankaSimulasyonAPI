@@ -85,7 +85,9 @@ namespace BankaSimulasyon.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
 
-            var ipAdresi = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "bilinmiyor";
+            var ipAdresi = Request.Headers["X-Forwarded-For"].FirstOrDefault() 
+               ?? HttpContext.Connection.RemoteIpAddress?.ToString() 
+               ?? "bilinmiyor";
 
             var sonuc = _kartService.KartDogrula(
                 request.KartNumara,
