@@ -22,7 +22,6 @@ namespace BankaSimulasyon.AraKatman.Controllers
             //Aşağıdaki kodda anguları kullanan kişinin ipsini alıyoruz
             var gercekIp = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "bilinmiyor";
 
-            //Token header'a aldığımız ip yi ekliyoruz zaten bu token'ı CoreAPI 'e ileteceğiz.
             client.DefaultRequestHeaders.Add("X-Forwarded-For", gercekIp);
 
             //CoreAPI'nin ilgili endpointine angulardan gelen request'i 
@@ -31,6 +30,8 @@ namespace BankaSimulasyon.AraKatman.Controllers
             var sonuc = await response.Content.ReadAsStringAsync();
             return Ok(sonuc);
         }
+
+
 
         [HttpPost("ParaCek")]
         public async Task<IActionResult> ParaCek([FromBody] object request)

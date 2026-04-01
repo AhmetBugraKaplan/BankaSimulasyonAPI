@@ -78,7 +78,7 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
-        [HttpPost("KartDogrula")]
+        [AllowAnonymous]
         public IActionResult KartDogrula([FromBody] KartDogrulaRequest request)
         {
             //Aşşağıdaki if bloğu requestteki requried içerisindekiş şartlar sağlanmayınca patlıyor ve errormesage'ı döndürüyor.

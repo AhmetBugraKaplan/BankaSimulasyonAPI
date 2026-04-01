@@ -232,26 +232,36 @@ namespace BankaSimulasyon.Services
         }
 
 
-
+        //Kalan limit güncellemicez, kullanılan limit güncellicez
         public ApiResponse<List<AtmKaset>> ParaCek(string kartNumara, int atmId, int cekilecekTutar)
         {
             ApiResponse<List<AtmKaset>> ParaCekApiResponse = new();
+
+            if (cekilecekTutar <= 0)
+            {
+                ParaCekApiResponse.IslemBasariliMi = false;
+                ParaCekApiResponse.Mesaj = "Çekilecek tutar 0'dan büyük olmalıdır.";
+                return ParaCekApiResponse;
+            }
+            if (cekilecekTutar % 10 != 0)
+            {
+                ParaCekApiResponse.IslemBasariliMi = false;
+                ParaCekApiResponse.Mesaj = "Çekilecek tutar 10'un katı olmalıdır.";
+                return ParaCekApiResponse;
+            }
 
             decimal kartKalanLimit = _kartRepository.KartKalanLimitGetir(kartNumara);
 
             if (cekilecekTutar <= kartKalanLimit)
             {
-                decimal yeniKalanLimit = (kartKalanLimit - cekilecekTutar);
-
-                _kartRepository.KartKalanLimitGuncelle(kartNumara, yeniKalanLimit);
                 AtmdenParaCekmeResponse AtmParaCekmeDonenDeger = _atmService.AtmdenParaCek(atmId, cekilecekTutar, kartNumara);
 
-                List<AtmKaset> DonenListe = AtmParaCekmeDonenDeger.Kasetler;
-
-
-                if (AtmParaCekmeDonenDeger.IslemBasariliMi == true)
+                if (AtmParaCekmeDonenDeger.IslemBasariliMi)
                 {
-                    ParaCekApiResponse.Data = DonenListe;
+                    decimal yeniKalanLimit = kartKalanLimit - cekilecekTutar;
+                    _kartRepository.KartKalanLimitGuncelle(kartNumara, yeniKalanLimit);
+
+                    ParaCekApiResponse.Data = AtmParaCekmeDonenDeger.Kasetler;
                     ParaCekApiResponse.IslemBasariliMi = true;
                     ParaCekApiResponse.Mesaj = "Para çekme işlemi başarıyla gerçekleştirildi.";
                 }
@@ -291,6 +301,17 @@ namespace BankaSimulasyon.Services
 
             if (sifreDogruMu)
             {
+                //Doğru şekilde giriş yaparsa gün limit kontrolü yapacağız.
+
+                DateOnly sonIslemTarihi = _kartRepository.SonIslemTarihiGetir(kartNumara);
+                DateOnly bugun = DateOnly.FromDateTime(DateTime.Today);
+
+                if (sonIslemTarihi != bugun)
+                {
+                    _kartRepository.SonIslemTarihiniBugunYap(kartNumara);
+                    _kartRepository.KartKalanLimitSifirla(kartNumara);
+                }
+
                 _kartRepository.YanlisGirisSayisiSifirla(kartNumara);
                 string? token = _authService.TokenUret(kartNumara, atmId, ipAdresi);
                 kartDogrulaApiResponse.Mesaj = "Giriş başarıyla yapıldı";

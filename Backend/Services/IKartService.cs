@@ -13,13 +13,11 @@ namespace BankaSimulasyon.Services
         public ApiResponse<object> KartGunlukLimitGuncelle(string kartNumara, decimal yeniKartLimit,int musteriId);
         
         //public ApiResponse<object> KartKalanLimitGuncelle(int kullaniciId, string kartNumara, decimal yeniKartLimit);
-
+        
         //public decimal KalanKullanilabilirHesapLimit(int kullaniciId, string kartNumara);
         public ApiResponse<object> KartSifreGuncelle(string yeniKartSifre, string kartNumara);
         public ApiResponse<List<AtmKaset>> ParaCek(string kartNumara, int atmId, int cekilecekTutar);
-
         public ApiResponse<object> KartDogrula(string kartNumara, string kartSifre, int atmId,string ipAdresi);
-
         public ApiResponse<int> YanlisGirisSayisiGetir(string kartNumara);
         public void TumKartLimitleriniSifirla();
         public ApiResponse<decimal> KartKalanLimitGetir(string kartNumara);

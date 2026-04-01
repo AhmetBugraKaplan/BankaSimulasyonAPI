@@ -16,6 +16,8 @@ namespace BankaSimulasyon.Models.Entities
         public decimal KartGunlukLimit { get; set; } = 0;
         public decimal KartKalanLimit{ get; set; } = 0;
         public int YanlisGirisSayisi { get; set; }
+        public DateOnly SonIslemTarihi { get; set; }
         public KartSifre? KartSifre { get; set; }
+        public decimal KartKullanilanLimit { get; set; } = 0;
     }
 }

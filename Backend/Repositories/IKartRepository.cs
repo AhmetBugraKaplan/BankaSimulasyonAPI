@@ -20,8 +20,12 @@ namespace BankaSimulasyon.Repositories
         public int YanlisGirisSayisiGetir(string kartNumara);
         public void YanlisGirisSayisiSifirla(string kartNumara);
         public void TumKartlarinLimitleriniSifirla();
-
         public bool AyniNumaradaKartVarMi(string kartNumara);
+        public DateOnly SonIslemTarihiGetir(string kartNumara);
+        public void SonIslemTarihiniBugunYap(string kartNumara);
+        public int KartKalanLimitSifirla(string kartNumara);
+
+
    
 
 

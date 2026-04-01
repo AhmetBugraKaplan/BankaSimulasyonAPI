@@ -26,6 +26,9 @@ paraCek(){
     return;
   }
 
+  this.hataMesaji = '';
+  this.sonuclar = [];
+
 
   this.kartService.ParaCek(this.cekilecekTutar).subscribe(sonuc=> {
     if(sonuc.islemBasariliMi){
@@ -33,6 +36,7 @@ paraCek(){
       this.cdr.detectChanges(); 
     }else{
       this.hataMesaji = sonuc.mesaj;
+      this.cdr.detectChanges();
     }
   });
 }

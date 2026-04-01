@@ -169,5 +169,32 @@ namespace BankaSimulasyon.Repositories
             return (bool)sonucParam.Value;
         }
 
+        public DateOnly SonIslemTarihiGetir(string kartNumara)
+        {
+            var kartNumaraParam = new SqlParameter("@KartNumara",kartNumara);
+            return _context.Database.SqlQuery<DateOnly>($"EXEC SP_KartSonIslemTarihiGetir {kartNumaraParam}")
+            .AsEnumerable()
+            .FirstOrDefault();
+        }
+
+        public int KartKalanLimitSifirla(string kartNumara)
+        {
+            var kartNumaraParam = new SqlParameter("@KartNumara",kartNumara);
+            var sonucParam = new SqlParameter("@Sonuc",SqlDbType.Int);
+            sonucParam.Direction = ParameterDirection.Output;
+
+            _context.Database.ExecuteSqlRaw("EXEC SP_KartKalanLimitSifirla @KartNumara, @Sonuc OUTPUT",kartNumaraParam,sonucParam);
+
+            return (int)sonucParam.Value;
+        }
+
+        public void SonIslemTarihiniBugunYap(string kartNumara)
+        {
+            var kartNumaraParam = new SqlParameter("@KartNumara",kartNumara);
+
+            _context.Database.ExecuteSqlRaw("EXEC SP_KartSonIslemTarihiBugunYap @KartNumara",kartNumaraParam);
+            
+        }
+
     }
 }

@@ -120,10 +120,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddHangfire(config =>
-config.UseSqlServerStorage(builder.Configuration.GetConnectionString("database")));
-
-builder.Services.AddHangfireServer();
 
 
 
@@ -136,28 +132,24 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHangfireDashboard("/hangfire");
 
 
-//Güncellemeyi kart kart yapmamız gerekyior. Son işlem yapılan tarih bir yerde tutulacak değiştiğinde güncellencek
+//Güncellemeyi kart kart yapmamız gerekyior. Son işlem yapılan tarih bir yerde tutulacak değiştiğinde güncellencek (+)
 //kalan limiti kullanılan limit olarka değiştir ve son işlem tarihi ekle her limit güncellemede son işlem tarihi değişiyor
 //gün değişince otomatik algılıyoruz zaten orda işlemden önce limiti güncelleyecğiz. 
  
 //Ara server katmanı oluşturacağım bu sadece server olacak istek atıcaz oraya 
-RecurringJob.AddOrUpdate<IKartService>(
-    "limit-sifirla",
-    service => service.TumKartLimitleriniSifirla(),
-    "0 0 * * *"
-);
+
 
 //Middleware ekliyoruz
 app.UseMiddleware<ExceptionMiddleware>(); //Hata yakalama !!!HER ZAMAN EN USTTE OLMALI!!!
 app.UseMiddleware<LoggingMiddleware>(); //Yapılan her isteği (get/post fark etmez) logluyoruz
 app.UseCors("AllowAngular");
 app.UseMiddleware<RateLimitingMiddleware>(); //İstek sınırla
-app.UseMiddleware<AuthMiddleware>();
 app.UseAuthentication(); 
 app.UseAuthorization();
+
+app.UseMiddleware<IpControlMiddleware>();
 
 
 //app.UseHttpsRedirection();
