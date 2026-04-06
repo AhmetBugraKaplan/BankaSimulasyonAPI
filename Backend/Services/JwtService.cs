@@ -25,8 +25,6 @@ namespace BankaSimulasyon.Services
             //bilgileri bizim kullanici entitymizden alıyor.
             var claims = new[]
             {
-                new Claim("kartNumara",kartNumara),
-                new Claim("atmId",atmId.ToString()),
                 new Claim("ipAdresi",ipAdresi)
             };
 

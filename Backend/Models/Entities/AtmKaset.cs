@@ -11,15 +11,18 @@ namespace BankaSimulasyon.Models.Entities
     //Atmkasetler ATM classının içinde.
     public class AtmKaset
     {
-        public ATM Atm { get; set; } = null!;
+
         [Key]
         public int Id { get; set; }
-        public int AtmId { get; set; }
         public int SlotNumarasi { get; set; }
         public int Kupur { get; set; }
         public int Adet { get; set; }
         public int KritikDeger { get; set; }
-        
+        //FK
+        public ATM Atm { get; set; } = null!;
+        public int AtmId { get; set; }
+
+
 
 
 

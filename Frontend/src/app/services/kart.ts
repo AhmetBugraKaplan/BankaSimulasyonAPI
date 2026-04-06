@@ -49,16 +49,27 @@ export class Kart {
     */
 
   ParaCek(cekilecekTutar: number): Observable<any> {
+    const kartNumara = sessionStorage.getItem('kartNumara');
+    const atmId = Number(sessionStorage.getItem('atmId'));
     return this.http.post<any>(
       `${this.apiUrl}/ParaCek`,
       {
-        CekilecekTutar: cekilecekTutar
+        CekilecekTutar: cekilecekTutar,
+        kartNumara: kartNumara,
+        AtmId: atmId
       }
     );
   }
 
   kartKalanLimitGetir(): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/KartKalanLimitGetir`, {});
+    const kartNumara = sessionStorage.getItem('kartNumara');
+
+
+    return this.http.post<any>(
+      `${this.apiUrl}/KartKalanLimitGetir`, 
+      { 
+        KartNumara: kartNumara
+      });
   }
 
  

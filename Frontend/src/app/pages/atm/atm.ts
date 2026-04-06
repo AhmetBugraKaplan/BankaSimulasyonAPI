@@ -11,14 +11,24 @@ import { Router } from '@angular/router';
 export class Atm {
 
 
-constructor(private router:Router){}
+  constructor(private router: Router) { }
 
-  paraCek(){
+  paraCek() {
     this.router.navigate(['/para-cek']);
   }
 
-  limitGoruntule(){
+  limitGoruntule() {
     this.router.navigate(['/limit-goruntule'])
+  }
+
+  paraTransfer(){
+    this.router.navigate(['/para-transfer'])
+  }
+
+  cikisYap() {
+    sessionStorage.clear();
+    localStorage.clear();
+    this.router.navigate(['/']);
   }
 
 }

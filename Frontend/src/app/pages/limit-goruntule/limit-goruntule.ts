@@ -20,7 +20,7 @@ constructor(private kartService: Kart, private router: Router, private cdr: Chan
 
   //ngOnInit sayfa açılınca otomatik tetikliyor.
   ngOnInit() {
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   if (!token) {
     this.router.navigate(['/']);
     return;

@@ -4,11 +4,23 @@ import { Atm } from './pages/atm/atm';
 import { SifreDegistir } from './pages/sifre-degistir/sifre-degistir';
 import { ParaCek } from './pages/para-cek/para-cek';
 import { LimitGoruntule } from './pages/limit-goruntule/limit-goruntule';
+import { ParaTransfer } from './pages/para-transfer/para-transfer';
+import { HavaleTipi } from './pages/para-transfer/havale-tipi/havale-tipi';
+import { HesapSec } from './pages/para-transfer/hesap-sec/hesap-sec';
+import { AliciHesapGiris } from './pages/para-transfer/alici-hesap-giris/alici-hesap-giris';
+import { TransferTutar } from './pages/para-transfer/transfer-tutar/transfer-tutar';
 
 export const routes: Routes = [
-    {path: '',component:Login},
-    {path: 'atm',component:Atm},
-    {path: 'sifre-degistir', component:SifreDegistir},
-    {path: 'para-cek',component:ParaCek},
-    {path: 'limit-goruntule',component: LimitGoruntule}
+    { path: '', component: Login },
+    { path: 'atm', component: Atm },
+    { path: 'sifre-degistir', component: SifreDegistir },
+    { path: 'para-cek', component: ParaCek },
+    { path: 'limit-goruntule', component: LimitGoruntule },
+    { path: 'para-transfer', component: ParaTransfer },
+    { path: 'havale-tipi', component: HavaleTipi },
+    { path: 'hesap-sec', component: HesapSec },
+    { path: 'alici-hesap-giris', component: AliciHesapGiris },
+    { path: 'transfer-tutar', component: TransferTutar }
+
+
 ];

@@ -7,7 +7,6 @@ using BankaSimulasyon.Models.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using Hangfire;
 
 
 
@@ -148,7 +147,6 @@ app.UseCors("AllowAngular");
 app.UseMiddleware<RateLimitingMiddleware>(); //İstek sınırla
 app.UseAuthentication(); 
 app.UseAuthorization();
-
 app.UseMiddleware<IpControlMiddleware>();
 
 
@@ -241,6 +239,8 @@ loogout localden bu tokenı silicez
 
 kötü niyetli bi bankanın komisyon ödemeedne nasıl para çekersin
 token manipüle
+
+//Options metodları nedir bak internetten
 
 */
 

@@ -3,7 +3,7 @@ import { HttpInterceptorFn, HttpRequest, HttpHandlerFn } from '@angular/common/h
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   // 1. localStorage'dan token'ı al
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
 
   // 2. Token varsa isteğe ekle
   if (token) {

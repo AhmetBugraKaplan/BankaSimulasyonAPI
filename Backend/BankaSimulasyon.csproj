@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <!-- Test klasörünü tamamen görmezden gel -->
     <DefaultItemExcludes>$(DefaultItemExcludes);BankaSimulasyon.Tests\**</DefaultItemExcludes>
+    <RootNamespace>BankaSimulasyon</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,5 +27,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
+
+  
 
 </Project>

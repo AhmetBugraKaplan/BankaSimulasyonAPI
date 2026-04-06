@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Backend.Models.Responses;
 using BankaSimulasyon.Models.Entities;
 using BankaSimulasyon.Models.Responses;
 using BankaSimulasyon.Repositories;
@@ -232,7 +233,7 @@ namespace BankaSimulasyon.Services
         }
 
 
-        //Kalan limit güncellemicez, kullanılan limit güncellicez
+        //Kalan limit güncellemicez
         public ApiResponse<List<AtmKaset>> ParaCek(string kartNumara, int atmId, int cekilecekTutar)
         {
             ApiResponse<List<AtmKaset>> ParaCekApiResponse = new();
@@ -250,6 +251,10 @@ namespace BankaSimulasyon.Services
                 return ParaCekApiResponse;
             }
 
+            //Biz  kalanLimiti silip kullanılan limit değerini kullanmaya başlarsak bu seferde çekilecek tutardan önce
+            //KartGulukLimit - kullanilan Limit  = Kalan limit hesaplamasını yapmamız geerekiypr bunun sebebi şu
+            //Para çekmek istediğim zaman limit kontrolü yapmam gerekiyor e zaten kalan limiti silmemizin sebebi limitguncelleme işlemindkei
+            //hesaplama maliyetini düşürmekti bu seferde burda bir hesaplama işlemi yapılıyor manası kalmıyor 
             decimal kartKalanLimit = _kartRepository.KartKalanLimitGetir(kartNumara);
 
             if (cekilecekTutar <= kartKalanLimit)
@@ -316,7 +321,12 @@ namespace BankaSimulasyon.Services
                 string? token = _authService.TokenUret(kartNumara, atmId, ipAdresi);
                 kartDogrulaApiResponse.Mesaj = "Giriş başarıyla yapıldı";
                 kartDogrulaApiResponse.IslemBasariliMi = true;
-                kartDogrulaApiResponse.Data = token;
+                kartDogrulaApiResponse.Data = new KartDogrulaResponce
+                {
+                    Token = token!,
+                    KartNumara = kartNumara,
+                    AtmId = atmId
+                };
             }
             else
             {

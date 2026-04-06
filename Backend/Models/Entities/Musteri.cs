@@ -13,15 +13,7 @@ namespace BankaSimulasyon.Models.Entities
         public String Isim { get; set; } = "İsim değeri girilmedi";
         public String Soyisim { get; set; } = "Soyisim girilmedi";
         public decimal MusteriLimit { get; set; } = 0;
-        
-        /*
-        public String TelefonNumarasi { get; set; } = "Telefon numarası girilmedi";
-        public String Adres { get; set; } = "Adres girilmedi";
-        public String Cinsiyet { get; set; } = "Cinsiyet girilmedi";
-        public string Email { get; set; } = null!;
-        public string PasswordHash { get; set; } = null!;
-        public string KullaniciRol { get; set; } = null!;
-        */ 
+        public List<Hesap> Hesaplar { get; set; } = new();
 
     }
 }

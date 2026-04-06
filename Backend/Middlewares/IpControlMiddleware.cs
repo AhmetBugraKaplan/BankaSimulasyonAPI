@@ -11,9 +11,9 @@ namespace BankaSimulasyon.Middlewares
         public IpControlMiddleware(RequestDelegate next)
         {
             _next = next;
-            // Dikkat: Artık IConfiguration'a veya JWT Key'lerine ihtiyacımız yok!
-            // Çünkü token'ı biz çözmüyoruz, Microsoft bizim yerimize çözüp context.User içine koyuyor.
         }
+
+        //Xforaward içindeki ip yimainülüle edebilrmyiz
 
         public async Task InvokeAsync(HttpContext context)
         {

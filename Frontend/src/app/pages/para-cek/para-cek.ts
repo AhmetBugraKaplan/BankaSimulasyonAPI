@@ -19,7 +19,7 @@ export class ParaCek {
 constructor(private kartService:Kart,private router:Router,private cdr: ChangeDetectorRef){}
 
 paraCek(){
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
 
   if(!token){
     this.router.navigate(['/']);

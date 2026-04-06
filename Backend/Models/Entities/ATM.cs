@@ -14,6 +14,9 @@ namespace BankaSimulasyon.Models.Entities
         public bool AktifMi { get; set; } = false;
         // public bool BasariliMi { get; set; }
         public List<AtmKaset> Kasetler { get; set; } = new();
+
+        
+
         
     }
 }

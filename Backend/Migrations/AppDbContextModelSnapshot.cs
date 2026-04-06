@@ -72,7 +72,7 @@ namespace BankaSimulasyon.Migrations
                     b.ToTable("AtmKasetler");
                 });
 
-            modelBuilder.Entity("BankaSimulasyon.Models.Entities.Kart", b =>
+            modelBuilder.Entity("BankaSimulasyon.Models.Entities.Hesap", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -80,14 +80,30 @@ namespace BankaSimulasyon.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("KartGunlukLimit")
+                    b.Property<decimal>("HesapBakiye")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("KartKalanLimit")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("HesapNumara")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("KartKullanilanLimit")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("MusteriId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MusteriId");
+
+                    b.ToTable("Hesaplar");
+                });
+
+            modelBuilder.Entity("BankaSimulasyon.Models.Entities.Kart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("KartNumara")
                         .IsRequired()
@@ -107,6 +123,31 @@ namespace BankaSimulasyon.Migrations
                     b.HasIndex("MusteriId");
 
                     b.ToTable("Kartlar");
+                });
+
+            modelBuilder.Entity("BankaSimulasyon.Models.Entities.KartLimit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("KartGunlukLimit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("KartId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("KartKalanLimit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KartId")
+                        .IsUnique();
+
+                    b.ToTable("KartLimitleri");
                 });
 
             modelBuilder.Entity("BankaSimulasyon.Models.Entities.KartSifre", b =>
@@ -167,6 +208,17 @@ namespace BankaSimulasyon.Migrations
                     b.Navigation("Atm");
                 });
 
+            modelBuilder.Entity("BankaSimulasyon.Models.Entities.Hesap", b =>
+                {
+                    b.HasOne("BankaSimulasyon.Models.Entities.Musteri", "Musteri")
+                        .WithMany("Hesaplar")
+                        .HasForeignKey("MusteriId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Musteri");
+                });
+
             modelBuilder.Entity("BankaSimulasyon.Models.Entities.Kart", b =>
                 {
                     b.HasOne("BankaSimulasyon.Models.Entities.Musteri", "Musteri")
@@ -176,6 +228,17 @@ namespace BankaSimulasyon.Migrations
                         .IsRequired();
 
                     b.Navigation("Musteri");
+                });
+
+            modelBuilder.Entity("BankaSimulasyon.Models.Entities.KartLimit", b =>
+                {
+                    b.HasOne("BankaSimulasyon.Models.Entities.Kart", "Kart")
+                        .WithOne("KartLimit")
+                        .HasForeignKey("BankaSimulasyon.Models.Entities.KartLimit", "KartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Kart");
                 });
 
             modelBuilder.Entity("BankaSimulasyon.Models.Entities.KartSifre", b =>
@@ -196,7 +259,14 @@ namespace BankaSimulasyon.Migrations
 
             modelBuilder.Entity("BankaSimulasyon.Models.Entities.Kart", b =>
                 {
+                    b.Navigation("KartLimit");
+
                     b.Navigation("KartSifre");
+                });
+
+            modelBuilder.Entity("BankaSimulasyon.Models.Entities.Musteri", b =>
+                {
+                    b.Navigation("Hesaplar");
                 });
 #pragma warning restore 612, 618
         }

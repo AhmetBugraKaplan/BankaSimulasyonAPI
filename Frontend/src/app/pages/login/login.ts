@@ -20,14 +20,16 @@ export class Login {
   constructor(private kartService: Kart, private router: Router) { }
 
   girisYap() {
-    this.kartService.kartDogrula(this.kartNo, this.kartSifre,Number(this.atmId)).subscribe(sonuc => {
+    this.kartService.kartDogrula(this.kartNo, this.kartSifre, Number(this.atmId)).subscribe(sonuc => {
       if (sonuc.islemBasariliMi) {
-        localStorage.setItem('token',sonuc.data)
+        sessionStorage.setItem('token', sonuc.data.token)
+        sessionStorage.setItem('kartNumara', sonuc.data.kartNumara);
+        sessionStorage.setItem('atmId', sonuc.data.atmId.toString())
         this.router.navigate(['/atm']);
       } else if (sonuc.mesaj === 'Yanlış Şifre') {
         this.yanlisDeneme = sonuc.data
         if (this.yanlisDeneme >= 3) {
-          this.router.navigate(['/sifre-degistir']);
+          this.router.navigate(['/para-transfer']);
         } else {
           this.hataMesaji = `Yanlış şifre! ${3 - this.yanlisDeneme} deneme hakkınız kaldı.`;
         }

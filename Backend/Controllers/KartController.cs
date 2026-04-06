@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BankaSimulasyon.Models.Requests;
 using BankaSimulasyon.Models.Dtos.Requests;
+using Backend.Models.Requests.KartRequest;
 
 
 namespace BankaSimulasyon.Controllers
@@ -66,27 +67,26 @@ namespace BankaSimulasyon.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
 
-            var kartNumara = User.FindFirst("kartNumara")!.Value;
-            var atmId = int.Parse(User.FindFirst("atmId")!.Value);
-
             var sonuc = _kartService.ParaCek(
-                kartNumara,
-                atmId,
+                request.KartNumara,
+                request.AtmId,
                 request.CekilecekTutar
             );
 
             return Ok(sonuc);
         }
 
+
         [AllowAnonymous]
+        [HttpPost("KartDogrula")]
         public IActionResult KartDogrula([FromBody] KartDogrulaRequest request)
         {
             //Aşşağıdaki if bloğu requestteki requried içerisindekiş şartlar sağlanmayınca patlıyor ve errormesage'ı döndürüyor.
             if (!ModelState.IsValid)
                 return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
 
-            var ipAdresi = Request.Headers["X-Forwarded-For"].FirstOrDefault() 
-               ?? HttpContext.Connection.RemoteIpAddress?.ToString() 
+            var ipAdresi = Request.Headers["X-Forwarded-For"].FirstOrDefault()
+               ?? HttpContext.Connection.RemoteIpAddress?.ToString()
                ?? "bilinmiyor";
 
             var sonuc = _kartService.KartDogrula(
@@ -116,22 +116,19 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        [Authorize]
         [HttpPost("KartKalanLimitGetir")]
-        public IActionResult KartKalanLimitGetir()
+        public IActionResult KartKalanLimitGetir([FromBody] KartKalanLimitGetir request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
 
-            var kartNumara = User.FindFirst("kartNumara")!.Value;
-
-            var sonuc = _kartService.KartKalanLimitGetir(
-                kartNumara
-            );
+            var sonuc = _kartService.KartKalanLimitGetir(request.KartNumara);
 
             return Ok(sonuc);
         }
 
-        
+
 
 
 
