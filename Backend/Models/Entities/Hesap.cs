@@ -16,5 +16,9 @@ namespace BankaSimulasyon.Models.Entities
         public int MusteriId { get; set; }
         public Musteri Musteri { get; set; } = new();
 
+        //İleride silicez geçiçi olarka ekledik
+        public string ParaBirimi { get; set; }  = string.Empty;
+        public string HesapTip { get; set; }  = string.Empty;
+
     }
 }

@@ -29,7 +29,7 @@ namespace BankaSimulasyon.Repositories
             var MusteriIdParam = new SqlParameter("@KullaniciId", musteriId);
             var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
             var kartSifreParam = new SqlParameter("@SifreHash", kartSifre);
-            var kartGunlukLimitParam = new SqlParameter("@KartGunlukLimit",kartGunlukLimit);
+            var kartGunlukLimitParam = new SqlParameter("@KartGunlukLimit", kartGunlukLimit);
 
             //Sonrasında output atamasını yapıp direction ile bu değerin output olduğunu belirtiyoruz
             var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
@@ -37,7 +37,7 @@ namespace BankaSimulasyon.Repositories
 
             _context.Database.ExecuteSqlRaw(
             "EXEC SP_YeniKartEkle @KullaniciId, @KartNumara,@SifreHash, @KartGunlukLimit,@Sonuc OUTPUT",
-            MusteriIdParam, kartNumaraParam, kartSifreParam, kartGunlukLimitParam,sonucParam
+            MusteriIdParam, kartNumaraParam, kartSifreParam, kartGunlukLimitParam, sonucParam
             );
 
 
@@ -67,8 +67,8 @@ namespace BankaSimulasyon.Repositories
             sonucParam.Direction = ParameterDirection.Output;
 
             _context.Database.ExecuteSqlRaw(
-                "EXEC SP_KartGunlukKalanLimitGuncelle @KartNumara, @KartGunlukLimit, @Sonuc OUTPUT",kartNumaraParam,yeniKartGunlukLimitParam,sonucParam);
-            
+                "EXEC SP_KartGunlukKalanLimitGuncelle @KartNumara, @KartGunlukLimit, @Sonuc OUTPUT", kartNumaraParam, yeniKartGunlukLimitParam, sonucParam);
+
             return (int)sonucParam.Value;
         }
 
@@ -153,7 +153,8 @@ namespace BankaSimulasyon.Repositories
         }
 
 
-        public void TumKartlarinLimitleriniSifirla(){
+        public void TumKartlarinLimitleriniSifirla()
+        {
             _context.Database.ExecuteSqlRaw("EXEC SP_TumKartlarinLimitleriniSifirla");
         }
 
@@ -161,17 +162,17 @@ namespace BankaSimulasyon.Repositories
         {
             var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
 
-            var sonucParam = new SqlParameter("@Sonuc",SqlDbType.Bit);
+            var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Bit);
             sonucParam.Direction = ParameterDirection.Output;
 
-           _context.Database.ExecuteSqlRaw("EXEC SP_AyniNumaradaKartVarMi @KartNumara, @Sonuc OUTPUT",kartNumaraParam,sonucParam);
+            _context.Database.ExecuteSqlRaw("EXEC SP_AyniNumaradaKartVarMi @KartNumara, @Sonuc OUTPUT", kartNumaraParam, sonucParam);
 
             return (bool)sonucParam.Value;
         }
 
         public DateOnly SonIslemTarihiGetir(string kartNumara)
         {
-            var kartNumaraParam = new SqlParameter("@KartNumara",kartNumara);
+            var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
             return _context.Database.SqlQuery<DateOnly>($"EXEC SP_KartSonIslemTarihiGetir {kartNumaraParam}")
             .AsEnumerable()
             .FirstOrDefault();
@@ -179,22 +180,31 @@ namespace BankaSimulasyon.Repositories
 
         public int KartKalanLimitSifirla(string kartNumara)
         {
-            var kartNumaraParam = new SqlParameter("@KartNumara",kartNumara);
-            var sonucParam = new SqlParameter("@Sonuc",SqlDbType.Int);
+            var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
+            var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
             sonucParam.Direction = ParameterDirection.Output;
 
-            _context.Database.ExecuteSqlRaw("EXEC SP_KartKalanLimitSifirla @KartNumara, @Sonuc OUTPUT",kartNumaraParam,sonucParam);
+            _context.Database.ExecuteSqlRaw("EXEC SP_KartKalanLimitSifirla @KartNumara, @Sonuc OUTPUT", kartNumaraParam, sonucParam);
 
             return (int)sonucParam.Value;
         }
 
         public void SonIslemTarihiniBugunYap(string kartNumara)
         {
-            var kartNumaraParam = new SqlParameter("@KartNumara",kartNumara);
+            var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
 
-            _context.Database.ExecuteSqlRaw("EXEC SP_KartSonIslemTarihiBugunYap @KartNumara",kartNumaraParam);
-            
+            _context.Database.ExecuteSqlRaw("EXEC SP_KartSonIslemTarihiBugunYap @KartNumara", kartNumaraParam);
+
         }
+
+        public int KartNumaraIleMusteriIdGetir(string kartNumara)
+        {
+            return _context.Kartlar
+                .Where(k => k.KartNumara == kartNumara)
+                .Select(k => k.MusteriId)
+                .FirstOrDefault();
+        }
+
 
     }
 }

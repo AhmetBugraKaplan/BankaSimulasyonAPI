@@ -1,4 +1,4 @@
-/*
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +10,8 @@ namespace BankaSimulasyon.Services
 {
     public interface IHesapServis
     {
-        public bool hesaptaYeterinceParaVarmi(KullaniciHesap hesap, int tutar);
-        public KullaniciResponse ParaCek(int hesapNumarasi,int atmId, int cekilecekTutar,string kartNumara,int kullaniciId);
-        public KullaniciResponse HesapLimitGuncelle(int kullaniciId, decimal kullaniciHesapLimit);
+       public ApiResponse<List<Hesap>> MusterininTumHesaplariniGetir(string kartNumara);
 
     }
 }
 
-*/

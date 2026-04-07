@@ -387,5 +387,10 @@ namespace BankaSimulasyon.Services
             return ayniNumaradaKartVarMiApiResponse;
         }
 
+        public int KartNumaraIleMusteriIdGetir(string kartNumara)
+        {
+            return _kartRepository.KartNumaraIleMusteriIdGetir(kartNumara);
+        }
+
     }
 }

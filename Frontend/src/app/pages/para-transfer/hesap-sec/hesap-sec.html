@@ -8,23 +8,39 @@
 
   <p class="header-text">Lütfen işlem yapmak istediğiniz hesabı seçin.</p>
 
-  <div class="hesap-liste">
-    @for (hesap of hesaplar; track hesap.hesapNumara) {
-      <div
-        class="hesap-kart"
-        [class.secili]="secilenHesap?.hesapNumara === hesap.hesapNumara"
-        (click)="hesapSec(hesap)">
-        <div class="hesap-bilgi">
-          <span class="hesap-tip">{{ hesap.hesapTip }}</span>
-          <span class="hesap-no">{{ hesap.hesapNumara }}</span>
-          <span class="hesap-bakiye">{{ hesap.hesapBakiye | number:'1.2-2' }} {{ hesap.paraBirimi }}</span>
+  @if (yukleniyor) {
+    <div class="durum-mesaji" style="text-align: center; margin-top: 2rem; font-weight: 500;">
+      <p>Hesaplarınız yükleniyor, lütfen bekleyin...</p>
+    </div>
+  } 
+  @else if (hata) {
+    <div class="durum-mesaji error" style="text-align: center; margin-top: 2rem; color: #d9534f; font-weight: bold;">
+      <p>{{ hata }}</p>
+    </div>
+  } 
+  @else {
+    <div class="hesap-liste">
+      @for (hesap of hesaplar; track hesap.hesapNumara) {
+        <div
+          class="hesap-kart"
+          [class.secili]="secilenHesap?.hesapNumara === hesap.hesapNumara"
+          (click)="hesapSec(hesap)">
+          <div class="hesap-bilgi">
+            <span class="hesap-tip">{{ hesap.hesapTip }}</span>
+            <span class="hesap-no">{{ hesap.hesapNumara }}</span>
+            <span class="hesap-bakiye">{{ hesap.hesapBakiye | number:'1.2-2' }} {{ hesap.paraBirimi }}</span>
+          </div>
+          <div class="hesap-ok">
+            <svg viewBox="0 0 14 14" fill="none"><path d="M4 7h6M10 7L7.5 4.5M10 7L7.5 9.5" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
         </div>
-        <div class="hesap-ok">
-          <svg viewBox="0 0 14 14" fill="none"><path d="M4 7h6M10 7L7.5 4.5M10 7L7.5 9.5" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
+      } @empty {
+        <div class="durum-mesaji" style="text-align: center; margin-top: 2rem;">
+          <p>Bu karta ait aktif bir hesap bulunamadı.</p>
         </div>
-      </div>
-    }
-  </div>
+      }
+    </div>
+  }
 
   <div class="bottom-bar">
     <button class="atm-btn" (click)="geriDon()">

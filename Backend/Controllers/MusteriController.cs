@@ -72,6 +72,10 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        
+
+
+
 
 
     }

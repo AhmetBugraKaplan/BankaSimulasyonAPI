@@ -22,6 +22,8 @@ namespace BankaSimulasyon.Services
         public void TumKartLimitleriniSifirla();
         public ApiResponse<decimal> KartKalanLimitGetir(string kartNumara);
         public ApiResponse<bool> AyniNumaradaKartVarMi(string kartNumara);
+        int KartNumaraIleMusteriIdGetir(string kartNumara);
+
 
 
 

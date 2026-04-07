@@ -24,9 +24,9 @@ namespace BankaSimulasyon.Repositories
         public DateOnly SonIslemTarihiGetir(string kartNumara);
         public void SonIslemTarihiniBugunYap(string kartNumara);
         public int KartKalanLimitSifirla(string kartNumara);
+        int KartNumaraIleMusteriIdGetir(string kartNumara);
 
 
-   
 
 
     }

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using BankaSimulasyon.Models.Requests;
 using BankaSimulasyon.Models.Dtos.Requests;
 using Backend.Models.Requests.KartRequest;
+using BankaSimulasyon.Models.Dtos.Requests.Kart;
 
 
 namespace BankaSimulasyon.Controllers
@@ -125,6 +126,17 @@ namespace BankaSimulasyon.Controllers
 
             var sonuc = _kartService.KartKalanLimitGetir(request.KartNumara);
 
+            return Ok(sonuc);
+        }
+
+
+        [HttpPost("KartNumaraIleMusteriIdGetir")]
+        public IActionResult KartNumaraIleMusteriIdGetir([FromBody] KartNumaraIleMusteriIdGetirRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)) });
+
+            var sonuc = _kartService.KartNumaraIleMusteriIdGetir(request.KartNumara);
             return Ok(sonuc);
         }
 

@@ -52,7 +52,7 @@ namespace BankaSimulasyon.AraKatman.Controllers
             return Ok(sonuc);
         }
 
-        
+
 
 
         [HttpPost("KartKalanLimitGetir")]
@@ -67,5 +67,31 @@ namespace BankaSimulasyon.AraKatman.Controllers
             var sonuc = await response.Content.ReadAsStringAsync();
             return Ok(sonuc);
         }
+
+
+        [HttpPost("KartNumaraIleMusteriIdGetir")]
+        public async Task<IActionResult> KartNumaraIleMusteriIdGetir([FromBody] object request)
+        {
+            var token = Request.Headers["Authorization"].ToString();
+            if (string.IsNullOrEmpty(token))
+                return Unauthorized(new { message = "Token bulunamadı." });
+
+            var client = _httpClientFactory.CreateClient("CoreAPI");
+            client.DefaultRequestHeaders.Add("Authorization", token);
+
+            var response = await client.PostAsJsonAsync("api/Kart/KartNumaraIleMusteriIdGetir", request);
+            var sonuc = await response.Content.ReadAsStringAsync();
+
+            // string "32" → int 32 olarak dön
+            if (int.TryParse(sonuc, out int musteriId))
+                return Ok(musteriId);
+
+            return BadRequest(new { message = "MusteriId parse edilemedi." });
+        }
+
+
+
+
+
     }
 }
