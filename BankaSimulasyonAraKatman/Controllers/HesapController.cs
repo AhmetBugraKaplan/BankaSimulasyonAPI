@@ -49,3 +49,5 @@ namespace BankaSimulasyonAraKatman.Controllers
 
     }
 }
+
+//dinamik sp bak

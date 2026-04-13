@@ -1,13 +1,45 @@
-<div class="atm-container">
-  <div class="atm-header">
-    <h1 class="bank-name">🏦 VakıfBank</h1>
-    <p class="subtitle">Lütfen İşlem Seçiniz</p>
+<div class="atm-screen">
+
+  <svg class="wave-decoration" viewBox="0 0 300 260" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M300 260 L0 260 Q60 200 140 180 Q200 165 240 120 Q270 85 300 60 Z" fill="#f5c842" opacity="0.55"/>
+    <path d="M300 260 L60 260 Q130 210 200 190 Q250 175 275 140 Q292 115 300 90 Z" fill="#e8a800" opacity="0.45"/>
+    <path d="M300 260 L140 260 Q200 235 250 210 Q278 195 295 170 L300 145 Z" fill="#d49200" opacity="0.35"/>
+  </svg>
+
+  <p class="header-text">Lütfen yapmak istediğiniz işlemi seçiniz.</p>
+
+  <div class="btn-grid">
+    <div class="btn-row">
+      <button class="atm-btn" (click)="paraCek()">
+        <span class="icon-left">
+          <svg viewBox="0 0 13 13" fill="none"><path d="M9 6.5H4M4 6.5L6.5 4M4 6.5L6.5 9" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </span>
+        <span class="btn-label">Para Çek</span>
+      </button>
+
+      <button class="atm-btn" (click)="paraTransfer()">
+        <span class="btn-label">Para Transfer</span>
+        <span class="icon-right">
+          <svg viewBox="0 0 13 13" fill="none"><path d="M4 6.5h5M9 6.5L6.5 4M9 6.5L6.5 9" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </span>
+      </button>
+    </div>
+
+    <div class="btn-row">
+      <button class="atm-btn" (click)="limitGoruntule()">
+        <span class="icon-left">
+          <svg viewBox="0 0 13 13" fill="none"><path d="M9 6.5H4M4 6.5L6.5 4M4 6.5L6.5 9" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </span>
+        <span class="btn-label">Limit Görüntüle</span>
+      </button>
+
+      <button class="atm-btn" (click)="cikisYap()">
+        <span class="btn-label">Çıkış</span>
+        <span class="icon-right">
+          <svg viewBox="0 0 13 13" fill="none"><path d="M4 6.5h5M9 6.5L6.5 4M9 6.5L6.5 9" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </span>
+      </button>
+    </div>
   </div>
 
-  <div class="atm-menu">
-    <button class="atm-btn active" (click)="paraCek()">💸 Para Çek</button>
-    <button class="atm-btn active" (click)="paraTransfer()">💰 Para Transfer</button>
-    <button class="atm-btn active" (click)="limitGoruntule()">📊 Limit Görüntüle</button>
-    <button class="atm-btn active" (click)="cikisYap()">❌ Çıkış</button>
-  </div>
 </div>

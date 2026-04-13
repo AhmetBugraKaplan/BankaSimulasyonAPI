@@ -1,38 +1,73 @@
-<div class="para-cek-container">
+<div class="atm-screen">
 
-  <div class="header">
-    <h1>🏦 VakıfBank</h1>
-    <p>Para Çekme İşlemi</p>
+  <svg class="wave-decoration" viewBox="0 0 300 260" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M300 260 L0 260 Q60 200 140 180 Q200 165 240 120 Q270 85 300 60 Z" fill="#f5c842" opacity="0.55"/>
+    <path d="M300 260 L60 260 Q130 210 200 190 Q250 175 275 140 Q292 115 300 90 Z" fill="#e8a800" opacity="0.45"/>
+    <path d="M300 260 L140 260 Q200 235 250 210 Q278 195 295 170 L300 145 Z" fill="#d49200" opacity="0.35"/>
+  </svg>
+
+  <p class="header-text">Para Çekme İşlemi</p>
+
+  <div class="icerik">
+
+    <div class="input-grup">
+      <span class="input-label">Çekilecek Tutar</span>
+      <div class="tutar-input-wrapper">
+        <input
+          class="tutar-input"
+          type="number"
+          placeholder="0,00"
+          [(ngModel)]="cekilecekTutar"
+          min="0"
+        />
+        <span class="para-birimi">₺</span>
+      </div>
+    </div>
+
+    @if (hataMesaji) {
+      <p class="hata-mesaj">{{ hataMesaji }}</p>
+    }
+
+    @if (sonuclar.length > 0) {
+      <div class="sonuc-kutu">
+        <p class="sonuc-baslik">Verilen Banknotlar</p>
+        <table class="sonuc-tablo">
+          <thead>
+            <tr>
+              <th>Kupür</th>
+              <th>Adet</th>
+              <th>Tutar</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of sonuclar; track item.kupur) {
+              <tr>
+                <td>{{ item.kupur }} ₺</td>
+                <td>{{ item.adet }}</td>
+                <td>{{ item.kupur * item.adet }} ₺</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <p class="toplam">Toplam: {{ cekilecekTutar }} ₺</p>
+      </div>
+    }
+
   </div>
 
-  <div class="form-area">
-    <label>Çekilecek Tutar (₺)</label>
-    <input type="number" placeholder="Tutar giriniz" [(ngModel)]="cekilecekTutar" />
-    <button class="btn-cek" (click)="paraCek()">Para Çek</button>
-    <button class="btn-geri" (click)="geriDon()">← Geri</button>
+  <div class="bottom-bar">
+    <button class="atm-btn" (click)="geriDon()">
+      <span class="icon-left">
+        <svg viewBox="0 0 13 13" fill="none"><path d="M9 6.5H4M4 6.5L6.5 4M4 6.5L6.5 9" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </span>
+      <span class="btn-label">Geri</span>
+    </button>
+    <button class="atm-btn" (click)="paraCek()">
+      <span class="btn-label">Para Çek</span>
+      <span class="icon-right">
+        <svg viewBox="0 0 13 13" fill="none"><path d="M4 6.5h5M9 6.5L6.5 4M9 6.5L6.5 9" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </span>
+    </button>
   </div>
-
-  <div class="sonuc-area" *ngIf="sonuclar.length > 0">
-    <h3>Verilen Banknotlar</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Kupür</th>
-          <th>Adet</th>
-          <th>Tutar</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of sonuclar">
-          <td>{{ item.kupur }} ₺</td>
-          <td>{{ item.adet }}</td>
-          <td>{{ item.kupur * item.adet }} ₺</td>
-        </tr>
-      </tbody>
-    </table>
-    <p class="toplam">Toplam: {{ cekilecekTutar }} ₺</p>
-  </div>
-
-  <p class="hata" *ngIf="hataMesaji">{{ hataMesaji }}</p>
 
 </div>

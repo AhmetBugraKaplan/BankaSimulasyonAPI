@@ -1,67 +1,146 @@
-.limit-container {
-  width: 420px;
-  margin: 60px auto;
-  background: linear-gradient(145deg, #f5a623, #e8820c);
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap');
+
+.atm-screen {
+  background: #f5f0e8;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 32px 24px;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Noto Sans', sans-serif;
+  box-sizing: border-box;
+}
+
+.wave-decoration {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 55%;
+  height: 65%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.header-text {
+  color: #1a1a1a;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 24px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.icerik {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.limit-kart {
+  background: #ffffff;
   border-radius: 20px;
-  padding: 48px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  padding: 40px 60px;
   text-align: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.header h1 {
-  color: white;
-  font-size: 26px;
-  font-weight: bold;
-  margin: 0 0 8px 0;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
-}
-
-.header p {
-  color: white;
-  font-size: 16px;
-  margin: 0 0 32px 0;
-}
-
-.limit-card {
-  background: rgba(255,255,255,0.2);
-  border-radius: 16px;
-  padding: 32px;
-  margin-bottom: 24px;
-}
-
-.limit-label {
-  color: white;
-  font-size: 16px;
-  margin: 0 0 12px 0;
+.limit-etiket {
+  color: #6b7280;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
 }
 
 .limit-deger {
-  color: white;
-  font-size: 48px;
-  font-weight: bold;
+  color: #b07800;
+  font-size: 52px;
+  font-weight: 700;
   margin: 0;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+  font-family: 'Courier New', monospace;
 }
 
-.btn-geri {
-  padding: 12px 32px;
-  font-size: 15px;
-  background: transparent;
-  color: white;
-  border: 2px solid white;
+.hata-mesaj {
+  color: #dc2626;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  background: #fef2f2;
   border-radius: 10px;
+  padding: 12px 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.bottom-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  position: relative;
+  z-index: 2;
+  margin-top: 20px;
+}
+
+.atm-btn {
+  display: flex;
+  align-items: center;
+  padding: 18px 20px;
+  border-radius: 50px;
+  border: none;
   cursor: pointer;
-  transition: all 0.2s;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #f5c842 0%, #e09800 100%);
+  color: #1a1a1a;
+  box-shadow: 0 3px 8px rgba(180, 120, 0, 0.22);
+  transition: filter 0.15s ease, transform 0.1s ease;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.btn-geri:hover {
-  background: rgba(255,255,255,0.2);
+.atm-btn:hover { filter: brightness(1.08); }
+.atm-btn:active { filter: brightness(0.92); transform: scale(0.98); }
+
+.icon-left {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 10px;
 }
 
-.hata {
-  color: white;
-  background: rgba(255,0,0,0.3);
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 16px;
+.icon-right {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 10px;
+}
+
+.icon-left svg,
+.icon-right svg {
+  width: 13px;
+  height: 13px;
+}
+
+.btn-label {
+  flex: 1;
+  text-align: center;
+  color: #1a1a1a;
 }

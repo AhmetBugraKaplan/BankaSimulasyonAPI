@@ -58,36 +58,34 @@ namespace BankaSimulasyon.Repositories
         public int HesapLimitYeterliMi(string hesapNumara, decimal gonderilecekPara)
         {
             var hesapNumaraParam = new SqlParameter("@HesapNumara", hesapNumara);
-            var gonderilecekParaParam = new SqlParameter("@GonderilecekPara",gonderilecekPara);
+            var gonderilecekParaParam = new SqlParameter("@GonderilecekPara", gonderilecekPara);
             var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
             sonucParam.Direction = ParameterDirection.Output;
 
             _context.Database.ExecuteSqlRaw(
                 "EXEC SP_HespaLimitYeterliMi @HesapNumara, @GonderilecekPara, @Sonuc OUTPUT",
-                hesapNumaraParam,gonderilecekParaParam,sonucParam
+                hesapNumaraParam, gonderilecekParaParam, sonucParam
             );
 
 
             return (int)sonucParam.Value;
         }
 
-        public int BaskasininHesabinaHavaleYap(string gonderenHesapNumara,string aliciHesapNumara,decimal gonderilenTutar, string kartNumara)
+
+        public int HesapBakiyeGuncelle(string hesapNumara, decimal degisimTutari)
         {
-            var gonderenHesapNumaraParam = new SqlParameter("@GonderenHesapNumara",gonderenHesapNumara);
-            var aliciHesapNumaraParam = new SqlParameter("@AliciHesapNumara",aliciHesapNumara);
-            var gonderilenTutarParam = new SqlParameter("@GonderilenTutar",gonderilenTutar);
-            var kartNumaraParam = new SqlParameter("@KartNumara",kartNumara);
+            var hesapNumaraParam = new SqlParameter("@HesapNumara", hesapNumara);
+            var degisimTutariParam = new SqlParameter("@DegisimTutari", degisimTutari);
             var sonucParam = new SqlParameter("@Sonuc",SqlDbType.Int);
             sonucParam.Direction = ParameterDirection.Output;
 
             _context.Database.ExecuteSqlRaw(
-                "EXEC SP_BaskasininHesabinaHavaleYap @GonderenHesapNumara, @AliciHesapNumara, @GonderilenTutar, @KartNumara, @Sonuc OUTPUT",
-                gonderenHesapNumaraParam,aliciHesapNumaraParam,gonderilenTutarParam,kartNumaraParam,sonucParam
+                "EXEC SP_HesapBakiyeGuncelle @HesapNumara, @DegisimTutari, @Sonuc OUTPUT"
+                ,hesapNumaraParam,degisimTutariParam,sonucParam
             );
 
             return (int)sonucParam.Value;
         }
-
 
 
 

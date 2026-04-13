@@ -1,56 +1,105 @@
-.atm-container {
-  width: 840px;
-  margin: 60px auto;
-  padding: 72px;
-  background: linear-gradient(145deg, #f5a623, #e8820c);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap');
+
+.atm-screen {
+  background: #f5f0e8;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 32px 24px;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Noto Sans', sans-serif;
+  box-sizing: border-box;
 }
 
-.atm-header {
-  text-align: center;
-  margin-bottom: 32px;
+.wave-decoration {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 55%;
+  height: 65%;
+  pointer-events: none;
+  z-index: 0;
 }
 
-.bank-name {
-  color: white;
-  font-size: 28px;
-  font-weight: bold;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
-  margin: 0 0 8px 0;
+.header-text {
+  color: #1a1a1a;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 24px 0;
+  position: relative;
+  z-index: 2;
 }
 
-.subtitle {
-  color: white;
-  font-size: 16px;
-  margin: 0;
+.btn-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
 }
 
-.atm-menu {
+.btn-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 14px;
 }
 
 .atm-btn {
-  padding: 48px 32px;
-  font-size: 20px;
-  font-weight: bold;
-  border: 3px solid rgba(255,255,255,0.6);
-  border-radius: 12px;
-  background: linear-gradient(145deg, #ffb347, #e8820c);
-  color: white;
+  display: flex;
+  align-items: center;
+  padding: 18px 20px;
+  border-radius: 50px;
+  border: none;
   cursor: pointer;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-  transition: all 0.2s;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #f5c842 0%, #e09800 100%);
+  color: #1a1a1a;
+  box-shadow: 0 3px 8px rgba(180, 120, 0, 0.22);
+  transition: filter 0.15s ease, transform 0.1s ease;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.atm-btn:hover:not([disabled]) {
-  background: linear-gradient(145deg, #ffc46a, #f59020);
-  transform: scale(1.03);
+.atm-btn:hover { filter: brightness(1.08); }
+.atm-btn:active { filter: brightness(0.92); transform: scale(0.98); }
+
+.icon-left {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 10px;
 }
 
-.atm-btn[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
+.icon-right {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 10px;
+}
+
+.icon-left svg,
+.icon-right svg {
+  width: 13px;
+  height: 13px;
+}
+
+.btn-label {
+  flex: 1;
+  text-align: center;
+  color: #1a1a1a;
 }
