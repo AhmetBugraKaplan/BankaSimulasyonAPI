@@ -30,5 +30,21 @@ namespace BankaSimulasyon.Controllers
 
             return Ok(sonuc);
         }
+
+        [HttpPost("BaskasininHesabinaHavaleYap")]
+        public IActionResult BaskasininHesabinaHavaleYap([FromBody] BaskasininHesabinaHavaleYapRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
+
+            var sonuc = _hesapService.BaskasininHesabinaHavaleYap(
+                request.GonderenHesapNumara,
+                request.AliciHesapNumara,
+                request.GonderilenTutar,
+                request.KartNumara
+            );
+
+            return Ok(sonuc);
+        }
     }
 }

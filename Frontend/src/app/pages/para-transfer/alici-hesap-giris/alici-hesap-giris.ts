@@ -42,6 +42,8 @@ export class AliciHesapGiris implements OnInit {
   }
 
   anaMenuye(): void {
+    sessionStorage.removeItem('secilenHesap');
+    sessionStorage.removeItem('aliciHesapNumara');
     this.router.navigate(['/atm']);
   }
 }

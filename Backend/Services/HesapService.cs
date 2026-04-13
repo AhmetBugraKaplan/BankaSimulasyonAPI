@@ -47,7 +47,56 @@ namespace BankaSimulasyon.Services
             }
         }
 
-        
+        public ApiResponse<int> BaskasininHesabinaHavaleYap(
+            string gonderenHesapNumara, string aliciHesapNumara, decimal gonderilenTutar, string kartNumara)
+        {
+            ApiResponse<int> BaskasininHesabinaHavaleYapApiResponse = new();
+            
+            int aliciVarMi = _hesapRepository.HesapVarMi(aliciHesapNumara);
+
+            if (aliciVarMi == 0)
+            {
+                BaskasininHesabinaHavaleYapApiResponse.IslemBasariliMi = false;
+                BaskasininHesabinaHavaleYapApiResponse.Mesaj = "Girdiğiniz hesap numarasına ait hesap bulunamadı";
+
+                return BaskasininHesabinaHavaleYapApiResponse;
+            }
+
+            int limitYeterliMi = _hesapRepository.HesapLimitYeterliMi(gonderenHesapNumara,gonderilenTutar);
+
+            if (limitYeterliMi == 0)
+            {
+                BaskasininHesabinaHavaleYapApiResponse.IslemBasariliMi = false;
+                 BaskasininHesabinaHavaleYapApiResponse.Mesaj = "Hesabınızda yeterli bakiye bulunmamakta";
+
+                return BaskasininHesabinaHavaleYapApiResponse;
+            }
+
+            int havaleSonucu = _hesapRepository.BaskasininHesabinaHavaleYap(
+                gonderenHesapNumara,
+                aliciHesapNumara,
+                gonderilenTutar,
+                kartNumara
+            );
+
+            if (havaleSonucu == 1)
+            {
+                 BaskasininHesabinaHavaleYapApiResponse.IslemBasariliMi = true;
+                 BaskasininHesabinaHavaleYapApiResponse.Mesaj = "Başkasının hesabına havale işlemi başarıyla gerçekleşti";
+
+                return BaskasininHesabinaHavaleYapApiResponse;
+            }
+            else
+            {
+                 BaskasininHesabinaHavaleYapApiResponse.IslemBasariliMi = false;
+                 BaskasininHesabinaHavaleYapApiResponse.Mesaj = "Başkasının hesabına havale işlemi gerçekleşirken bir hata meydana geldi";
+
+                return BaskasininHesabinaHavaleYapApiResponse;
+            }
+        }
+
+
+
 
 
 

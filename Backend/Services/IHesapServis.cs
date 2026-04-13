@@ -12,6 +12,8 @@ namespace BankaSimulasyon.Services
     {
        public ApiResponse<List<Hesap>> MusterininTumHesaplariniGetir(string kartNumara);
 
+       public ApiResponse<int> BaskasininHesabinaHavaleYap(string gonderenHesapNumara,string aliciHesapNumara,decimal gonderilenTutar, string kartNumara);
+
     }
 }
 

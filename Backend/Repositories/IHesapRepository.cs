@@ -13,5 +13,6 @@ namespace BankaSimulasyon.Repositories
         public List<Hesap> MusterininTumHesaplariniGetir(string kartNumara);
         public int HesapVarMi(string hesapNumara);
         public int HesapLimitYeterliMi(string hesapNumara, decimal gonderilecekPara);
+        public int BaskasininHesabinaHavaleYap(string gonderenHesapNumara,string aliciHesapNumara,decimal gonderilenTutar, string kartNumara);
     }
 }

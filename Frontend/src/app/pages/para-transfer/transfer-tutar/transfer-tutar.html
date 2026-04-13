@@ -1,5 +1,4 @@
 <div class="atm-screen">
-
   <svg class="wave-decoration" viewBox="0 0 300 260" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M300 260 L0 260 Q60 200 140 180 Q200 165 240 120 Q270 85 300 60 Z" fill="#f5c842" opacity="0.55"/>
     <path d="M300 260 L60 260 Q130 210 200 190 Q250 175 275 140 Q292 115 300 90 Z" fill="#e8a800" opacity="0.45"/>
@@ -7,7 +6,6 @@
   </svg>
 
   <div class="icerik">
-
     <div class="bilgi-kutu">
       <div class="bilgi-satir">
         <span class="bilgi-etiket">Hesap Numarası</span>
@@ -25,38 +23,51 @@
       </div>
     </div>
 
-    <div class="tutar-alan">
-      <p class="tutar-aciklama">Lütfen tutar girişi yapıp, Devam butonuna basınız.</p>
-      <div class="tutar-input-wrapper">
-        <input
-          class="tutar-input"
-          type="number"
-          placeholder="0,00"
-          [(ngModel)]="tutar"
-          min="0"
-        />
-        <span class="para-birimi">{{ secilenHesap?.paraBirimi }}</span>
+    @if (yukleniyor) {
+      <div class="animasyon-kutusu">
+        <div class="spinner"></div>
+        <p class="spinner-text">İşleminiz gerçekleştiriliyor, lütfen bekleyiniz...</p>
       </div>
-      @if (hataMesaji) {
-        <p class="hata-mesaj">{{ hataMesaji }}</p>
-      }
-    </div>
+    } 
+    @else {
+      <div class="tutar-alan">
+        
+        @if (mesaj) {
+          <div class="mesaj-kutusu" [ngClass]="{'basarili': islemBasariliMi, 'hatali': !islemBasariliMi}">
+            {{ mesaj }}
+          </div>
+        }
 
+        @if (!islemBasariliMi) {
+          <p class="tutar-aciklama">Lütfen tutar girişi yapıp, Devam butonuna basınız.</p>
+          <div class="tutar-input-wrapper">
+            <input
+              class="tutar-input"
+              type="number"
+              placeholder="0,00"
+              [(ngModel)]="tutar"
+              min="0"
+              [disabled]="islemBasariliMi"
+            />
+            <span class="para-birimi">{{ secilenHesap?.paraBirimi }}</span>
+          </div>
+        }
+      </div>
+    }
   </div>
 
   <div class="bottom-bar">
-    <button class="atm-btn" (click)="geriDon()">
+    <button class="atm-btn" (click)="geriDon()" [disabled]="yukleniyor || islemBasariliMi">
       <span class="icon-left">
         <svg viewBox="0 0 13 13" fill="none"><path d="M9 6.5H4M4 6.5L6.5 4M4 6.5L6.5 9" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
       </span>
       <span class="btn-label">Geri</span>
     </button>
-    <button class="atm-btn" (click)="devam()">
+    <button class="atm-btn" (click)="devam()" [disabled]="yukleniyor || islemBasariliMi">
       <span class="btn-label">Devam</span>
       <span class="icon-right">
         <svg viewBox="0 0 13 13" fill="none"><path d="M4 6.5h5M9 6.5L6.5 4M9 6.5L6.5 9" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
       </span>
     </button>
   </div>
-
 </div>

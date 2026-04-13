@@ -9,6 +9,7 @@ import { HavaleTipi } from './pages/para-transfer/havale-tipi/havale-tipi';
 import { HesapSec } from './pages/para-transfer/hesap-sec/hesap-sec';
 import { AliciHesapGiris } from './pages/para-transfer/alici-hesap-giris/alici-hesap-giris';
 import { TransferTutar } from './pages/para-transfer/transfer-tutar/transfer-tutar';
+import { IslemOnaylandi } from './pages/para-transfer/islem-onaylandi/islem-onaylandi';
 
 export const routes: Routes = [
     { path: '', component: Login },
@@ -20,7 +21,8 @@ export const routes: Routes = [
     { path: 'havale-tipi', component: HavaleTipi },
     { path: 'hesap-sec', component: HesapSec },
     { path: 'alici-hesap-giris', component: AliciHesapGiris },
-    { path: 'transfer-tutar', component: TransferTutar }
+    { path: 'transfer-tutar', component: TransferTutar },
+    { path: 'islem-onaylandi',component: IslemOnaylandi}
 
 
 ];

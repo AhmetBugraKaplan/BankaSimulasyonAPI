@@ -309,3 +309,65 @@
   font-weight: 600;
   text-align: center;
 }
+
+/* ── Spinner ve Animasyon Kutusu ── */
+.animasyon-kutusu {
+  text-align: center;
+  margin-top: 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border-left-color: #e8a800;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+.spinner-text {
+  font-weight: 700;
+  color: #e8a800;
+  font-size: 1.1rem;
+}
+
+@keyframes spin { 
+  0% { transform: rotate(0deg); } 
+  100% { transform: rotate(360deg); } 
+}
+
+/* ── Dinamik Mesaj Kutusu (Başarılı & Başarısız) ── */
+.mesaj-kutusu {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14.5px;
+  text-align: center;
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto 10px auto;
+  box-sizing: border-box;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Hata (Kırmızı) Tasarımı */
+.mesaj-kutusu.hatali {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+/* Başarılı (Yeşil) Tasarımı */
+.mesaj-kutusu.basarili {
+  background-color: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

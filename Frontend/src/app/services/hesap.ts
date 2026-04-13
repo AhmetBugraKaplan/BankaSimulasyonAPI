@@ -8,13 +8,20 @@ export interface Hesap {
     hesapTip: string;
     hesapBakiye: number;
     paraBirimi: string;
-    musteriId: number;      
+    musteriId: number;
 }
 
 export interface BaseResponse<T> {
     islemBasariliMi: boolean;
     mesaj: string;
     data: T;
+}
+
+export interface HavaleTalebi {
+    GonderenHesapNumara: string;
+    AliciHesapNumara: string;
+    GonderilenTutar: number;
+    KartNumara: string;
 }
 
 
@@ -30,8 +37,16 @@ export class HesapService {
 
     musteriTumHesaplariGetir(kartNumara: string): Observable<BaseResponse<Hesap[]>> {
         return this.http.post<BaseResponse<Hesap[]>>(
-            `${this.hesapUrl}/MusteriTumHesaplariGetir`, 
+            `${this.hesapUrl}/MusteriTumHesaplariGetir`,
             { KartNumara: kartNumara }
         );
     }
+
+    havaleYap(talep: HavaleTalebi): Observable<BaseResponse<any>> {
+        return this.http.post<BaseResponse<any>>(
+            `${this.hesapUrl}/BaskasininHesabinaHavaleYap`,
+            talep
+        )
+    }
+
 }
