@@ -38,4 +38,12 @@ export class Login {
       }
     });
   }
+
+  kartsizIslemler(): void {
+    this.router.navigate(['/tel-no-gir'])
+  }
+
+  qrIslemler(): void {
+    // Görsellik için şimdilik boş
+  }
 }

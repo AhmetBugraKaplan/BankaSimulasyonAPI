@@ -14,5 +14,6 @@ namespace BankaSimulasyon.Repositories
         public int HesapVarMi(string hesapNumara);
         public int HesapLimitYeterliMi(string hesapNumara, decimal gonderilecekPara);
         public int HesapBakiyeGuncelle(string hesapNumara,decimal degisimTutari);
+        public int HesapVarMiTelNoIle(string telefonNumara);
     }
 }

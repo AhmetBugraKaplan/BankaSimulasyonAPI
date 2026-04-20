@@ -112,6 +112,17 @@ namespace BankaSimulasyon.Services
             return response;
         }
 
+        public ApiResponse<bool> HesapVarMiTelNoIle(string telefonNumara)
+        {
+            ApiResponse<bool> response = new();
+            int varMi = _hesapRepository.HesapVarMiTelNoIle(telefonNumara);
+            response.IslemBasariliMi = varMi > 0;
+            response.Mesaj = varMi > 0 ? "Hesap bulundu." : "Hesap bulunamadı.";
+
+
+            return response;
+        }
+
 
 
 

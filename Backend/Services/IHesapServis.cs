@@ -16,6 +16,11 @@ namespace BankaSimulasyon.Services
 
         public ApiResponse<bool> HesapVarMi(string hesapNumara);
 
+        public ApiResponse<bool> HesapVarMiTelNoIle(string hesapNumara);
+
+
+
+
     }
 }
 

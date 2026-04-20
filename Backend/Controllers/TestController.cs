@@ -17,8 +17,9 @@ namespace BankaSimulasyon.Controllers
         [HttpPost("SmsTesti")]
         public IActionResult SmsTesti()
         {
-            _smsService.SmsGonder("5522161298", "Proje için test sms'i gönderiyorum -Buğra");
-            return Ok("SMS gönderildi.");
+            var kod = new Random().Next(1000, 9999).ToString();
+            _smsService.SmsGonder("5522161298", kod);
+            return Ok($"SMS gönderildi. Kod: {kod}");
         }
     }
 }

@@ -9,23 +9,21 @@
   position: relative;
   overflow: hidden;
   font-family: 'Noto Sans', sans-serif;
+  box-sizing: border-box;
 }
 
 .wave-decoration {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 55%;
-  height: 65%;
+  bottom: 0; right: 0;
+  width: 55%; height: 65%;
   pointer-events: none;
   z-index: 0;
 }
 
 .header-text {
   color: #1a1a1a;
-  font-size: 32px;
-  font-weight: 700;
-  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
   margin: 0 0 24px 0;
   position: relative;
   z-index: 2;
@@ -43,46 +41,73 @@
 .giris-kutu {
   background: #ffffff;
   border-radius: 20px;
-  padding: 32px 28px;
+  padding: 36px 28px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  gap: 28px;
 }
 
-.input-grup {
+.aciklama {
+  color: #1a1a1a;
+  font-size: 17px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+}
+
+/* ── 4 haneli kod kutuları ── */
+.kod-wrapper {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  gap: 16px;
+  justify-content: center;
 }
 
-.input-label {
-  color: #1a1a1a;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.atm-input {
-  background: #f9f6ef;
+.kod-kutu {
+  width: 64px;
+  height: 72px;
+  border-radius: 14px;
   border: 2.5px solid #e0d0a0;
-  border-radius: 12px;
-  padding: 14px 18px;
-  font-size: 16px;
-  font-weight: 600;
+  background: #f9f6ef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 700;
   color: #1a1a1a;
-  font-family: 'Noto Sans', sans-serif;
-  outline: none;
-  width: 100%;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.atm-input:focus {
+.kod-kutu.aktif {
   border-color: #e09800;
+  box-shadow: 0 0 0 3px rgba(224,152,0,0.15);
 }
 
-.atm-input::placeholder {
-  color: #c0b090;
-  font-weight: 400;
+.kod-kutu.dolu {
+  border-color: #e09800;
+  background: #fffbef;
+}
+
+/* ── Gizli input (arkada, klavyeyi tetikler) ── */
+.gizli-input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.klavye-btn {
+  background: transparent;
+  border: 1.5px dashed #c0b090;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #9a8a6a;
+  cursor: pointer;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 .hata-mesaj {
@@ -93,10 +118,11 @@
   background: #fef2f2;
   border-radius: 10px;
   padding: 12px 20px;
+  width: 100%;
+  box-sizing: border-box;
   margin: 0;
 }
 
-/* ── Alt buton çubuğu — 3 buton: ilk 2 yan yana, 3. tam genişlik ── */
 .bottom-bar {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -118,51 +144,30 @@
   font-weight: 700;
   background: linear-gradient(135deg, #f5c842 0%, #e09800 100%);
   color: #1a1a1a;
-  box-shadow: 0 3px 8px rgba(180, 120, 0, 0.22);
+  box-shadow: 0 3px 8px rgba(180,120,0,0.22);
   transition: filter 0.15s ease, transform 0.1s ease;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .atm-btn:hover { filter: brightness(1.08); }
 .atm-btn:active { filter: brightness(0.92); transform: scale(0.98); }
 
-/* Giriş Yap butonu tam genişlik */
-.atm-btn.genis {
-  grid-column: 1 / -1;
-}
-
 .icon-left {
-  width: 30px;
-  height: 30px;
+  width: 30px; height: 30px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.12);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-right: 10px;
+  background: rgba(0,0,0,0.12);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-right: 10px;
 }
 
 .icon-right {
-  width: 30px;
-  height: 30px;
+  width: 30px; height: 30px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.18);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-left: 10px;
+  background: rgba(0,0,0,0.18);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-left: 10px;
 }
 
-.icon-left svg,
-.icon-right svg {
-  width: 13px;
-  height: 13px;
-}
-
-.btn-label {
-  flex: 1;
-  text-align: center;
-  color: #1a1a1a;
-}
+.icon-left svg, .icon-right svg { width: 13px; height: 13px; }
+.btn-label { flex: 1; text-align: center; color: #1a1a1a; }

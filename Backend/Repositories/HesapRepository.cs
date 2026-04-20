@@ -76,16 +76,30 @@ namespace BankaSimulasyon.Repositories
         {
             var hesapNumaraParam = new SqlParameter("@HesapNumara", hesapNumara);
             var degisimTutariParam = new SqlParameter("@DegisimTutari", degisimTutari);
-            var sonucParam = new SqlParameter("@Sonuc",SqlDbType.Int);
+            var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
             sonucParam.Direction = ParameterDirection.Output;
 
             _context.Database.ExecuteSqlRaw(
                 "EXEC SP_HesapBakiyeGuncelle @HesapNumara, @DegisimTutari, @Sonuc OUTPUT"
-                ,hesapNumaraParam,degisimTutariParam,sonucParam
+                , hesapNumaraParam, degisimTutariParam, sonucParam
             );
 
             return (int)sonucParam.Value;
         }
+
+        public int HesapVarMiTelNoIle(string telefonNumara)
+        {
+            var telefonNumaraParam = new SqlParameter("@TelefonNumara",telefonNumara);
+            var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
+            sonucParam.Direction = ParameterDirection.Output;
+
+            _context.Database.ExecuteSqlRaw(
+                "EXEC SP_MusteriVarMiTelNoIleKontrol @TelefonNumara, @Sonuc OUTPUT",telefonNumaraParam,sonucParam
+            );
+            
+            return (int)sonucParam.Value;
+        }
+
 
 
 

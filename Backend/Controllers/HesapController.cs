@@ -54,6 +54,16 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        [HttpPost("HesapVarMiTelNoIle")]
+        public IActionResult HesapVarMiTelNoIle([FromBody] HesapVarMiTelefonNoIleRequest request)
+        {
+            var sonuc = _hesapService.HesapVarMiTelNoIle(request.TelefonNumara);
+            return Ok(sonuc);
+        }
+
+
+
+
 
 
 

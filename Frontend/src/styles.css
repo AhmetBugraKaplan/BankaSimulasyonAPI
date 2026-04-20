@@ -1,1 +1,260 @@
+/* ── ATM Ortak Stiller ── */
+
 /* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.atm-screen {
+  background: #f5f0e8;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 32px 24px;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Noto Sans', sans-serif;
+  box-sizing: border-box;
+}
+
+.wave-decoration {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 55%;
+  height: 65%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.header-text {
+  color: #1a1a1a;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 24px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.icerik {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.btn-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.btn-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.btn-placeholder {
+  visibility: hidden;
+}
+
+.bottom-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  position: relative;
+  z-index: 2;
+  margin-top: 20px;
+}
+
+.atm-btn {
+  display: flex;
+  align-items: center;
+  padding: 18px 20px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #f5c842 0%, #e09800 100%);
+  color: #1a1a1a;
+  box-shadow: 0 3px 8px rgba(180, 120, 0, 0.22);
+  transition: filter 0.15s ease, transform 0.1s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.atm-btn:hover {
+  filter: brightness(1.08);
+}
+
+.atm-btn:active {
+  filter: brightness(0.92);
+  transform: scale(0.98);
+}
+
+.atm-btn.genis {
+  grid-column: 1 / -1;
+}
+
+.icon-left {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+.icon-right {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 10px;
+}
+
+.icon-left svg,
+.icon-right svg {
+  width: 13px;
+  height: 13px;
+}
+
+.btn-label {
+  flex: 1;
+  text-align: center;
+  color: #1a1a1a;
+}
+
+.input-grup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-label {
+  color: #1a1a1a;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.atm-input {
+  background: #f9f6ef;
+  border: 2.5px solid #e0d0a0;
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  font-family: 'Noto Sans', sans-serif;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.atm-input:focus {
+  border-color: #e09800;
+}
+
+.atm-input::placeholder {
+  color: #c0b090;
+  font-weight: 400;
+}
+
+.hata-mesaj {
+  color: #dc2626;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  background: #fef2f2;
+  border-radius: 10px;
+  padding: 12px 20px;
+  margin: 0;
+}
+
+.giris-kutu {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px 28px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── Kod kutuları (SMS onay) ── */
+.kod-wrapper {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.kod-kutu {
+  width: 64px;
+  height: 72px;
+  border-radius: 14px;
+  border: 2.5px solid #e0d0a0;
+  background: #f9f6ef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a1a;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.kod-kutu.aktif {
+  border-color: #e09800;
+  box-shadow: 0 0 0 3px rgba(224, 152, 0, 0.15);
+}
+
+.kod-kutu.dolu {
+  border-color: #e09800;
+  background: #fffbef;
+}
+
+.gizli-input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.klavye-btn {
+  background: transparent;
+  border: 1.5px dashed #c0b090;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #9a8a6a;
+  cursor: pointer;
+  font-family: 'Noto Sans', sans-serif;
+}

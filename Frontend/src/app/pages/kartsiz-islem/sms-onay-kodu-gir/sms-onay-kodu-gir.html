@@ -1,0 +1,59 @@
+<div class="atm-screen">
+
+  <svg class="wave-decoration" viewBox="0 0 300 260" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M300 260 L0 260 Q60 200 140 180 Q200 165 240 120 Q270 85 300 60 Z" fill="#f5c842" opacity="0.55"/>
+    <path d="M300 260 L60 260 Q130 210 200 190 Q250 175 275 140 Q292 115 300 90 Z" fill="#e8a800" opacity="0.45"/>
+    <path d="M300 260 L140 260 Q200 235 250 210 Q278 195 295 170 L300 145 Z" fill="#d49200" opacity="0.35"/>
+  </svg>
+
+  <p class="header-text">SMS Onay Kodu</p>
+
+  <div class="icerik">
+    <div class="giris-kutu">
+
+      <p class="aciklama">Telefonunuza gelen 4 haneli onay kodunu girin.</p>
+
+      <div class="kod-wrapper">
+        @for (i of [0,1,2,3]; track i) {
+          <div class="kod-kutu" [class.dolu]="kod.length > i" [class.aktif]="kod.length === i">
+            {{ kod.length > i ? '●' : '' }}
+          </div>
+        }
+      </div>
+
+      @if (hataMesaji) {
+        <p class="hata-mesaj">{{ hataMesaji }}</p>
+      }
+
+      <input
+        class="gizli-input"
+        type="tel"
+        maxlength="4"
+        [(ngModel)]="kod"
+        (ngModelChange)="kodGirildi()"
+        #kodInput
+      />
+
+      <button class="klavye-btn" (click)="kodInput.focus()">
+        Kodu Girmek İçin Dokunun
+      </button>
+
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <button class="atm-btn" (click)="geriDon()">
+      <span class="icon-left">
+        <svg viewBox="0 0 13 13" fill="none"><path d="M9 6.5H4M4 6.5L6.5 4M4 6.5L6.5 9" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </span>
+      <span class="btn-label">Geri</span>
+    </button>
+    <button class="atm-btn" (click)="onayla()">
+      <span class="btn-label">Onayla</span>
+      <span class="icon-right">
+        <svg viewBox="0 0 13 13" fill="none"><path d="M4 6.5h5M9 6.5L6.5 4M9 6.5L6.5 9" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </span>
+    </button>
+  </div>
+
+</div>

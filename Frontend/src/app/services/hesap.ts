@@ -62,6 +62,13 @@ export class HesapService {
         );
     }
 
+    hesapVarMiTelNoIle(telefonNumara: string): Observable<BaseResponse<boolean>>{
+        return this.http.post<BaseResponse<boolean>>(
+            `${this.hesapUrl}/HesapVarMiTelNoIle`,
+            {telefonNumara:telefonNumara} //Burdaki 1.parametre ismi backenndeki isim ile aynı olmalı 
+            // 2. parametre ismi yukarıda bizim tanımladığımız isim
+        );
+    }
 
 
 }
