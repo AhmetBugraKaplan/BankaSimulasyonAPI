@@ -31,19 +31,36 @@ namespace BankaSimulasyonAraKatman.Controllers
             return Ok(sonuc);
         }
 
-        [HttpPost("BaskasininHesabinaHavaleYap")]
-        public async Task<IActionResult> BaskasininHesabinaHavaleYap([FromBody] object request)
+        [HttpPost("HavaleYap")]
+        public async Task<IActionResult> HavaleYap([FromBody] object request)
         {
             var client = _httpClientFactory.CreateClient("CoreAPI");
 
             var token = Request.Headers["Authorization"].ToString();
 
-             client.DefaultRequestHeaders.Add("Authorization", token);
+            client.DefaultRequestHeaders.Add("Authorization", token);
 
-            var response = await client.PostAsJsonAsync("api/Hesap/BaskasininHesabinaHavaleYap", request);
+            var response = await client.PostAsJsonAsync("api/Hesap/HavaleYap", request);
             var sonuc = await response.Content.ReadAsStringAsync();
             return Ok(sonuc);
         }
+
+        [HttpPost("HesapVarMi")]
+        public async Task<IActionResult> HesapVarMi([FromBody] object request)
+        {
+            var token = Request.Headers["Authorization"].ToString();
+            if (string.IsNullOrEmpty(token))
+                return Unauthorized(new { message = "Token bulunamadı." });
+
+            var client = _httpClientFactory.CreateClient("CoreAPI");
+            client.DefaultRequestHeaders.Add("Authorization", token);
+
+            var response = await client.PostAsJsonAsync("api/Hesap/HesapVarMi", request);
+            var sonuc = await response.Content.ReadAsStringAsync();
+            return Ok(sonuc);
+        }
+
+
 
 
 

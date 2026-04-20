@@ -16,8 +16,8 @@ export class TransferTutar implements OnInit {
   secilenHesap: Hesap | null = null;
   aliciHesapNumara: string = '';
   tutar: number | null = null;
+  havaletipi: string = '';
 
-  // Sadece bu 3 durum değişkeni bize yeter
   yukleniyor: boolean = false;
   mesaj: string = '';
   islemBasariliMi: boolean = false;
@@ -26,26 +26,41 @@ export class TransferTutar implements OnInit {
     private router: Router,
     private hesapService: HesapService,
     private cdr: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    const hesapData = sessionStorage.getItem('secilenHesap');
-    const aliciData = sessionStorage.getItem('aliciHesapNumara');
+    this.havaletipi = sessionStorage.getItem('havaletipi') || '';
 
-    if (!hesapData || !aliciData) {
-      this.router.navigate(['/hesap-sec']);
-      return;
+    if (this.havaletipi === 'HesaplarimArasi') {
+      const gonderenJson = sessionStorage.getItem('gonderenHesap');
+      const aliciJson = sessionStorage.getItem('aliciHesap');
+
+      if (!gonderenJson || !aliciJson) {
+        this.router.navigate(['/havale-hesaplararasi-gonderecekhesabisec']);
+        return;
+      }
+
+      this.secilenHesap = JSON.parse(gonderenJson);
+      const aliciHesap: Hesap = JSON.parse(aliciJson);
+      this.aliciHesapNumara = aliciHesap.hesapNumara;
+
+    } else if (this.havaletipi === 'BaskasininHesabi') {
+      const hesapData = sessionStorage.getItem('secilenHesap');
+      const aliciData = sessionStorage.getItem('aliciHesapNumara');
+
+      if (!hesapData || !aliciData) {
+        this.router.navigate(['/hesap-sec']);
+        return;
+      }
+
+      this.secilenHesap = JSON.parse(hesapData);
+      this.aliciHesapNumara = aliciData;
     }
-
-    this.secilenHesap = JSON.parse(hesapData);
-    this.aliciHesapNumara = aliciData;
   }
 
   devam(): void {
-    // 1. Ekranı temizle
     this.mesaj = '';
 
-    // 2. Frontend Validasyonları
     if (!this.tutar || this.tutar <= 0) {
       this.mesaj = 'Lütfen sıfırdan büyük geçerli bir tutar giriniz.';
       return;
@@ -56,8 +71,6 @@ export class TransferTutar implements OnInit {
       return;
     }
 
-
-    // 3. Yükleniyor Animasyonunu Başlat
     this.yukleniyor = true;
     this.cdr.detectChanges();
 
@@ -69,37 +82,35 @@ export class TransferTutar implements OnInit {
       KartNumara: kartNo
     };
 
-    // 4. İsteği Gönder
     forkJoin({
       apiCevabi: this.hesapService.havaleYap(talep),
-      beklemeSuresi: timer(1000) // Minimum 1000 milisaniye (1 saniye) spinner dönecek
+      beklemeSuresi: timer(1000)
     }).subscribe({
       next: (sonuc) => {
-        // sonuc.apiCevabi içinde backend'den dönen asıl response var
-        const res = sonuc.apiCevabi; 
-        
-        this.yukleniyor = false; // Süre doldu, Spinner'ı KAPAT
+        const res = sonuc.apiCevabi;
+        this.yukleniyor = false;
         this.cdr.detectChanges();
-        
+
         if (res.islemBasariliMi) {
-          // Başarılıysa hiç mesaj göstermeden doğrudan dekont/onay sayfasına uçur!
           sessionStorage.removeItem('secilenHesap');
           sessionStorage.removeItem('aliciHesapNumara');
-          this.router.navigate(['/islem-onaylandi']); 
+          sessionStorage.removeItem('gonderenHesap');
+          sessionStorage.removeItem('aliciHesap');
+          sessionStorage.removeItem('havaletipi');
+          this.router.navigate(['/islem-onaylandi']);
         } else {
-          // Eğer SP'den veya servisten hata dönerse ekranda göster
           this.mesaj = res.mesaj || 'İşlem sırasında bir hata oluştu.';
         }
       },
       error: (err: any) => {
         this.yukleniyor = false;
         if (err.error && err.error.errors) {
-            const ilkHataAnahtari = Object.keys(err.error.errors)[0];
-            this.mesaj = err.error.errors[ilkHataAnahtari][0];
+          const ilkHataAnahtari = Object.keys(err.error.errors)[0];
+          this.mesaj = err.error.errors[ilkHataAnahtari][0];
         } else if (err.error && typeof err.error === 'string') {
-            this.mesaj = err.error;
+          this.mesaj = err.error;
         } else {
-            this.mesaj = 'Sunucu ile iletişim kurulamadı veya bağlantı koptu.';
+          this.mesaj = 'Sunucu ile iletişim kurulamadı veya bağlantı koptu.';
         }
         this.cdr.detectChanges();
       }
@@ -107,6 +118,10 @@ export class TransferTutar implements OnInit {
   }
 
   geriDon(): void {
-    this.router.navigate(['/alici-hesap-giris']);
+    if (this.havaletipi === 'HesaplarimArasi') {
+      this.router.navigate(['/havale-hesaplararasi-gonderilecekhesabisec']);
+    } else {
+      this.router.navigate(['/alici-hesap-giris']);
+    }
   }
 }

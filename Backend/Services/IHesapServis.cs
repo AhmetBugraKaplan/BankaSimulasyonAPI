@@ -10,10 +10,11 @@ namespace BankaSimulasyon.Services
 {
     public interface IHesapServis
     {
-       public ApiResponse<List<Hesap>> MusterininTumHesaplariniGetir(string kartNumara);
+        public ApiResponse<List<Hesap>> MusterininTumHesaplariniGetir(string kartNumara);
 
-       public ApiResponse<int> BaskasininHesabinaHavaleYap(string gonderenHesapNumara,string aliciHesapNumara,decimal gonderilenTutar, string kartNumara);
+        public ApiResponse<int> HavaleYap(string gonderenHesapNumara, string aliciHesapNumara, decimal gonderilenTutar, string kartNumara);
 
+        public ApiResponse<bool> HesapVarMi(string hesapNumara);
 
     }
 }

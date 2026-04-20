@@ -23,31 +23,38 @@
       </div>
     </div>
 
-    <div class="input-grup">
-      <span class="input-label">Alıcı Hesap Numarası</span>
-      <input
-        class="hesap-input"
-        type="text"
-        placeholder="0000 0000 0000 0000 0"
-        [(ngModel)]="aliciHesapNumara"
-        maxlength="26"
-      />
-    </div>
+    @if (yukleniyor) {
+      <div class="animasyon-kutusu">
+        <div class="spinner"></div>
+        <p class="spinner-text">Hesap kontrol ediliyor...</p>
+      </div>
+    } @else {
+      <div class="input-grup">
+        <span class="input-label">Alıcı Hesap Numarası</span>
+        <input
+          class="hesap-input"
+          type="text"
+          placeholder="0000 0000 0000 0000 0"
+          [(ngModel)]="aliciHesapNumara"
+          maxlength="26"
+        />
+      </div>
 
-    @if (hataMesaji) {
-      <p class="hata-mesaj">{{ hataMesaji }}</p>
+      @if (hataMesaji) {
+        <p class="hata-mesaj">{{ hataMesaji }}</p>
+      }
     }
 
   </div>
 
   <div class="bottom-bar">
-    <button class="atm-btn" (click)="geriDon()">
+    <button class="atm-btn" (click)="geriDon()" [disabled]="yukleniyor">
       <span class="icon-left">
         <svg viewBox="0 0 13 13" fill="none"><path d="M9 6.5H4M4 6.5L6.5 4M4 6.5L6.5 9" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
       </span>
       <span class="btn-label">Geri</span>
     </button>
-    <button class="atm-btn" (click)="devam()">
+    <button class="atm-btn" (click)="devam()" [disabled]="yukleniyor">
       <span class="btn-label">Devam</span>
       <span class="icon-right">
         <svg viewBox="0 0 13 13" fill="none"><path d="M4 6.5h5M9 6.5L6.5 4M9 6.5L6.5 9" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>

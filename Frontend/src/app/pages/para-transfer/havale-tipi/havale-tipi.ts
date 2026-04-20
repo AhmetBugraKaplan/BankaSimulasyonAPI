@@ -13,9 +13,12 @@ export class HavaleTipi {
   constructor(private router: Router) { }
 
   havaleSecimi(tip: string): void {
+    sessionStorage.setItem('havaletipi',tip);
     if (tip === 'BaskasininHesabi') {
       this.router.navigate(['/hesap-sec']);
-    }
+    }else if (tip == 'HesaplarimArasi') {
+    this.router.navigate(['/havale-hesaplararasi-gonderecekhesabisec']);
+}
   }
 
   geriDon(): void {

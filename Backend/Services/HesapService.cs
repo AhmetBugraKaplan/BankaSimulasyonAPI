@@ -20,7 +20,7 @@ namespace BankaSimulasyon.Services
         private readonly IAtmService _atmService;
         private readonly AppDbContext _context;
 
-        public HesapService(IHesapRepository hesapRepository, IAtmService atmService, IMusteriRepository kullaniciRepository,AppDbContext context)
+        public HesapService(IHesapRepository hesapRepository, IAtmService atmService, IMusteriRepository kullaniciRepository, AppDbContext context)
         {
             _hesapRepository = hesapRepository;
             _atmService = atmService;
@@ -33,7 +33,7 @@ namespace BankaSimulasyon.Services
             ApiResponse<List<Hesap>> MusterininTumHesaplariniGetirApiResponse = new();
             List<Hesap> musteriHesapListesi = _hesapRepository.MusterininTumHesaplariniGetir(kartNumara);
 
-            if (musteriHesapListesi.IsNullOrEmpty())
+            if (musteriHesapListesi == null || musteriHesapListesi.Count == 0)
             {
                 MusterininTumHesaplariniGetirApiResponse.Data = musteriHesapListesi;
                 MusterininTumHesaplariniGetirApiResponse.IslemBasariliMi = false;
@@ -49,10 +49,10 @@ namespace BankaSimulasyon.Services
             }
         }
 
-        public ApiResponse<int> BaskasininHesabinaHavaleYap(
+        public ApiResponse<int> HavaleYap(
             string gonderenHesapNumara, string aliciHesapNumara, decimal gonderilenTutar, string kartNumara)
         {
-            ApiResponse<int> BaskasininHesabinaHavaleYapApiResponse = new();
+            ApiResponse<int> HavaleYapApiResponse = new();
 
             //Başkasının hesabına para göndermeden önce birkaç kontrol sağlamamız gerekiyor 
 
@@ -60,20 +60,20 @@ namespace BankaSimulasyon.Services
 
             if (aliciVarMi == 0)
             {
-                BaskasininHesabinaHavaleYapApiResponse.IslemBasariliMi = false;
-                BaskasininHesabinaHavaleYapApiResponse.Mesaj = "Girdiğiniz hesap numarasına ait hesap bulunamadı";
+                HavaleYapApiResponse.IslemBasariliMi = false;
+                HavaleYapApiResponse.Mesaj = "Girdiğiniz hesap numarasına ait hesap bulunamadı";
 
-                return BaskasininHesabinaHavaleYapApiResponse;
+                return HavaleYapApiResponse;
             }
 
             int limitYeterliMi = _hesapRepository.HesapLimitYeterliMi(gonderenHesapNumara, gonderilenTutar);
 
             if (limitYeterliMi == 0)
             {
-                BaskasininHesabinaHavaleYapApiResponse.IslemBasariliMi = false;
-                BaskasininHesabinaHavaleYapApiResponse.Mesaj = "Hesabınızda yeterli bakiye bulunmamakta";
+                HavaleYapApiResponse.IslemBasariliMi = false;
+                HavaleYapApiResponse.Mesaj = "Hesabınızda yeterli bakiye bulunmamakta";
 
-                return BaskasininHesabinaHavaleYapApiResponse;
+                return HavaleYapApiResponse;
             }
 
             // Kontrollerimizi sağladık şimdi transaction başlatıyoruz.
@@ -81,29 +81,38 @@ namespace BankaSimulasyon.Services
             {
                 try
                 {     //İlk işlem olarak parayı gönderen kişinin bakiyesinden tutarı düşücez. Tutarı düşmek için değeri - olarak gönderiyoruz.
-                    _hesapRepository.HesapBakiyeGuncelle(gonderenHesapNumara,-gonderilenTutar);
+                    _hesapRepository.HesapBakiyeGuncelle(gonderenHesapNumara, -gonderilenTutar);
 
                     //İkinci işlem olarak parayı alan hesabın hesap bakiyeisni arttırıyoruz
-                    _hesapRepository.HesapBakiyeGuncelle(aliciHesapNumara,gonderilenTutar);
+                    _hesapRepository.HesapBakiyeGuncelle(aliciHesapNumara, gonderilenTutar);
 
                     transaction.Commit();
 
-                    BaskasininHesabinaHavaleYapApiResponse.IslemBasariliMi = true;
-                    BaskasininHesabinaHavaleYapApiResponse.Mesaj = "Başkasının hesabına para yatırma işlemi başarıyla gerçekleşti";
-                    return BaskasininHesabinaHavaleYapApiResponse;
+                    HavaleYapApiResponse.IslemBasariliMi = true;
+                    HavaleYapApiResponse.Mesaj = "Başkasının hesabına para yatırma işlemi başarıyla gerçekleşti";
+                    return HavaleYapApiResponse;
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     transaction.Rollback();
 
-                    BaskasininHesabinaHavaleYapApiResponse.IslemBasariliMi = false;
-                    BaskasininHesabinaHavaleYapApiResponse.Mesaj = "Başkasının hesabına para yatırma işlemi sırasında bir hata ile karşılaşıldı.";
-                    return BaskasininHesabinaHavaleYapApiResponse;
+                    HavaleYapApiResponse.IslemBasariliMi = false;
+                    HavaleYapApiResponse.Mesaj = "Başkasının hesabına para yatırma işlemi sırasında bir hata ile karşılaşıldı.";
+                    return HavaleYapApiResponse;
                 }
             }
         }
 
-       
+        public ApiResponse<bool> HesapVarMi(string hesapNumara)
+        {
+            ApiResponse<bool> response = new();
+            int varMi = _hesapRepository.HesapVarMi(hesapNumara);
+            response.IslemBasariliMi = varMi > 0;
+            response.Mesaj = varMi > 0 ? "Hesap bulundu." : "Hesap bulunamadı.";
+            return response;
+        }
+
+
 
 
 

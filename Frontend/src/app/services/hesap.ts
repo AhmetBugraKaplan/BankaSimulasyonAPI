@@ -5,10 +5,10 @@ import { map, Observable } from 'rxjs';
 export interface Hesap {
     id: number;
     hesapNumara: string;
-    hesapTip: string;
     hesapBakiye: number;
-    paraBirimi: string;
     musteriId: number;
+    hesapTip?: string;
+    paraBirimi?: string;
 }
 
 export interface BaseResponse<T> {
@@ -36,17 +36,32 @@ export class HesapService {
 
 
     musteriTumHesaplariGetir(kartNumara: string): Observable<BaseResponse<Hesap[]>> {
-        return this.http.post<BaseResponse<Hesap[]>>(
+        return this.http.post<string>(
             `${this.hesapUrl}/MusteriTumHesaplariGetir`,
-            { KartNumara: kartNumara }
+            { KartNumara: kartNumara },
+            { responseType: 'text' as 'json' }
+        ).pipe(
+            map(raw => JSON.parse(raw) as BaseResponse<Hesap[]>)
         );
     }
 
     havaleYap(talep: HavaleTalebi): Observable<BaseResponse<any>> {
         return this.http.post<BaseResponse<any>>(
-            `${this.hesapUrl}/BaskasininHesabinaHavaleYap`,
+            `${this.hesapUrl}/HavaleYap`,
             talep
         )
     }
+
+    hesapVarMi(hesapNumara: string): Observable<BaseResponse<boolean>> {
+        return this.http.post<string>(
+            `${this.hesapUrl}/HesapVarMi`,
+            { HesapNumara: hesapNumara },
+            { responseType: 'text' as 'json' }
+        ).pipe(
+            map(raw => JSON.parse(raw) as BaseResponse<boolean>)
+        );
+    }
+
+
 
 }

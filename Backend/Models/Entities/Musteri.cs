@@ -13,6 +13,7 @@ namespace BankaSimulasyon.Models.Entities
         public String Isim { get; set; } = "İsim değeri girilmedi";
         public String Soyisim { get; set; } = "Soyisim girilmedi";
         public decimal MusteriLimit { get; set; } = 0;
+        public string TelefonNumarasi { get; set; } = string.Empty; 
         public List<Hesap> Hesaplar { get; set; } = new();
 
     }

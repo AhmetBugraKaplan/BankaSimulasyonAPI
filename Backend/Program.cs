@@ -63,6 +63,7 @@ builder.Services.AddScoped<IKartRepository,KartRepository>();
 builder.Services.AddScoped<IKartService,KartService>();
 builder.Services.AddScoped<IHesapRepository,HesapRepository>();
 builder.Services.AddScoped<IHesapServis,HesapService>();
+builder.Services.AddScoped<ISmsService, SmsService>();
 
 
 builder.Services.AddScoped<JwtService>();

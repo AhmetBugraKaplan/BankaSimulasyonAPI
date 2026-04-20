@@ -34,23 +34,6 @@
   z-index: 2;
 }
 
-.animasyon-kutusu {
-  text-align: center;
-  margin-top: 40px;
-  position: relative;
-  z-index: 2;
-}
-
-.spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  border-left-color: #e8a800;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 15px;
-}
-
 /* ── Buton grid kapsayıcısı — ortada esnek büyüyür ── */
 .btn-grid {
   display: flex;
@@ -219,90 +202,79 @@
   z-index: 2;
 }
 
-.icerik {
-  flex: 1;
+.hesap-liste {
   display: flex;
   flex-direction: column;
+  gap: 12px;
+  flex: 1;
   justify-content: center;
   position: relative;
   z-index: 2;
-  gap: 16px;
 }
 
-.bilgi-kutu {
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 16px 22px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-}
-
-.bilgi-satir {
+.hesap-kart {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 5px 0;
+  justify-content: space-between;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px 22px;
+  cursor: pointer;
+  border: 2.5px solid transparent;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.bilgi-etiket {
-  color: #6b7280;
-  font-size: 13px;
-  font-weight: 600;
+.hesap-kart:hover {
+  border-color: #e09800;
+  box-shadow: 0 4px 14px rgba(180,120,0,0.15);
 }
 
-.bilgi-deger {
-  color: #1a1a1a;
-  font-size: 13px;
-  font-weight: 700;
-  font-family: 'Courier New', monospace;
+.hesap-kart.secili {
+  border-color: #e09800;
+  background: #fffbef;
 }
 
-.bilgi-deger.bakiye {
-  color: #b07800;
-  font-size: 15px;
-}
-
-.input-grup {
+.hesap-bilgi {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 4px;
 }
 
-.input-label {
-  color: #1a1a1a;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.hesap-input {
-  background: #ffffff;
-  border: 2.5px solid #e0d0a0;
-  border-radius: 12px;
-  padding: 16px 20px;
-  font-size: 20px;
+.hesap-no {
+  font-size: 15px;
   font-weight: 700;
   color: #1a1a1a;
+  letter-spacing: 0.5px;
   font-family: 'Courier New', monospace;
-  letter-spacing: 1px;
-  outline: none;
-  width: 100%;
-  box-sizing: border-box;
-  transition: border-color 0.2s;
 }
 
-.hesap-input:focus {
-  border-color: #e09800;
+.hesap-bakiye {
+  font-size: 18px;
+  font-weight: 700;
+  color: #b07800;
 }
 
-.hesap-input::placeholder {
-  color: #c0b090;
-  font-size: 16px;
-  font-weight: 400;
-  letter-spacing: 0;
-}
-
-.hata-mesaj {
-  color: #dc2626;
-  font-size: 14px;
+.hesap-tip {
+  font-size: 12px;
+  color: #6b7280;
   font-weight: 600;
-  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hesap-ok {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f5c842 0%, #e09800 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hesap-ok svg {
+  width: 14px;
+  height: 14px;
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankaSimulasyon.Models.Requests.HesapRequest
 {
-    public class BaskasininHesabinaHavaleYapRequest
+    public class HavaleYapRequest
     {
         [Required(ErrorMessage = "Gönderen hesap numarası zorunludur")]
         public string GonderenHesapNumara { get; set; } = string.Empty;

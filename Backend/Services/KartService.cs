@@ -393,4 +393,6 @@ namespace BankaSimulasyon.Services
         }
 
     }
+    
 }
+

@@ -31,13 +31,13 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
-        [HttpPost("BaskasininHesabinaHavaleYap")]
-        public IActionResult BaskasininHesabinaHavaleYap([FromBody] BaskasininHesabinaHavaleYapRequest request)
+        [HttpPost("HavaleYap")]
+        public IActionResult HavaleYap([FromBody] HavaleYapRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
 
-            var sonuc = _hesapService.BaskasininHesabinaHavaleYap(
+            var sonuc = _hesapService.HavaleYap(
                 request.GonderenHesapNumara,
                 request.AliciHesapNumara,
                 request.GonderilenTutar,
@@ -46,5 +46,17 @@ namespace BankaSimulasyon.Controllers
 
             return Ok(sonuc);
         }
+
+        [HttpPost("HesapVarMi")]
+        public IActionResult HesapVarMi([FromBody] HesapVarMiRequest request)
+        {
+            var sonuc = _hesapService.HesapVarMi(request.HesapNumara);
+            return Ok(sonuc);
+        }
+
+
+
+
+
     }
 }

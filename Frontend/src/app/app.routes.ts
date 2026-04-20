@@ -10,6 +10,9 @@ import { HesapSec } from './pages/para-transfer/hesap-sec/hesap-sec';
 import { AliciHesapGiris } from './pages/para-transfer/alici-hesap-giris/alici-hesap-giris';
 import { TransferTutar } from './pages/para-transfer/transfer-tutar/transfer-tutar';
 import { IslemOnaylandi } from './pages/para-transfer/islem-onaylandi/islem-onaylandi';
+import { HavaleHesaplararasiGonderilecekhesabisec } from './pages/para-transfer/havale-hesaplararasi-gonderilecekhesabisec/havale-hesaplararasi-gonderilecekhesabisec';
+import { HavaleHesaplararasiGonderecekhesabisec } from './pages/para-transfer/havale-hesaplararasi-gonderecekhesabisec/havale-hesaplararasi-gonderecekhesabisec';
+
 
 export const routes: Routes = [
     { path: '', component: Login },
@@ -22,7 +25,9 @@ export const routes: Routes = [
     { path: 'hesap-sec', component: HesapSec },
     { path: 'alici-hesap-giris', component: AliciHesapGiris },
     { path: 'transfer-tutar', component: TransferTutar },
-    { path: 'islem-onaylandi',component: IslemOnaylandi}
-
-
+    { path: 'islem-onaylandi', component: IslemOnaylandi },
+    { path: 'havale-hesaplararasi-gonderilecekhesabisec', component: HavaleHesaplararasiGonderilecekhesabisec },
+    { path: 'havale-hesaplararasi-gonderecekhesabisec', component: HavaleHesaplararasiGonderecekhesabisec },
+    { path: 'havale-hesaplararasi-tutar', component: TransferTutar },
+    { path: 'havale-hesaplararasi-alacakhesabisec', component: HavaleHesaplararasiGonderilecekhesabisec }
 ];
