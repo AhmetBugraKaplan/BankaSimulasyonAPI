@@ -50,6 +50,9 @@ namespace BankaSimulasyon.Controllers
         [HttpPost("HesapVarMi")]
         public IActionResult HesapVarMi([FromBody] HesapVarMiRequest request)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
+
             var sonuc = _hesapService.HesapVarMi(request.HesapNumara);
             return Ok(sonuc);
         }
@@ -57,6 +60,9 @@ namespace BankaSimulasyon.Controllers
         [HttpPost("HesapVarMiTelNoIle")]
         public IActionResult HesapVarMiTelNoIle([FromBody] HesapVarMiTelefonNoIleRequest request)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
+
             var sonuc = _hesapService.HesapVarMiTelNoIle(request.TelefonNumara);
             return Ok(sonuc);
         }

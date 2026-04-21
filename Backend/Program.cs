@@ -13,12 +13,13 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-{   var config = builder.Configuration;
-    var connectionString =config.GetConnectionString("database");
+{
+    var config = builder.Configuration;
+    var connectionString = config.GetConnectionString("database");
     options.UseSqlServer(connectionString);
 });
 
-builder.Services.AddControllers(); 
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 
@@ -54,16 +55,19 @@ builder.Services.AddSwaggerGen(c =>
 
 
 
-builder.Services.AddScoped<IAtmKasetRepository,AtmKasetRepository>();
-builder.Services.AddScoped<IAtmService,AtmService>();
+builder.Services.AddScoped<IAtmKasetRepository, AtmKasetRepository>();
+builder.Services.AddScoped<IAtmService, AtmService>();
 builder.Services.AddScoped<IAtmRepository, AtmRepository>();
 builder.Services.AddScoped<IMusteriRepository, MusteriRepository>();
 builder.Services.AddScoped<IMusteriService, MusteriServis>();
-builder.Services.AddScoped<IKartRepository,KartRepository>();
-builder.Services.AddScoped<IKartService,KartService>();
-builder.Services.AddScoped<IHesapRepository,HesapRepository>();
-builder.Services.AddScoped<IHesapServis,HesapService>();
+builder.Services.AddScoped<IKartRepository, KartRepository>();
+builder.Services.AddScoped<IKartService, KartService>();
+builder.Services.AddScoped<IHesapRepository, HesapRepository>();
+builder.Services.AddScoped<IHesapServis, HesapService>();
 builder.Services.AddScoped<ISmsService, SmsService>();
+builder.Services.AddScoped<IOnayRepository, OnayRepository>();
+builder.Services.AddScoped<IOnayService, OnayService>();
+
 
 
 builder.Services.AddScoped<JwtService>();
@@ -139,7 +143,7 @@ if (app.Environment.IsDevelopment())
 //Güncellemeyi kart kart yapmamız gerekyior. Son işlem yapılan tarih bir yerde tutulacak değiştiğinde güncellencek (+)
 //kalan limiti kullanılan limit olarka değiştir ve son işlem tarihi ekle her limit güncellemede son işlem tarihi değişiyor
 //gün değişince otomatik algılıyoruz zaten orda işlemden önce limiti güncelleyecğiz. 
- 
+
 //Ara server katmanı oluşturacağım bu sadece server olacak istek atıcaz oraya 
 
 
@@ -148,7 +152,7 @@ app.UseMiddleware<ExceptionMiddleware>(); //Hata yakalama !!!HER ZAMAN EN USTTE 
 app.UseMiddleware<LoggingMiddleware>(); //Yapılan her isteği (get/post fark etmez) logluyoruz
 app.UseCors("AllowAngular");
 app.UseMiddleware<RateLimitingMiddleware>(); //İstek sınırla
-app.UseAuthentication(); 
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<IpControlMiddleware>();
 

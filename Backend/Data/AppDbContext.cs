@@ -16,6 +16,7 @@ namespace BankaSimulasyon.Data
         public DbSet<KartSifre> KartSifreleri { get; set; } = null!;
         public DbSet<KartLimit> KartLimitleri { get; set; } = null!;
         public DbSet<Hesap> Hesaplar { get; set; } = null!;
+        public DbSet<OnayKod> OnayKodlari { get; set; } = null!;
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

@@ -12,7 +12,6 @@ import { TransferTutar } from './pages/para-transfer/transfer-tutar/transfer-tut
 import { IslemOnaylandi } from './pages/para-transfer/islem-onaylandi/islem-onaylandi';
 import { HavaleHesaplararasiGonderilecekhesabisec } from './pages/para-transfer/havale-hesaplararasi-gonderilecekhesabisec/havale-hesaplararasi-gonderilecekhesabisec';
 import { HavaleHesaplararasiGonderecekhesabisec } from './pages/para-transfer/havale-hesaplararasi-gonderecekhesabisec/havale-hesaplararasi-gonderecekhesabisec';
-import { KartsizIslem } from './pages/kartsiz-islem/kartsiz-islem';
 import { TelNoGir } from './pages/kartsiz-islem/tel-no-gir/tel-no-gir';
 import { SmsOnayKoduGir } from './pages/kartsiz-islem/sms-onay-kodu-gir/sms-onay-kodu-gir';
 import { KartsizIslemMenu } from './pages/kartsiz-islem/kartsiz-islem-menu/kartsiz-islem-menu';
@@ -35,7 +34,6 @@ export const routes: Routes = [
     { path: 'havale-hesaplararasi-gonderecekhesabisec', component: HavaleHesaplararasiGonderecekhesabisec },
     { path: 'havale-hesaplararasi-tutar', component: TransferTutar },
     { path: 'havale-hesaplararasi-alacakhesabisec', component: HavaleHesaplararasiGonderilecekhesabisec },
-    { path: 'kartsiz-islem', component: KartsizIslem },
     { path: 'tel-no-gir', component: TelNoGir },
     { path: 'sms-onay-kodu-gir', component: SmsOnayKoduGir },
     { path: 'kartsiz-islem-menu', component: KartsizIslemMenu },

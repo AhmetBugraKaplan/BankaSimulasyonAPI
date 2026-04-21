@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Onay } from '../../../services/onay';
 
 @Component({
   selector: 'app-sms-onay-kodu-gir',
@@ -10,12 +11,18 @@ import { Router } from '@angular/router';
   templateUrl: './sms-onay-kodu-gir.html',
   styleUrl: './sms-onay-kodu-gir.css',
 })
-export class SmsOnayKoduGir {
+export class SmsOnayKoduGir implements AfterViewInit {
+
+  @ViewChild('kodInput') kodInput!: ElementRef;
 
   kod: string = '';
   hataMesaji: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private onayService: Onay) {}
+
+  ngAfterViewInit(): void {
+    setTimeout(() => this.kodInput.nativeElement.focus(), 100);
+  }
 
   kodGirildi(): void {
     this.kod = this.kod.replace(/[^0-9]/g, '').slice(0, 4);
@@ -27,9 +34,22 @@ export class SmsOnayKoduGir {
       this.hataMesaji = 'Lütfen 4 haneli kodu eksiksiz giriniz.';
       return;
     }
-    // Backend entegrasyonu buraya gelecek
-    // Doğruysa:
-    this.router.navigate(['/kartsiz-islem-menu']);
+
+    const telNo = sessionStorage.getItem('telNo') ?? '';
+
+    this.onayService.onayKoduDogruMu(this.kod, telNo).subscribe({
+      next: (response) => {
+        if (response.islemBasariliMi) {
+          this.router.navigate(['/kartsiz-islem-menu']);
+        } else {
+          this.hataMesaji = 'Girdiğiniz doğrulama kodu hatalı veya süresi dolmuş';
+        }
+      },
+      error: (err) => {
+        console.error('Hata', err);
+        this.hataMesaji = 'Bir hata oluştu, tekrar deneyiniz.';
+      }
+    });
   }
 
   geriDon(): void {

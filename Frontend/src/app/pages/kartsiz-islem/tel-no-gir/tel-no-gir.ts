@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HesapService } from '../../../services/hesap';
+import { Onay } from '../../../services/onay';
 
 @Component({
   selector: 'app-tel-no-gir',
@@ -13,11 +14,13 @@ import { HesapService } from '../../../services/hesap';
 })
 export class TelNoGir implements OnInit {
 
+  HesapVarMi: boolean = false;
   telNo: string = '05';
   hataMesaji: string = '';
 
-  constructor(private router: Router, private hesapService: HesapService) {
-
+  constructor(private router: Router,
+    private hesapService: HesapService,
+    private onayService: Onay) {
   }
 
   ngOnInit(): void {
@@ -59,7 +62,26 @@ export class TelNoGir implements OnInit {
 
     //TelefonNoVar ise burda geçmiş işlemler tablosuna hesapno ile kaydedilecek.
 
-    this.router.navigate(['/sms-onay-kodu-gir']);
+    let hesapVarMi: boolean;
+
+    this.hesapService.hesapVarMiTelNoIle(raw).subscribe({
+      next: (response) => {
+        this.HesapVarMi = response.islemBasariliMi; // BaseResponse içindeki boolean burda
+        if (this.HesapVarMi) {
+          //Burda işlemi müşterinin geçmiş işlemlerine kaydedicez ama bu yapıyı sonrasında kuracağım
+          console.log("HesapVar çalışıyor")
+        }
+        console.log('Hesap var mı:', this.HesapVarMi);
+      },
+      error: (err) => {
+        console.error('Hata:', err);
+      }
+    })
+
+    this.onayService.onayKodUret(raw).subscribe({
+      next: (response) => console.log('Kod üretildi:', response),
+      error: (err) => console.error('Hata:', err)
+    }); this.router.navigate(['/sms-onay-kodu-gir']);
   }
 
   geriDon(): void {

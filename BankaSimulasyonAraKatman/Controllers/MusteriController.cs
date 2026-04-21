@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BankaSimulasyonAraKatman.Controllers
 {
-    
+    [ApiController]
+    [Route("api/[controller]")]
     public class MusteriController : ControllerBase
     {
         private readonly IHttpClientFactory _httpClientFactory;

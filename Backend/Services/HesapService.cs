@@ -118,6 +118,7 @@ namespace BankaSimulasyon.Services
             int varMi = _hesapRepository.HesapVarMiTelNoIle(telefonNumara);
             response.IslemBasariliMi = varMi > 0;
             response.Mesaj = varMi > 0 ? "Hesap bulundu." : "Hesap bulunamadı.";
+            response.Data = true;
 
 
             return response;

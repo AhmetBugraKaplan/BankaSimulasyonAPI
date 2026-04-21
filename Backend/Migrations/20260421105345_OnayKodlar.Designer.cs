@@ -4,6 +4,7 @@ using BankaSimulasyon.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankaSimulasyon.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260421105345_OnayKodlar")]
+    partial class OnayKodlar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -207,32 +210,6 @@ namespace BankaSimulasyon.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Musteriler");
-                });
-
-            modelBuilder.Entity("BankaSimulasyon.Models.Entities.OnayKod", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("GecerliMi")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Kod")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("OlusturulmaZamani")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TelefonNumara")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OnayKodlari");
                 });
 
             modelBuilder.Entity("BankaSimulasyon.Models.Entities.AtmKaset", b =>

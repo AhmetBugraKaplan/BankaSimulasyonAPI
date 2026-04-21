@@ -32,11 +32,8 @@
         [(ngModel)]="kod"
         (ngModelChange)="kodGirildi()"
         #kodInput
+        autofocus
       />
-
-      <button class="klavye-btn" (click)="kodInput.focus()">
-        Kodu Girmek İçin Dokunun
-      </button>
 
     </div>
   </div>

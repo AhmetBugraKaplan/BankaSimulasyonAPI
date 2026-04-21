@@ -1,3 +1,4 @@
+using BankaSimulasyon.Repositories;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 
@@ -12,11 +13,14 @@ namespace BankaSimulasyon.Services
     {
         private readonly IConfiguration _config;
         private readonly ILogger<SmsService> _logger;
+        private readonly IOnayRepository _onayRepository;
+        
 
-        public SmsService(IConfiguration config, ILogger<SmsService> logger)
+        public SmsService(IConfiguration config, ILogger<SmsService> logger,IOnayRepository onayRepository)
         {
             _config = config;
             _logger = logger;
+            _onayRepository = onayRepository;
         }
 
         public void SmsGonder(string telefonNumara, string kod)
@@ -43,6 +47,8 @@ namespace BankaSimulasyon.Services
             );
 
             _logger.LogWarning(">>> Twilio Status: {Status} | SID: {Sid}", message.Status, message.Sid);
+
+            _onayRepository.OnayKoduUret(kod,telefonNumara);
         }
     }
 }
