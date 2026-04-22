@@ -2,7 +2,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Onay } from '../../../services/onay';
+import { Onay } from '../../../../services/onay';
 
 @Component({
   selector: 'app-sms-onay-kodu-gir',
@@ -18,7 +18,7 @@ export class SmsOnayKoduGir implements AfterViewInit {
   kod: string = '';
   hataMesaji: string = '';
 
-  constructor(private router: Router, private onayService: Onay) {}
+  constructor(private router: Router, private onayService: Onay) { }
 
   ngAfterViewInit(): void {
     setTimeout(() => this.kodInput.nativeElement.focus(), 100);
@@ -27,6 +27,10 @@ export class SmsOnayKoduGir implements AfterViewInit {
   kodGirildi(): void {
     this.kod = this.kod.replace(/[^0-9]/g, '').slice(0, 4);
     this.hataMesaji = '';
+  }
+
+  inputBlur(): void {
+    setTimeout(() => this.kodInput.nativeElement.focus(), 0);
   }
 
   onayla(): void {
@@ -43,6 +47,8 @@ export class SmsOnayKoduGir implements AfterViewInit {
           this.router.navigate(['/kartsiz-islem-menu']);
         } else {
           this.hataMesaji = 'Girdiğiniz doğrulama kodu hatalı veya süresi dolmuş';
+          this.kod = '';
+          setTimeout(() => this.kodInput.nativeElement.focus(), 100);
         }
       },
       error: (err) => {

@@ -19,10 +19,10 @@ namespace BankaSimulasyonAraKatman.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
+        //Token kullanmıyoruz.
         [HttpPost("OnayKoduDogruMu")]
         public async Task<IActionResult> OnayKoduDogruMu([FromBody] object request)
         {
-
             var client = _httpClientFactory.CreateClient("CoreAPI");
 
             var response = await client.PostAsJsonAsync("api/Onay/OnayKoduDogruMu", request);
@@ -30,6 +30,7 @@ namespace BankaSimulasyonAraKatman.Controllers
             return Ok(sonuc);
         }
 
+        //Token kullanmıyoruz.
         [HttpPost("OnayKoduUret")]
         public async Task<IActionResult> OnayKoduUret([FromBody] object request)
         {

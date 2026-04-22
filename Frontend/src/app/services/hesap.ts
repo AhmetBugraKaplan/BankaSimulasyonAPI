@@ -70,6 +70,13 @@ export class HesapService {
         );
     }
 
+  hesabaKartsizParaGonder(hesapNumara: string, gonderilecekTutar: number): Observable<BaseResponse<number>> {
+    return this.http.post<BaseResponse<number>>(
+        `${this.hesapUrl}/HesabaKartsizParaGonder`,
+        { HesapNumara: hesapNumara, GonderilecekTutar: gonderilecekTutar }
+    );
+}
+
     
 
 }

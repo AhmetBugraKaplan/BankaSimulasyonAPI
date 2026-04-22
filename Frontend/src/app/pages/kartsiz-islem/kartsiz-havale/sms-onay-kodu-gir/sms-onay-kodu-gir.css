@@ -91,11 +91,12 @@
 
 /* ── Gizli input (arkada, klavyeyi tetikler) ── */
 .gizli-input {
-  position: absolute;
+  position: fixed;
   opacity: 0;
+  top: -9999px;
+  left: -9999px;
   width: 1px;
   height: 1px;
-  pointer-events: none;
 }
 
 .klavye-btn {

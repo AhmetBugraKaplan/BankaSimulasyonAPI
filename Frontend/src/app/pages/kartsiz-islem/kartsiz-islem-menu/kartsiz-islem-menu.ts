@@ -11,14 +11,18 @@ import { Router } from '@angular/router';
 })
 export class KartsizIslemMenu {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   baskasininHesabina(): void {
-    // İleri adım eklenecek
+    this.router.navigate(['/alici-hesap-no-gir']);
   }
 
   cebeParaGonder(): void {
-    // İleri adım eklenecek
+    this.router.navigate(['/cebe-gonder-tc-giris']);
+  }
+
+  ceptenParaAl(): void {
+    this.router.navigate(['/cepten-al-tc-giris']);
   }
 
   geriDon(): void {

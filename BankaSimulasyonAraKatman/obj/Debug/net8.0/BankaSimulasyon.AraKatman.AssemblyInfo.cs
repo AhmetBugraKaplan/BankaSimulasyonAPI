@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BankaSimulasyon.AraKatman")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ef6e5c05044396ca8d3a9289510b47365724ade6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3f53212fbf8863f9dc19fc9ed4f54d3497ae9875")]
 [assembly: System.Reflection.AssemblyProductAttribute("BankaSimulasyon.AraKatman")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BankaSimulasyon.AraKatman")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

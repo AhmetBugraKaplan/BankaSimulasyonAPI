@@ -30,13 +30,13 @@ namespace BankaSimulasyon.Repositories
             return sonuc;
         }
 
-        public void OnayKoduUret(string kod, string telefonNumara)
+        public void OnayKodunuDbKaydet(string kod, string telefonNumara)
         {
             var telefonParam = new SqlParameter("@TelefonNumara", telefonNumara);
             var kodParam = new SqlParameter("@Kod", kod);
 
             _context.Database.ExecuteSqlRaw(
-                "EXEC SP_OnayKoduUret @TelefonNumara, @Kod",
+                "EXEC SP_OnayKodunuKaydet @TelefonNumara, @Kod",
                 telefonParam, kodParam
             );
         }

@@ -101,6 +101,24 @@ namespace BankaSimulasyon.Repositories
         }
 
 
+        public int HesabaKartsizParaGonder(string hesapNumara,decimal gonderilecekTutar)
+        {
+            var hesapNumaraParam = new SqlParameter("@HesapNumara",hesapNumara);
+            var gonderilecekTutarParam = new SqlParameter("@GonderilenTutar",gonderilecekTutar);
+            var sonucParam = new SqlParameter("@Sonuc",SqlDbType.Int);
+            sonucParam.Direction = ParameterDirection.Output;
+
+            _context.Database.ExecuteSqlRaw(
+                "EXEC SP_KartsizParaGonderHesaba @HesapNumara, @GonderilenTutar, @Sonuc OUTPUT",
+                hesapNumaraParam,gonderilecekTutarParam,sonucParam
+            );
+            
+            return (int)sonucParam.Value;
+        }
+
+
+
+
 
 
 

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HesapService } from '../../../services/hesap';
-import { Onay } from '../../../services/onay';
+import { HesapService } from '../../../../services/hesap';
+import { Onay } from '../../../../services/onay';
 
 @Component({
   selector: 'app-tel-no-gir',
@@ -12,6 +12,7 @@ import { Onay } from '../../../services/onay';
   templateUrl: './tel-no-gir.html',
   styleUrl: './tel-no-gir.css',
 })
+
 export class TelNoGir implements OnInit {
 
   HesapVarMi: boolean = false;
@@ -23,6 +24,9 @@ export class TelNoGir implements OnInit {
     private onayService: Onay) {
   }
 
+  //ngOnInit ne işe yarar ? = Constructordan sonra çalışan fonksiyondur.
+  //Atama işlemlerini burda yaparız constructor içinde DI işlemleri yapılır. 
+  
   ngOnInit(): void {
     this.telNo = '05';
   }

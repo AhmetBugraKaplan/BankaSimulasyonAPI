@@ -120,10 +120,43 @@ namespace BankaSimulasyon.Services
             response.Mesaj = varMi > 0 ? "Hesap bulundu." : "Hesap bulunamadı.";
             response.Data = true;
 
-
             return response;
         }
 
+
+        public ApiResponse<int> HesabaKartsizParaGonder(string hesapNumara, decimal gonderilecekTutar)
+        {
+            ApiResponse<int> response = new();
+
+            try
+            {
+                int sonuc = _hesapRepository.HesabaKartsizParaGonder(hesapNumara, gonderilecekTutar);
+
+                if (sonuc == 1)
+                {
+                    response.IslemBasariliMi = true;
+                    response.Data = sonuc;
+                    response.Mesaj = "Para transferi başarıyla gerçekleşti.";
+                }
+                else if (sonuc == 0)
+                {
+                    response.IslemBasariliMi = false;
+                    response.Mesaj = "Alıcı hesap bulunamadı.";
+                }
+                else
+                {
+                    response.IslemBasariliMi = false;
+                    response.Mesaj = "Transfer sırasında bir hata oluştu.";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IslemBasariliMi = false;
+                response.Mesaj = "Beklenmedik bir hata oluştu: " + ex.Message;
+            }
+
+            return response;
+        }
 
 
 

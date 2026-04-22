@@ -6,34 +6,28 @@
     <path d="M300 260 L140 260 Q200 235 250 210 Q278 195 295 170 L300 145 Z" fill="#d49200" opacity="0.35"/>
   </svg>
 
-  <p class="header-text">SMS Onay Kodu</p>
+  <p class="header-text">Cebe Para Gönder</p>
 
   <div class="icerik">
     <div class="giris-kutu">
 
-      <p class="aciklama">Telefonunuza gelen 4 haneli onay kodunu girin.</p>
+      <p class="aciklama">Lütfen alıcının telefon numarasını girin.</p>
 
-      <div class="kod-wrapper">
-        @for (i of [0,1,2,3]; track i) {
-          <div class="kod-kutu" [class.dolu]="kod.length > i" [class.aktif]="kod.length === i">
-            {{ kod.length > i ? '●' : '' }}
-          </div>
-        }
+      <div class="input-grup">
+        <span class="input-label">Alıcı Telefon Numarası</span>
+        <input
+          #telInput
+          class="atm-input"
+          type="tel"
+          [value]="telNo"
+          (input)="telNoGirildi($event)"
+          maxlength="14"
+        />
       </div>
 
       @if (hataMesaji) {
         <p class="hata-mesaj">{{ hataMesaji }}</p>
       }
-
-      <input
-        class="gizli-input"
-        type="tel"
-        maxlength="4"
-        [(ngModel)]="kod"
-        (ngModelChange)="kodGirildi()"
-        #kodInput
-        autofocus
-      />
 
     </div>
   </div>
@@ -45,8 +39,8 @@
       </span>
       <span class="btn-label">Geri</span>
     </button>
-    <button class="atm-btn" (click)="onayla()">
-      <span class="btn-label">Onayla</span>
+    <button class="atm-btn" (click)="devam()">
+      <span class="btn-label">Devam</span>
       <span class="icon-right">
         <svg viewBox="0 0 13 13" fill="none"><path d="M4 6.5h5M9 6.5L6.5 4M9 6.5L6.5 9" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
       </span>

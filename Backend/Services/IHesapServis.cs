@@ -18,6 +18,8 @@ namespace BankaSimulasyon.Services
 
         public ApiResponse<bool> HesapVarMiTelNoIle(string hesapNumara);
 
+        public ApiResponse<int> HesabaKartsizParaGonder(string hesapNumara,decimal gonderilecekTutar);
+
 
 
 

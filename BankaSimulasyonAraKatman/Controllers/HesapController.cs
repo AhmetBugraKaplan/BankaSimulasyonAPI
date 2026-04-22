@@ -48,12 +48,8 @@ namespace BankaSimulasyonAraKatman.Controllers
         [HttpPost("HesapVarMi")]
         public async Task<IActionResult> HesapVarMi([FromBody] object request)
         {
-            var token = Request.Headers["Authorization"].ToString();
-            if (string.IsNullOrEmpty(token))
-                return Unauthorized(new { message = "Token bulunamadı." });
 
             var client = _httpClientFactory.CreateClient("CoreAPI");
-            client.DefaultRequestHeaders.Add("Authorization", token);
 
             var response = await client.PostAsJsonAsync("api/Hesap/HesapVarMi", request);
             var sonuc = await response.Content.ReadAsStringAsync();
@@ -64,13 +60,25 @@ namespace BankaSimulasyonAraKatman.Controllers
         [HttpPost("HesapVarMiTelNoIle")]
         public async Task<IActionResult> HesapVarMiTelNoIle([FromBody] object request)
         {
-            
+
             var client = _httpClientFactory.CreateClient("CoreAPI");
 
             var response = await client.PostAsJsonAsync("api/Hesap/HesapVarMiTelNoIle", request);
             var sonuc = await response.Content.ReadAsStringAsync();
             return Ok(sonuc);
         }
+
+        [HttpPost("HesabaKartsizParaGonder")]
+        public async Task<IActionResult> HesabaKartsizParaGonder([FromBody] object request)
+        {
+
+            var client = _httpClientFactory.CreateClient("CoreAPI");
+
+            var response = await client.PostAsJsonAsync("api/Hesap/HesabaKartsizParaGonder", request);
+            var sonuc = await response.Content.ReadAsStringAsync();
+            return Ok(sonuc);
+        }
+
 
 
 

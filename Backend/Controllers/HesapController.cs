@@ -67,6 +67,19 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        [HttpPost("HesabaKartsizParaGonder")]
+        public IActionResult HesabaKartsizParaGonder([FromBody] HesabaKartsizParaGonderRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
+
+            var sonuc = _hesapService.HesabaKartsizParaGonder(
+                request.HesapNumara,
+                request.GonderilecekTutar
+            );
+
+            return Ok(sonuc);
+        }
 
 
 

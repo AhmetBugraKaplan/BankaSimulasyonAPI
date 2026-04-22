@@ -1,0 +1,67 @@
+.icerik {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.onay-kutu {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px 28px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.bilgi-satir-wrapper {
+  background: #f9f6ef;
+  border-radius: 14px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 2px solid #e0d0a0;
+}
+
+.bilgi-satir {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ede8d8;
+}
+
+.bilgi-satir:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.bilgi-etiket {
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.bilgi-deger {
+  color: #1a1a1a;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+}
+
+.bilgi-deger.maksimum {
+  color: #b07800;
+  font-size: 16px;
+}
+
+.onay-aciklama {
+  color: #1a1a1a;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+}
