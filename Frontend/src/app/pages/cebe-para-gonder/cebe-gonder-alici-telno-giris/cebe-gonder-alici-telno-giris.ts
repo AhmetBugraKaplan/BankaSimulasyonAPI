@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-cebe-gonder-kendi-telno-giris',
+  selector: 'app-cebe-gonder-alici-telno-giris',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './cebe-gonder-kendi-telno-giris.html',
-  styleUrl: './cebe-gonder-kendi-telno-giris.css',
+  templateUrl: './cebe-gonder-alici-telno-giris.html',
+  styleUrl: './cebe-gonder-alici-telno-giris.css',
 })
-export class CebeGonderKendiTelnoGiris implements AfterViewInit {
+export class CebeGonderAliciTelnoGiris implements AfterViewInit {
 
   @ViewChild('telInput') telInput!: ElementRef;
 
@@ -56,7 +56,7 @@ export class CebeGonderKendiTelnoGiris implements AfterViewInit {
       this.hataMesaji = 'Lütfen geçerli bir telefon numarası giriniz.';
       return;
     }
-    sessionStorage.setItem('cebeGonderTelNo', raw);
+    sessionStorage.setItem('cebeGonderAliciTelNo', raw);
     this.router.navigate(['/cebe-gonder-gonderilecektutargiris']);
   }
 

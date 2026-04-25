@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CebeGonderKendiTelnoGiris } from './cebe-gonder-kendi-telno-giris';
+import { CebeGonderKendiTelnoGiris } from './cebe-gonder-alici-telno-giris';
 
 describe('CebeGonderKendiTelnoGiris', () => {
   let component: CebeGonderKendiTelnoGiris;

@@ -35,6 +35,7 @@ export class SmsOnayKoduGir implements AfterViewInit {
 
   onayla(): void {
     if (this.kod.length < 4) {
+      console.log(this.kod.length);
       this.hataMesaji = 'Lütfen 4 haneli kodu eksiksiz giriniz.';
       return;
     }

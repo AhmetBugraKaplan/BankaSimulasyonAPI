@@ -7,6 +7,8 @@ using BankaSimulasyon.Data;
 using BankaSimulasyon.Models.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using BankaSimulasyon.Models.Responses;
+
 
 namespace BankaSimulasyon.Repositories
 {
@@ -89,32 +91,64 @@ namespace BankaSimulasyon.Repositories
 
         public int HesapVarMiTelNoIle(string telefonNumara)
         {
-            var telefonNumaraParam = new SqlParameter("@TelefonNumara",telefonNumara);
+            var telefonNumaraParam = new SqlParameter("@TelefonNumara", telefonNumara);
             var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
             sonucParam.Direction = ParameterDirection.Output;
 
             _context.Database.ExecuteSqlRaw(
-                "EXEC SP_MusteriVarMiTelNoIleKontrol @TelefonNumara, @Sonuc OUTPUT",telefonNumaraParam,sonucParam
+                "EXEC SP_MusteriVarMiTelNoIleKontrol @TelefonNumara, @Sonuc OUTPUT", telefonNumaraParam, sonucParam
             );
-            
+
             return (int)sonucParam.Value;
         }
 
 
-        public int HesabaKartsizParaGonder(string hesapNumara,decimal gonderilecekTutar)
+        public int HesabaKartsizParaGonder(string hesapNumara, decimal gonderilecekTutar)
         {
-            var hesapNumaraParam = new SqlParameter("@HesapNumara",hesapNumara);
-            var gonderilecekTutarParam = new SqlParameter("@GonderilenTutar",gonderilecekTutar);
-            var sonucParam = new SqlParameter("@Sonuc",SqlDbType.Int);
+            var hesapNumaraParam = new SqlParameter("@HesapNumara", hesapNumara);
+            var gonderilecekTutarParam = new SqlParameter("@GonderilenTutar", gonderilecekTutar);
+            var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
             sonucParam.Direction = ParameterDirection.Output;
 
             _context.Database.ExecuteSqlRaw(
                 "EXEC SP_KartsizParaGonderHesaba @HesapNumara, @GonderilenTutar, @Sonuc OUTPUT",
-                hesapNumaraParam,gonderilecekTutarParam,sonucParam
+                hesapNumaraParam, gonderilecekTutarParam, sonucParam
             );
-            
+
             return (int)sonucParam.Value;
         }
+
+        public CebeGonderSpResponse CebeParaGonder(
+            string gonderenHesapNo,
+            string aliciTckNO,
+            string aliciTelNo,
+            decimal tutar,
+            string smsOnayKodu)
+        {
+            var gonderenHesapNoParam = new SqlParameter("@GonderenHesapNo", gonderenHesapNo);
+            var aliciTckNOParam = new SqlParameter("@AliciTckNO", aliciTckNO);
+            var aliciTelNoParam = new SqlParameter("@AliciTelNo", aliciTelNo);
+            var tutarParam = new SqlParameter("@Tutar", tutar);
+            var smsOnayKoduParam = new SqlParameter("@SmsOnayKodu", smsOnayKodu);
+
+            var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
+            sonucParam.Direction = ParameterDirection.Output;
+
+            var mesajParam = new SqlParameter("@Mesaj", SqlDbType.NVarChar, 255);
+            mesajParam.Direction = ParameterDirection.Output;
+
+            _context.Database.ExecuteSqlRaw(
+                "EXEC SP_CebeParaGonder @GonderenHesapNo, @AliciTckNO, @AliciTelNo, @Tutar, @SmsOnayKodu, @Sonuc OUTPUT, @Mesaj OUTPUT",
+                gonderenHesapNoParam, aliciTckNOParam, aliciTelNoParam, tutarParam, smsOnayKoduParam, sonucParam, mesajParam
+            );
+
+            return new CebeGonderSpResponse
+            {
+                Sonuc = (int)sonucParam.Value,
+                Mesaj = mesajParam.Value?.ToString() ?? string.Empty
+            };
+        }
+
 
 
 

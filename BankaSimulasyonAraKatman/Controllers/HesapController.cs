@@ -79,6 +79,22 @@ namespace BankaSimulasyonAraKatman.Controllers
             return Ok(sonuc);
         }
 
+        [HttpPost("CebeParaGonder")]
+        public async Task<IActionResult> CebeParaGonder([FromBody] object request)
+        {
+            var client = _httpClientFactory.CreateClient("CoreAPI");
+
+            var token = Request.Headers["Authorization"].ToString();
+
+            client.DefaultRequestHeaders.Add("Authorization", token);
+
+            var response = await client.PostAsJsonAsync("api/Hesap/CebeParaGonder", request);
+            var sonuc = await response.Content.ReadAsStringAsync();
+            return Ok(sonuc);
+        }
+
+
+
 
 
 

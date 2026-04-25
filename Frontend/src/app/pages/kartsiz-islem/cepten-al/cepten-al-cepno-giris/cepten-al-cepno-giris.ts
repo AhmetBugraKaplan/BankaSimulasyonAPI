@@ -45,7 +45,7 @@ export class CeptenAlCepnoGiris implements AfterViewInit {
       return;
     }
     sessionStorage.setItem('ceptenAlKendiTelNo', raw);
-    this.router.navigate(['/cepten-al-gonderen-cepno-giris']);
+    this.router.navigate(['/cepten-al-sms-dogrulama']);
   }
 
   geriDon(): void {

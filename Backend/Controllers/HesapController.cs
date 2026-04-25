@@ -82,6 +82,24 @@ namespace BankaSimulasyon.Controllers
         }
 
 
+        [HttpPost("CebeParaGonder")]
+        public IActionResult CebeParaGonder([FromBody] CebeParaGonderRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
+
+            var sonuc = _hesapService.CebeParaGonder(
+                request.aliciTckNO,
+                request.aliciTelNo,
+                request.gonderilenTutar
+            );
+
+            return Ok(sonuc);
+        }
+
+
+
+
 
 
 

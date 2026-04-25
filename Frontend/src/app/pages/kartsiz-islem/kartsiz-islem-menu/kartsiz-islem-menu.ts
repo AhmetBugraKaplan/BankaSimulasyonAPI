@@ -16,11 +16,7 @@ export class KartsizIslemMenu {
   baskasininHesabina(): void {
     this.router.navigate(['/alici-hesap-no-gir']);
   }
-
-  cebeParaGonder(): void {
-    this.router.navigate(['/cebe-gonder-tc-giris']);
-  }
-
+  
   ceptenParaAl(): void {
     this.router.navigate(['/cepten-al-tc-giris']);
   }

@@ -4,6 +4,7 @@ using BankaSimulasyon.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankaSimulasyon.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260425130132_addedtckno")]
+    partial class addedtckno
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,55 +73,6 @@ namespace BankaSimulasyon.Migrations
                     b.HasIndex("AtmId");
 
                     b.ToTable("AtmKasetler");
-                });
-
-            modelBuilder.Entity("BankaSimulasyon.Models.Entities.CebeGonderBekleyenIslem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AliciTckNO")
-                        .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
-
-                    b.Property<string>("AliciTelNo")
-                        .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
-
-                    b.Property<DateTime?>("CekilmeTarihi")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Durum")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("GonderenHesapNo")
-                        .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
-
-                    b.Property<DateTime>("GonderimTarihi")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("SmsOnayKodu")
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
-
-                    b.Property<DateTime>("SonKabullenmeTarihi")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Tutar")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CebeGonderBekleyenIslemler");
                 });
 
             modelBuilder.Entity("BankaSimulasyon.Models.Entities.Hesap", b =>

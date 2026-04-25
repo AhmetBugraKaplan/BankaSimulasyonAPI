@@ -11,6 +11,7 @@ using BankaSimulasyon.Repositories;
 using Microsoft.IdentityModel.Tokens;
 
 
+
 namespace BankaSimulasyon.Services
 {
     public class HesapService : IHesapServis
@@ -19,13 +20,16 @@ namespace BankaSimulasyon.Services
         private readonly IMusteriRepository _kullaniciRepository;
         private readonly IAtmService _atmService;
         private readonly AppDbContext _context;
+        private readonly ISmsService _smsService;          
 
-        public HesapService(IHesapRepository hesapRepository, IAtmService atmService, IMusteriRepository kullaniciRepository, AppDbContext context)
+        public HesapService(IHesapRepository hesapRepository, 
+                            IAtmService atmService, IMusteriRepository kullaniciRepository, AppDbContext context, ISmsService smsService)
         {
             _hesapRepository = hesapRepository;
             _atmService = atmService;
             _kullaniciRepository = kullaniciRepository;
             _context = context;
+            _smsService = smsService;
         }
 
         public ApiResponse<List<Hesap>> MusterininTumHesaplariniGetir(string kartNumara)
@@ -123,7 +127,6 @@ namespace BankaSimulasyon.Services
             return response;
         }
 
-
         public ApiResponse<int> HesabaKartsizParaGonder(string hesapNumara, decimal gonderilecekTutar)
         {
             ApiResponse<int> response = new();
@@ -157,6 +160,64 @@ namespace BankaSimulasyon.Services
 
             return response;
         }
+
+        public ApiResponse<object> CebeParaGonder(string gonderenKartNo, string gonderenTelNo, string aliciTckNO,
+                                                    string aliciTelNo, decimal gonderilenTutar)
+        {
+            ApiResponse<object> CebeParaGonderApiResponse = new();
+
+            // 1. Validation - Tutar kontrolü
+            if (gonderilenTutar <= 0)
+            {
+                CebeParaGonderApiResponse.IslemBasariliMi = false;
+                CebeParaGonderApiResponse.Mesaj = "Gönderilecek tutar sıfırdan büyük olmalıdır.";
+                return CebeParaGonderApiResponse;
+            }
+
+            if (gonderilenTutar > 5000)
+            {
+                CebeParaGonderApiResponse.IslemBasariliMi = false;
+                CebeParaGonderApiResponse.Mesaj = "Tek seferde en fazla 5.000 ₺ gönderebilirsiniz.";
+                return CebeParaGonderApiResponse;
+            }
+
+            // 2. Gönderen kartına ait hesabı bul
+            List<Hesap> gonderenHesaplari = _hesapRepository.MusterininTumHesaplariniGetir(gonderenKartNo);
+
+            if (gonderenHesaplari == null || gonderenHesaplari.Count == 0)
+            {
+                CebeParaGonderApiResponse.IslemBasariliMi = false;
+                CebeParaGonderApiResponse.Mesaj = "Gönderen hesap bulunamadı.";
+                return CebeParaGonderApiResponse;
+            }
+
+            string gonderenHesapNo = gonderenHesaplari.First().HesapNumara;
+
+            // 3. SMS onay kodu üret
+            string smsOnayKodu = new Random().Next(1000, 9999).ToString();
+
+            // 4. SP'yi çağır (bakiye düşürme + bekleyen kayıt - atomik)
+            CebeGonderSpResponse spSonuc = _hesapRepository.CebeParaGonder(
+                gonderenHesapNo, aliciTckNO, aliciTelNo, gonderilenTutar, smsOnayKodu);
+
+            // 5. SP başarısızsa hata dön
+            if (spSonuc.Sonuc == 0)
+            {
+                CebeParaGonderApiResponse.IslemBasariliMi = false;
+                CebeParaGonderApiResponse.Mesaj = spSonuc.Mesaj;
+                return CebeParaGonderApiResponse;
+            }
+
+            // 6. SP başarılı - SMS gönder (gönderene)
+            _smsService.SmsGonder(gonderenTelNo, smsOnayKodu);
+
+            // 7. Başarılı response
+            CebeParaGonderApiResponse.IslemBasariliMi = true;
+            CebeParaGonderApiResponse.Mesaj = "Para gönderme işlemi başarılı. SMS onay kodu telefonunuza iletildi.";
+            return CebeParaGonderApiResponse;
+        }
+
+
 
 
 

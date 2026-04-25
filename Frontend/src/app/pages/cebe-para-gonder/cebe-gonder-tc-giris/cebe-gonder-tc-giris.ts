@@ -47,7 +47,7 @@ export class CebeGonderTcGiris implements AfterViewInit {
     // });
 
     // Servis entegrasyonu tamamlanana kadar direkt geçiş:
-    sessionStorage.setItem('cebeGonderTcNo', this.tcNo);
+    sessionStorage.setItem('cebeGonderAliciTcNo', this.tcNo);
     this.router.navigate(['/cebe-gonder-kendi-telno-giris']);
   }
 

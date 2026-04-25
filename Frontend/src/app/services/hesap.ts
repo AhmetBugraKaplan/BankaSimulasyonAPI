@@ -62,21 +62,28 @@ export class HesapService {
         );
     }
 
-    hesapVarMiTelNoIle(telefonNumara: string): Observable<BaseResponse<boolean>>{
+    hesapVarMiTelNoIle(telefonNumara: string): Observable<BaseResponse<boolean>> {
         return this.http.post<BaseResponse<boolean>>(
             `${this.hesapUrl}/HesapVarMiTelNoIle`,
-            {telefonNumara:telefonNumara} //Burdaki 1.parametre ismi backenndeki isim ile aynı olmalı 
+            { telefonNumara: telefonNumara } //Burdaki 1.parametre ismi backenndeki isim ile aynı olmalı 
             // 2. parametre ismi yukarıda bizim tanımladığımız isim
         );
     }
 
-  hesabaKartsizParaGonder(hesapNumara: string, gonderilecekTutar: number): Observable<BaseResponse<number>> {
-    return this.http.post<BaseResponse<number>>(
-        `${this.hesapUrl}/HesabaKartsizParaGonder`,
-        { HesapNumara: hesapNumara, GonderilecekTutar: gonderilecekTutar }
-    );
-}
+    hesabaKartsizParaGonder(hesapNumara: string, gonderilecekTutar: number): Observable<BaseResponse<number>> {
+        return this.http.post<BaseResponse<number>>(
+            `${this.hesapUrl}/HesabaKartsizParaGonder`,
+            { HesapNumara: hesapNumara, GonderilecekTutar: gonderilecekTutar }
+        );
+    }
 
-    
+    cebeParaGonder(aliciTckNO: string, aliciTelNo: string,gonderilenTutar:number): Observable<BaseResponse<void>> {
+        return this.http.post<BaseResponse<void>>(
+            `${this.hesapUrl}/CebeParaGonder`, 
+            { aliciTckNO:aliciTckNO, aliciTelNo : aliciTelNo, gonderilenTutar:gonderilenTutar }
+        );
+    }
+
+
 
 }

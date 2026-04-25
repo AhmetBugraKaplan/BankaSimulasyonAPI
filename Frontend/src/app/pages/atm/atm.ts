@@ -21,8 +21,12 @@ export class Atm {
     this.router.navigate(['/limit-goruntule'])
   }
 
-  paraTransfer(){
+  paraTransfer() {
     this.router.navigate(['/para-transfer'])
+  }
+
+  cebeParaGonder(): void {
+    this.router.navigate(['/cebe-gonder-tc-giris']);
   }
 
   cikisYap() {

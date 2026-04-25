@@ -1,0 +1,80 @@
+.aciklama {
+  color: #1a1a1a;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+}
+
+/* ── Geri sayım yuvarlağı ── */
+.sayac-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto;
+}
+
+.sayac-svg {
+  width: 72px;
+  height: 72px;
+  transform: rotate(-90deg);
+}
+
+.sayac-arka {
+  fill: none;
+  stroke: #e0d0a0;
+  stroke-width: 5;
+}
+
+.sayac-on {
+  fill: none;
+  stroke: #e09800;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 163.36;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.9s linear;
+}
+
+.sayac-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  font-family: 'Noto Sans', sans-serif;
+}
+
+/* ── Tekrar gönder butonu ── */
+.tekrar-gonder-btn {
+  width: auto;
+  align-self: center;
+  padding: 10px 24px;
+  border-radius: 50px;
+  border: 2px dashed #c0b090;
+  background: transparent;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #9a8a6a;
+  cursor: not-allowed;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.tekrar-gonder-btn.aktif-btn {
+  border: 2px solid #e09800;
+  background: linear-gradient(135deg, #f5c842 0%, #e09800 100%);
+  color: #1a1a1a;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(180,120,0,0.22);
+}
+
+.tekrar-gonder-btn.aktif-btn:hover {
+  filter: brightness(1.08);
+}

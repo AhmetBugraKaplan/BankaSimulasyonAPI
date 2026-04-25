@@ -24,10 +24,9 @@ import { KartsizIslemOnaylandi } from './pages/kartsiz-islem/kartsiz-havale/kart
 import { KartsizIslemMenu } from './pages/kartsiz-islem/kartsiz-islem-menu/kartsiz-islem-menu';
 
 // Cebe Para Gönder
-import { CebeGonderTcGiris } from './pages/kartsiz-islem/cebe-para-gonder/cebe-gonder-tc-giris/cebe-gonder-tc-giris';
-import { CebeGonderKendiTelnoGiris } from './pages/kartsiz-islem/cebe-para-gonder/cebe-gonder-tc-giris/cebe-gonder-kendi-telno-giris/cebe-gonder-kendi-telno-giris';
-import { CebeGonderGonderilecektutargiris } from './pages/kartsiz-islem/cebe-para-gonder/cebe-gonder-gonderilecektutargiris/cebe-gonder-gonderilecektutargiris';
-
+import { CebeGonderTcGiris } from './pages/cebe-para-gonder/cebe-gonder-tc-giris/cebe-gonder-tc-giris';
+import { CebeGonderAliciTelnoGiris } from './pages/cebe-para-gonder/cebe-gonder-alici-telno-giris/cebe-gonder-alici-telno-giris';
+import { CebeGonderGonderilecektutargiris } from './pages/cebe-para-gonder/cebe-gonder-gonderilecektutargiris/cebe-gonder-gonderilecektutargiris';
 // Cepten Al
 import { CeptenAlTcGiris } from './pages/kartsiz-islem/cepten-al/cepten-al-tc-giris/cepten-al-tc-giris';
 import { CeptenAlCepnoGiris } from './pages/kartsiz-islem/cepten-al/cepten-al-cepno-giris/cepten-al-cepno-giris';
@@ -36,6 +35,8 @@ import { CeptenAlTutarbilgisiGiris } from './pages/kartsiz-islem/cepten-al/cepte
 import { CeptenAlSmsonayGiris } from './pages/kartsiz-islem/cepten-al/cepten-al-smsonay-giris/cepten-al-smsonay-giris';
 import { CeptenAlOnay } from './pages/kartsiz-islem/cepten-al/cepten-al-onay/cepten-al-onay';
 import { CeptenAlParaayal } from './pages/kartsiz-islem/cepten-al/cepten-al-paraayal/cepten-al-paraayal';
+import { CeptenAlSmsDogrulama } from './pages/kartsiz-islem/cepten-al/cepten-al-sms-dogrulama/cepten-al-sms-dogrulama';
+
 
 export const routes: Routes = [
   { path: '', component: Login },
@@ -68,7 +69,7 @@ export const routes: Routes = [
 
   // Cebe Para Gönder
   { path: 'cebe-gonder-tc-giris', component: CebeGonderTcGiris },
-  { path: 'cebe-gonder-kendi-telno-giris', component: CebeGonderKendiTelnoGiris },
+  { path: 'cebe-gonder-kendi-telno-giris', component: CebeGonderAliciTelnoGiris },
   { path: 'cebe-gonder-gonderilecektutargiris', component: CebeGonderGonderilecektutargiris },
 
   // Cepten Al
@@ -79,4 +80,5 @@ export const routes: Routes = [
   { path: 'cepten-al-smsonay-giris', component: CeptenAlSmsonayGiris },
   { path: 'cepten-al-onay', component: CeptenAlOnay },
   { path: 'cepten-al-paraayal', component: CeptenAlParaayal },
+  { path: 'cepten-al-sms-dogrulama', component: CeptenAlSmsDogrulama },
 ];

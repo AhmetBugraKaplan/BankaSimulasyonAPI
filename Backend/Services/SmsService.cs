@@ -25,30 +25,7 @@ namespace BankaSimulasyon.Services
 
         public void SmsGonder(string telefonNumara, string kod)
         {
-
-            TwilioClient.Init("", "");
-
             _logger.LogWarning(">>> OTP KOD: {Kod} | Telefon: {Telefon}", kod, telefonNumara);
-
-
-            var accountSid = _config["Twilio:AccountSid"];
-            var authToken = _config["Twilio:AuthToken"];
-            var fromNumber = _config["Twilio:FromNumber"];
-
-            TwilioClient.Init(accountSid, authToken);
-
-            var message = MessageResource.Create(
-                to: new Twilio.Types.PhoneNumber("+90" + telefonNumara),
-
-                from: new Twilio.Types.PhoneNumber(""),
-
-
-                body: $"ATM doğrulama kodunuz: {kod}"
-            );
-
-            _logger.LogWarning(">>> Twilio Status: {Status} | SID: {Sid}", message.Status, message.Sid);
-
-            _onayRepository.OnayKoduDogruMu(kod,telefonNumara);
             _onayRepository.OnayKodunuDbKaydet(kod, telefonNumara);
         }
     }
