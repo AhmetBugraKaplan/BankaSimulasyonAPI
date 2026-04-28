@@ -89,6 +89,18 @@ export class HesapService {
         );
     }
 
+    cebeParaCek(
+        aliciTckNO: string,
+        aliciTelNo: string,
+        gonderenTelNo: string,
+        tutar: number
+    ): Observable<BaseResponse<void>> {
+        return this.http.post<BaseResponse<void>>(
+            `${this.hesapUrl}/CebeParaCek`,
+            { aliciTckNO, aliciTelNo, gonderenTelNo, tutar }
+        );
+    }
+
 
 
 }

@@ -37,6 +37,7 @@ namespace BankaSimulasyon.Models.Entities
         public string Durum { get; set; } = string.Empty;// Bekliyor | Cekildi | IadeEdildi
 
         public DateTime? CekilmeTarihi { get; set; }
+        
 
     }
 }

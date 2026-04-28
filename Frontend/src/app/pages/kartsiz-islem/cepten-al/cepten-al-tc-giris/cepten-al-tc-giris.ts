@@ -32,15 +32,7 @@ export class CeptenAlTcGiris implements AfterViewInit {
       this.hataMesaji = 'Lütfen geçerli bir T.C. Kimlik No giriniz.';
       return;
     }
-    // TC doğrulama servisi buraya gelecek
-    // this.tcService.tcDogrula(this.tcNo).subscribe(sonuc => {
-    //   if (sonuc.islemBasariliMi) {
-    //     sessionStorage.setItem('ceptenAlTcNo', this.tcNo);
-    //     this.router.navigate(['/cepten-al-cepno-giris']);
-    //   } else {
-    //     this.hataMesaji = sonuc.mesaj;
-    //   }
-    // });
+  
 
     sessionStorage.setItem('ceptenAlTcNo', this.tcNo);
     this.router.navigate(['/cepten-al-cepno-giris']);

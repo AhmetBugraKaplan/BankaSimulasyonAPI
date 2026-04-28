@@ -161,11 +161,7 @@ namespace BankaSimulasyon.Services
             return response;
         }
 
-        public ApiResponse<object> CebeParaGonder(
-     string gonderenKartNo,
-     string aliciTckNO,
-     string aliciTelNo,
-     decimal gonderilenTutar)
+        public ApiResponse<object> CebeParaGonder(string gonderenKartNo, string aliciTckNO, string aliciTelNo, decimal gonderilenTutar)
         {
             ApiResponse<object> CebeParaGonderApiResponse = new();
 
@@ -217,15 +213,11 @@ namespace BankaSimulasyon.Services
         }
 
 
-        public ApiResponse<object> CebeParaCek(
-    string aliciTckNO,
-    string aliciTelNo,
-    string gonderenTelNo,
-    decimal tutar)
+        public ApiResponse<object> CebeParaCek(string aliciTckNO, string aliciTelNo, string gonderenTelNo, decimal tutar)
         {
             ApiResponse<object> CebeParaCekApiResponse = new();
 
-            // 1. Validation - Tutar
+
             if (tutar <= 0)
             {
                 CebeParaCekApiResponse.IslemBasariliMi = false;

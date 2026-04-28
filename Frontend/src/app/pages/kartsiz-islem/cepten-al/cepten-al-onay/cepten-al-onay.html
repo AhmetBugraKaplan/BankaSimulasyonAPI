@@ -29,21 +29,27 @@
         </div>
       </div>
 
-      <p class="onay-aciklama">Lütfen işleminizi onaylıyorsanız ONAY butonuna tıklayın.</p>
+      <p class="onay-aciklama" *ngIf="!hataMesaji">
+        Lütfen işleminizi onaylıyorsanız ONAY butonuna tıklayın.
+      </p>
+
+      <p class="hata-mesaji" *ngIf="hataMesaji">
+        {{ hataMesaji }}
+      </p>
 
     </div>
   </div>
 
   <div class="bottom-bar">
-    <button class="atm-btn" (click)="geriDon()">
+    <button class="atm-btn" (click)="geriDon()" [disabled]="yukleniyor">
       <span class="icon-left">
         <svg viewBox="0 0 13 13" fill="none"><path d="M9 6.5H4M4 6.5L6.5 4M4 6.5L6.5 9" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
       </span>
       <span class="btn-label">Geri</span>
     </button>
-    <button class="atm-btn" (click)="onayla()">
-      <span class="btn-label">Onay</span>
-      <span class="icon-right">
+    <button class="atm-btn" (click)="onayla()" [disabled]="yukleniyor">
+      <span class="btn-label">{{ yukleniyor ? 'İşleniyor...' : 'Onay' }}</span>
+      <span class="icon-right" *ngIf="!yukleniyor">
         <svg viewBox="0 0 13 13" fill="none"><path d="M4 6.5h5M9 6.5L6.5 4M9 6.5L6.5 9" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
       </span>
     </button>

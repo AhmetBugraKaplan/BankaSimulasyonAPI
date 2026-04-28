@@ -24,7 +24,6 @@ namespace BankaSimulasyon.Repositories
 
         public int KartEkle(int musteriId, string kartNumara, decimal kartGunlukLimit, string kartSifre)
         {
-
             //Önce input atamalarını yapıyoaruz her zaman
             var MusteriIdParam = new SqlParameter("@KullaniciId", musteriId);
             var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);

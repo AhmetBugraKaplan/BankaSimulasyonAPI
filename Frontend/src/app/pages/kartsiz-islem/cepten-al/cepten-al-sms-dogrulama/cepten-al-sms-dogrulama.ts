@@ -2,6 +2,7 @@ import { Component, AfterViewInit, OnDestroy, ViewChild, ElementRef, NgZone } fr
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Onay } from '../../../../services/onay';
 
 @Component({
   selector: 'app-cepten-al-sms-dogrulama',
@@ -19,18 +20,20 @@ export class CeptenAlSmsDogrulama implements AfterViewInit, OnDestroy {
   kalanSure: number = 60;
   tekrarGonderAktif: boolean = false;
 
-  readonly cember = 2 * Math.PI * 26; // ≈ 163.36
+  readonly cember = 2 * Math.PI * 26;
   dashOffset: number = 0;
 
   private interval: any;
 
-  constructor(private router: Router, private ngZone: NgZone) {}
+  constructor(
+    private router: Router,
+    private ngZone: NgZone,
+    private onayService: Onay
+  ) {}
 
   ngAfterViewInit(): void {
     this.focusInput();
     this.sayaciBaslat();
-
-    // Her tıklamada focus'u geri al
     document.addEventListener('click', this.focusInput.bind(this));
     document.addEventListener('keydown', this.focusInput.bind(this));
   }
@@ -53,7 +56,6 @@ export class CeptenAlSmsDogrulama implements AfterViewInit, OnDestroy {
     this.dashOffset = 0;
     clearInterval(this.interval);
 
-    // NgZone içinde çalıştır ki Angular değişiklik tespiti çalışsın
     this.ngZone.runOutsideAngular(() => {
       this.interval = setInterval(() => {
         this.ngZone.run(() => {
@@ -74,11 +76,19 @@ export class CeptenAlSmsDogrulama implements AfterViewInit, OnDestroy {
     this.kod = '';
     this.hataMesaji = '';
 
-    // SMS tekrar gönder servisi buraya gelecek
-    // this.smsService.smsTekrarGonder(sessionStorage.getItem('ceptenAlKendiTelNo')).subscribe();
+    const telNo = sessionStorage.getItem('ceptenAlKendiTelNo') ?? '';
 
-    this.sayaciBaslat();
-    this.focusInput();
+    this.onayService.onayKodUret(telNo).subscribe({
+      next: (response) => {
+        console.log('Kod tekrar üretildi:', response);
+        this.sayaciBaslat();
+        this.focusInput();
+      },
+      error: (err) => {
+        console.error('Hata:', err);
+        this.hataMesaji = 'SMS tekrar gönderilirken bir hata oluştu.';
+      }
+    });
   }
 
   kodGirildi(): void {
@@ -91,16 +101,23 @@ export class CeptenAlSmsDogrulama implements AfterViewInit, OnDestroy {
       this.hataMesaji = 'Lütfen 4 haneli kodu eksiksiz giriniz.';
       return;
     }
-    // SMS doğrulama servisi buraya gelecek
-    // this.smsService.smsDogrula(this.kod).subscribe(sonuc => {
-    //   if (sonuc.islemBasariliMi) {
-    //     this.router.navigate(['/cepten-al-gonderen-cepno-giris']);
-    //   } else {
-    //     this.hataMesaji = sonuc.mesaj;
-    //   }
-    // });
 
-    this.router.navigate(['/cepten-al-gonderen-cepno-giris']);
+    const telNo = sessionStorage.getItem('ceptenAlKendiTelNo') ?? '';
+
+    this.onayService.onayKoduDogruMu(this.kod, telNo).subscribe({
+      next: (sonuc) => {
+        if (sonuc.islemBasariliMi) {
+          this.router.navigate(['/cepten-al-gonderen-cepno-giris']);
+        } else {
+          this.hataMesaji = 'Girilen kod hatalı veya süresi dolmuş.';
+          this.kod = '';
+        }
+      },
+      error: (err) => {
+        console.error('Hata:', err);
+        this.hataMesaji = 'Doğrulama sırasında bir hata oluştu.';
+      }
+    });
   }
 
   geriDon(): void {

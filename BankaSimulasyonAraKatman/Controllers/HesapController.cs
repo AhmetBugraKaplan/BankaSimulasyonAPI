@@ -94,6 +94,17 @@ namespace BankaSimulasyonAraKatman.Controllers
         }
 
 
+        [HttpPost("CebeParaCek")]
+        public async Task<IActionResult> CebeParaCek([FromBody] object request)
+        {
+            var client = _httpClientFactory.CreateClient("CoreAPI");
+
+            var response = await client.PostAsJsonAsync("api/Hesap/CebeParaCek", request);
+            var sonuc = await response.Content.ReadAsStringAsync();
+            return Ok(sonuc);
+        }
+
+
     }
 }
 

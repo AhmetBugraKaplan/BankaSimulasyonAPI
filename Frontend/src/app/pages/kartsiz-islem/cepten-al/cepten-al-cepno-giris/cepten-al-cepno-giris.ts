@@ -2,6 +2,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Onay } from '../../../../services/onay';
 
 @Component({
   selector: 'app-cepten-al-cepno-giris',
@@ -16,7 +17,10 @@ export class CeptenAlCepnoGiris implements AfterViewInit {
   telNo: string = '05';
   hataMesaji: string = '';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private onayService: Onay
+  ) {}
 
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -44,7 +48,15 @@ export class CeptenAlCepnoGiris implements AfterViewInit {
       this.hataMesaji = 'Lütfen geçerli bir telefon numarası giriniz.';
       return;
     }
+
     sessionStorage.setItem('ceptenAlKendiTelNo', raw);
+
+    // SMS kodu üret + gönder
+    this.onayService.onayKodUret(raw).subscribe({
+      next: (response) => console.log('Kod üretildi:', response),
+      error: (err) => console.error('Hata:', err)
+    });
+
     this.router.navigate(['/cepten-al-sms-dogrulama']);
   }
 
