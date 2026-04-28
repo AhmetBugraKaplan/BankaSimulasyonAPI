@@ -22,9 +22,9 @@ export class CebeGonderGonderilecektutargiris implements OnInit, AfterViewInit {
   constructor(private router: Router, private hesapService: HesapService) { }
 
   ngOnInit(): void {
-    const tel = sessionStorage.getItem('cebeGonderTelNo');
+    const tel = sessionStorage.getItem('cebeGonderAliciTelNo');
     if (!tel) {
-      this.router.navigate(['/cebe-gonder-kendi-telno-giris']);
+      this.router.navigate(['/cebe-gonder-alici-telno-giris']);
       return;
     }
     const raw = tel;
@@ -57,16 +57,22 @@ export class CebeGonderGonderilecektutargiris implements OnInit, AfterViewInit {
       return;
     }
 
+    const gonderenKartNo = sessionStorage.getItem('kartNumara');
     const aliciTckNO = sessionStorage.getItem('cebeGonderAliciTcNo');
     const aliciTelNo = sessionStorage.getItem('cebeGonderAliciTelNo');
 
+    if (!gonderenKartNo) {
+      this.hataMesaji = "Oturum bilgisi eksik, lütfen tekrar giriş yapın.";
+      return;
+    }
+
     if (!aliciTckNO || !aliciTelNo) {
-      console.error('Session bilgisi eksik');
-      this.hataMesaji = "Alici kimlik numarası ya da telefon numarası eksik!"
+      this.hataMesaji = "Alıcı kimlik numarası ya da telefon numarası eksik!";
       return;
     }
 
     this.hesapService.cebeParaGonder(
+      gonderenKartNo,
       aliciTckNO,
       aliciTelNo,
       tutar
@@ -77,7 +83,6 @@ export class CebeGonderGonderilecektutargiris implements OnInit, AfterViewInit {
         this.hataMesaji = sonuc.mesaj;
       }
     });
-
   }
 
   geriDon(): void {

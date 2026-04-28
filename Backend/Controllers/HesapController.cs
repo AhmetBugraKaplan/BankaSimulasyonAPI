@@ -89,14 +89,30 @@ namespace BankaSimulasyon.Controllers
                 return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
 
             var sonuc = _hesapService.CebeParaGonder(
-                request.aliciTckNO,
-                request.aliciTelNo,
-                request.gonderilenTutar
+                request.GonderenKartNo,
+                request.AliciTckNO,
+                request.AliciTelNo,
+                request.GonderilenTutar
             );
 
             return Ok(sonuc);
         }
 
+        [HttpPost("CebeParaCek")]
+        public IActionResult CebeParaCek([FromBody] CebeParaCekRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
+
+            var sonuc = _hesapService.CebeParaCek(
+                request.AliciTckNO,
+                request.AliciTelNo,
+                request.GonderenTelNo,
+                request.Tutar
+            );
+
+            return Ok(sonuc);
+        }
 
 
 

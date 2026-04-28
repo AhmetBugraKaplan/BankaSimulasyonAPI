@@ -94,12 +94,6 @@ namespace BankaSimulasyonAraKatman.Controllers
         }
 
 
-
-
-
-
-
-
     }
 }
 

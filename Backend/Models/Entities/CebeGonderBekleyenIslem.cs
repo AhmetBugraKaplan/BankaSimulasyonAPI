@@ -38,7 +38,5 @@ namespace BankaSimulasyon.Models.Entities
 
         public DateTime? CekilmeTarihi { get; set; }
 
-        [MaxLength(6)]
-        public string? SmsOnayKodu { get; set; }
     }
 }

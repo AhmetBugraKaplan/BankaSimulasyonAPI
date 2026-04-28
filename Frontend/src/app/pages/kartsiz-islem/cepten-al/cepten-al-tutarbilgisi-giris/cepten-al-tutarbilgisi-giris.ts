@@ -16,7 +16,7 @@ export class CeptenAlTutarbilgisiGiris implements AfterViewInit {
   tutar: number | null = null;
   hataMesaji: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngAfterViewInit(): void {
     setTimeout(() => this.tutarInput.nativeElement.focus(), 100);
@@ -36,7 +36,7 @@ export class CeptenAlTutarbilgisiGiris implements AfterViewInit {
       return;
     }
     sessionStorage.setItem('ceptenAlTutar', this.tutar.toString());
-    this.router.navigate(['/cepten-al-smsonay-giris']);
+    this.router.navigate(['/cepten-al-onay']);
   }
 
   geriDon(): void {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BankaSimulasyon.Models.Responses
 {
-    public class CebeGonderSpResponse
+    public class CebeSpResponse
     {
         public int Sonuc { get; set; }
         public string Mesaj { get; set; } = string.Empty;

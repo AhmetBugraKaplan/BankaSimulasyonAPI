@@ -17,7 +17,11 @@ namespace BankaSimulasyon.Repositories
         public int HesapBakiyeGuncelle(string hesapNumara, decimal degisimTutari);
         public int HesapVarMiTelNoIle(string telefonNumara);
         public int HesabaKartsizParaGonder(string hesapNumara, decimal gonderilecekTutar);
-        public CebeGonderSpResponse CebeParaGonder(string gonderenHesapNo, string aliciTckNO, 
-                                                string aliciTelNo, decimal tutar, string smsOnayKodu);
+        public CebeSpResponse CebeParaGonder(string gonderenHesapNo, string aliciTckNO, 
+                                                string aliciTelNo, decimal tutar);
+        public string KartNoIleMusteriTelNoGetir(string kartNumara);
+        public CebeSpResponse CebeParaCek(string aliciTckNO,string aliciTelNo,string gonderenTelNo,decimal tutar);
+ 
+
     }
 }

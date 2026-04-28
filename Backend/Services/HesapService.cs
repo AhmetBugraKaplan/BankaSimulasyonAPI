@@ -20,9 +20,9 @@ namespace BankaSimulasyon.Services
         private readonly IMusteriRepository _kullaniciRepository;
         private readonly IAtmService _atmService;
         private readonly AppDbContext _context;
-        private readonly ISmsService _smsService;          
+        private readonly ISmsService _smsService;
 
-        public HesapService(IHesapRepository hesapRepository, 
+        public HesapService(IHesapRepository hesapRepository,
                             IAtmService atmService, IMusteriRepository kullaniciRepository, AppDbContext context, ISmsService smsService)
         {
             _hesapRepository = hesapRepository;
@@ -161,12 +161,15 @@ namespace BankaSimulasyon.Services
             return response;
         }
 
-        public ApiResponse<object> CebeParaGonder(string gonderenKartNo, string gonderenTelNo, string aliciTckNO,
-                                                    string aliciTelNo, decimal gonderilenTutar)
+        public ApiResponse<object> CebeParaGonder(
+     string gonderenKartNo,
+     string aliciTckNO,
+     string aliciTelNo,
+     decimal gonderilenTutar)
         {
             ApiResponse<object> CebeParaGonderApiResponse = new();
 
-            // 1. Validation - Tutar kontrolü
+            // 1. Validation - Tutar
             if (gonderilenTutar <= 0)
             {
                 CebeParaGonderApiResponse.IslemBasariliMi = false;
@@ -193,14 +196,12 @@ namespace BankaSimulasyon.Services
 
             string gonderenHesapNo = gonderenHesaplari.First().HesapNumara;
 
-            // 3. SMS onay kodu üret
-            string smsOnayKodu = new Random().Next(1000, 9999).ToString();
 
-            // 4. SP'yi çağır (bakiye düşürme + bekleyen kayıt - atomik)
-            CebeGonderSpResponse spSonuc = _hesapRepository.CebeParaGonder(
-                gonderenHesapNo, aliciTckNO, aliciTelNo, gonderilenTutar, smsOnayKodu);
 
-            // 5. SP başarısızsa hata dön
+            // 3. SP çağır (bakiye düş + bekleyen kayıt)
+            CebeSpResponse spSonuc = _hesapRepository.CebeParaGonder(
+                gonderenHesapNo, aliciTckNO, aliciTelNo, gonderilenTutar);
+
             if (spSonuc.Sonuc == 0)
             {
                 CebeParaGonderApiResponse.IslemBasariliMi = false;
@@ -208,13 +209,45 @@ namespace BankaSimulasyon.Services
                 return CebeParaGonderApiResponse;
             }
 
-            // 6. SP başarılı - SMS gönder (gönderene)
-            _smsService.SmsGonder(gonderenTelNo, smsOnayKodu);
 
-            // 7. Başarılı response
+            // 4. Başarılı response
             CebeParaGonderApiResponse.IslemBasariliMi = true;
-            CebeParaGonderApiResponse.Mesaj = "Para gönderme işlemi başarılı. SMS onay kodu telefonunuza iletildi.";
+            CebeParaGonderApiResponse.Mesaj = "Para gönderme işlemi başarılı. Alıcı 3 gün içinde parayı çekebilir.";
             return CebeParaGonderApiResponse;
+        }
+
+
+        public ApiResponse<object> CebeParaCek(
+    string aliciTckNO,
+    string aliciTelNo,
+    string gonderenTelNo,
+    decimal tutar)
+        {
+            ApiResponse<object> CebeParaCekApiResponse = new();
+
+            // 1. Validation - Tutar
+            if (tutar <= 0)
+            {
+                CebeParaCekApiResponse.IslemBasariliMi = false;
+                CebeParaCekApiResponse.Mesaj = "Tutar sıfırdan büyük olmalıdır.";
+                return CebeParaCekApiResponse;
+            }
+
+            // 2. SP çağır (eşleşme + süre + Durum güncelle)
+            CebeSpResponse spSonuc = _hesapRepository.CebeParaCek(
+                aliciTckNO, aliciTelNo, gonderenTelNo, tutar);
+
+            if (spSonuc.Sonuc == 0)
+            {
+                CebeParaCekApiResponse.IslemBasariliMi = false;
+                CebeParaCekApiResponse.Mesaj = spSonuc.Mesaj;
+                return CebeParaCekApiResponse;
+            }
+
+            // 3. Başarılı response
+            CebeParaCekApiResponse.IslemBasariliMi = true;
+            CebeParaCekApiResponse.Mesaj = spSonuc.Mesaj;
+            return CebeParaCekApiResponse;
         }
 
 

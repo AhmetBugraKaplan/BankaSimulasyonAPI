@@ -17,7 +17,7 @@ export class CebeGonderAliciTelnoGiris implements AfterViewInit {
   telNo: string = '05';
   hataMesaji: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -58,6 +58,7 @@ export class CebeGonderAliciTelnoGiris implements AfterViewInit {
     }
     sessionStorage.setItem('cebeGonderAliciTelNo', raw);
     this.router.navigate(['/cebe-gonder-gonderilecektutargiris']);
+    
   }
 
   geriDon(): void {

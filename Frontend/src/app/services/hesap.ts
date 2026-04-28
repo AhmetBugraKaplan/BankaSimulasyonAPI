@@ -77,10 +77,15 @@ export class HesapService {
         );
     }
 
-    cebeParaGonder(aliciTckNO: string, aliciTelNo: string,gonderilenTutar:number): Observable<BaseResponse<void>> {
+    cebeParaGonder(
+        gonderenKartNo: string,
+        aliciTckNO: string,
+        aliciTelNo: string,
+        gonderilenTutar: number
+    ): Observable<BaseResponse<void>> {
         return this.http.post<BaseResponse<void>>(
-            `${this.hesapUrl}/CebeParaGonder`, 
-            { aliciTckNO:aliciTckNO, aliciTelNo : aliciTelNo, gonderilenTutar:gonderilenTutar }
+            `${this.hesapUrl}/CebeParaGonder`,
+            { gonderenKartNo, aliciTckNO, aliciTelNo, gonderilenTutar }
         );
     }
 

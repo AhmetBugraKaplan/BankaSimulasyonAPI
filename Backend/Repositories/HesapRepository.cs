@@ -118,18 +118,12 @@ namespace BankaSimulasyon.Repositories
             return (int)sonucParam.Value;
         }
 
-        public CebeGonderSpResponse CebeParaGonder(
-            string gonderenHesapNo,
-            string aliciTckNO,
-            string aliciTelNo,
-            decimal tutar,
-            string smsOnayKodu)
+        public CebeSpResponse CebeParaGonder(string gonderenHesapNo, string aliciTckNO, string aliciTelNo, decimal tutar)
         {
             var gonderenHesapNoParam = new SqlParameter("@GonderenHesapNo", gonderenHesapNo);
             var aliciTckNOParam = new SqlParameter("@AliciTckNO", aliciTckNO);
             var aliciTelNoParam = new SqlParameter("@AliciTelNo", aliciTelNo);
             var tutarParam = new SqlParameter("@Tutar", tutar);
-            var smsOnayKoduParam = new SqlParameter("@SmsOnayKodu", smsOnayKodu);
 
             var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
             sonucParam.Direction = ParameterDirection.Output;
@@ -138,11 +132,53 @@ namespace BankaSimulasyon.Repositories
             mesajParam.Direction = ParameterDirection.Output;
 
             _context.Database.ExecuteSqlRaw(
-                "EXEC SP_CebeParaGonder @GonderenHesapNo, @AliciTckNO, @AliciTelNo, @Tutar, @SmsOnayKodu, @Sonuc OUTPUT, @Mesaj OUTPUT",
-                gonderenHesapNoParam, aliciTckNOParam, aliciTelNoParam, tutarParam, smsOnayKoduParam, sonucParam, mesajParam
+                "EXEC SP_CebeParaGonder @GonderenHesapNo, @AliciTckNO, @AliciTelNo, @Tutar, @Sonuc OUTPUT, @Mesaj OUTPUT",
+                gonderenHesapNoParam, aliciTckNOParam, aliciTelNoParam, tutarParam, sonucParam, mesajParam
             );
 
-            return new CebeGonderSpResponse
+            return new CebeSpResponse
+            {
+                Sonuc = (int)sonucParam.Value,
+                Mesaj = mesajParam.Value?.ToString() ?? string.Empty
+            };
+        }
+
+
+        public string? KartNoIleMusteriTelNoGetir(string kartNumara)
+        {
+            var kartNumaraParam = new SqlParameter("@KartNumara", kartNumara);
+
+            var telefonNumaraParam = new SqlParameter("@TelefonNumara", SqlDbType.NVarChar, 16);
+            telefonNumaraParam.Direction = ParameterDirection.Output;
+
+            _context.Database.ExecuteSqlRaw(
+                "EXEC SP_KartNoIleMusteriTelNoGetir @KartNumara, @TelefonNumara OUTPUT",
+                kartNumaraParam, telefonNumaraParam
+            );
+
+            return telefonNumaraParam.Value?.ToString();
+        }
+
+
+            public CebeSpResponse CebeParaCek(string aliciTckNO,string aliciTelNo,string gonderenTelNo,decimal tutar)
+        {
+            var aliciTckNOParam = new SqlParameter("@AliciTckNO", aliciTckNO);
+            var aliciTelNoParam = new SqlParameter("@AliciTelNo", aliciTelNo);
+            var gonderenTelNoParam = new SqlParameter("@GonderenTelNo", gonderenTelNo);
+            var tutarParam = new SqlParameter("@Tutar", tutar);
+
+            var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int);
+            sonucParam.Direction = ParameterDirection.Output;
+
+            var mesajParam = new SqlParameter("@Mesaj", SqlDbType.NVarChar, 255);
+            mesajParam.Direction = ParameterDirection.Output;
+
+            _context.Database.ExecuteSqlRaw(
+                "EXEC SP_CebeParaCek @AliciTckNO, @AliciTelNo, @GonderenTelNo, @Tutar, @Sonuc OUTPUT, @Mesaj OUTPUT",
+                aliciTckNOParam, aliciTelNoParam, gonderenTelNoParam, tutarParam, sonucParam, mesajParam
+            );
+
+            return new CebeSpResponse
             {
                 Sonuc = (int)sonucParam.Value,
                 Mesaj = mesajParam.Value?.ToString() ?? string.Empty

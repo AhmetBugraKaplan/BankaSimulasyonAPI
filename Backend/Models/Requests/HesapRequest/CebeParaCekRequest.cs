@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace BankaSimulasyon.Models.Requests.HesapRequest
 {
-    public class CebeParaGonderRequest
+    public class CebeParaCekRequest
     {
-        public string GonderenKartNo { get; set; } = string.Empty;
         public string AliciTckNO { get; set; } = string.Empty;
         public string AliciTelNo { get; set; } = string.Empty;
-        public decimal GonderilenTutar { get; set; }
+        public string GonderenTelNo { get; set; } = string.Empty;
+        public decimal Tutar { get; set; }
     }
 }

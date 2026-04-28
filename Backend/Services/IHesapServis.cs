@@ -19,10 +19,8 @@ namespace BankaSimulasyon.Services
         public ApiResponse<bool> HesapVarMiTelNoIle(string hesapNumara);
 
         public ApiResponse<int> HesabaKartsizParaGonder(string hesapNumara, decimal gonderilecekTutar);
-        public ApiResponse<object> CebeParaGonder(string gonderenKartNo,string gonderenTelNo,string aliciTckNO,
-                                                    string aliciTelNo,  decimal gonderilenTutar);
-        
-
+        public ApiResponse<object> CebeParaGonder(string gonderenKartNo, string aliciTckNO, string aliciTelNo, decimal gonderilenTutar);
+        ApiResponse<object> CebeParaCek(string aliciTckNO, string aliciTelNo, string gonderenTelNo, decimal tutar);
 
 
 
