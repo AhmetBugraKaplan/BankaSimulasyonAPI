@@ -41,7 +41,8 @@ namespace BankaSimulasyon.Controllers
                 request.GonderenHesapNumara,
                 request.AliciHesapNumara,
                 request.GonderilenTutar,
-                request.KartNumara
+                request.KartNumara,
+                request.AtmId
             );
 
             return Ok(sonuc);

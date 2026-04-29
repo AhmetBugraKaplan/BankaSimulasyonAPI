@@ -54,7 +54,7 @@ namespace BankaSimulasyon.Services
         }
 
         public ApiResponse<int> HavaleYap(
-            string gonderenHesapNumara, string aliciHesapNumara, decimal gonderilenTutar, string kartNumara)
+            string gonderenHesapNumara, string aliciHesapNumara, decimal gonderilenTutar, string kartNumara,int atmID)
         {
             ApiResponse<int> HavaleYapApiResponse = new();
 
@@ -76,7 +76,6 @@ namespace BankaSimulasyon.Services
             {
                 HavaleYapApiResponse.IslemBasariliMi = false;
                 HavaleYapApiResponse.Mesaj = "Hesabınızda yeterli bakiye bulunmamakta";
-
                 return HavaleYapApiResponse;
             }
 
@@ -90,10 +89,18 @@ namespace BankaSimulasyon.Services
                     //İkinci işlem olarak parayı alan hesabın hesap bakiyeisni arttırıyoruz
                     _hesapRepository.HesapBakiyeGuncelle(aliciHesapNumara, gonderilenTutar);
 
+                    // Islem Geçmişi için gerekli parametreleri oluşturuyoruz.
+                    decimal gonderenIslemSonrasiBakiye = _hesapRepository.HesapBakiyeGetir(gonderenHesapNumara);
+                    decimal aliciIslemSonrasiBakiye = _hesapRepository.HesapBakiyeGetir(aliciHesapNumara);
+
+                    _hesapRepository.IslemGecmisiEkleCiftTarafli(gonderenHesapNumara, aliciHesapNumara, "Havale", gonderilenTutar,
+                    gonderenIslemSonrasiBakiye, aliciIslemSonrasiBakiye,atmID,"","");
+
                     transaction.Commit();
 
                     HavaleYapApiResponse.IslemBasariliMi = true;
                     HavaleYapApiResponse.Mesaj = "Başkasının hesabına para yatırma işlemi başarıyla gerçekleşti";
+                    
                     return HavaleYapApiResponse;
                 }
                 catch (Exception)
@@ -136,7 +143,10 @@ namespace BankaSimulasyon.Services
                 int sonuc = _hesapRepository.HesabaKartsizParaGonder(hesapNumara, gonderilecekTutar);
 
                 if (sonuc == 1)
-                {
+                {   
+                    decimal guncelBakiye = _hesapRepository.HesapBakiyeGetir(hesapNumara);
+                    _hesapRepository.IslemGecmisiEkleCiftTarafli("",hesapNumara,"Kartsiz Para Gönderme",gonderilecekTutar,0,guncelBakiye,7,
+                    "Kartısz Para Gönderdiniz","Hesabınıza Kartsız Para Gönderildi.");
                     response.IslemBasariliMi = true;
                     response.Data = sonuc;
                     response.Mesaj = "Para transferi başarıyla gerçekleşti.";
@@ -205,6 +215,9 @@ namespace BankaSimulasyon.Services
                 return CebeParaGonderApiResponse;
             }
 
+            decimal gonderenHesapGuncelBakiye = _hesapRepository.HesapBakiyeGetir(gonderenHesapNo);
+            
+            _hesapRepository.IslemGecmisiEkleCiftTarafli(gonderenHesapNo,"","Cebe Para Al/Gönder",gonderilenTutar,gonderenHesapGuncelBakiye,gonderilenTutar,7,"Cebe para gönderildi.","Cebe para geldi.");
 
             // 4. Başarılı response
             CebeParaGonderApiResponse.IslemBasariliMi = true;

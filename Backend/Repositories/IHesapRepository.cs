@@ -21,6 +21,10 @@ namespace BankaSimulasyon.Repositories
                                                 string aliciTelNo, decimal tutar);
         public string KartNoIleMusteriTelNoGetir(string kartNumara);
         public CebeSpResponse CebeParaCek(string aliciTckNO,string aliciTelNo,string gonderenTelNo,decimal tutar);
+        public void IslemGecmisiEkleTekTarafli(string hesapNumara, string islemTuru, string islemYonu, decimal tutar,
+        decimal islemSonrasiBakiye, int atmID, string islemAciklama);
+        public void IslemGecmisiEkleCiftTarafli(string gonderenHesapNumara, string aliciHesapNumara, string islemTuru, decimal tutar,
+        decimal gonderenIslemSonrasiBakiye, decimal aliciIslemSonrasiBakiye, int atmID, string gonderenAciklama, string aliciAciklama);
  
 
     }

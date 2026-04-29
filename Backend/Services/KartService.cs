@@ -17,13 +17,16 @@ namespace BankaSimulasyon.Services
         private readonly IMusteriRepository _musteriRepository;
         private readonly IAtmService _atmService;
         private readonly IAuthService _authService;
+        private readonly IHesapRepository _hesapRepository;
 
-        public KartService(IKartRepository kartRepository, IAtmService atmService, IAuthService authService, IMusteriRepository musteriRepository)
+        public KartService(IKartRepository kartRepository, IAtmService atmService, IAuthService authService,
+         IMusteriRepository musteriRepository,IHesapRepository hesapRepository)
         {
             _kartRepository = kartRepository;
             _atmService = atmService;
             _authService = authService;
             _musteriRepository = musteriRepository;
+            _hesapRepository = hesapRepository;
         }
 
         //Bu fonksiyonda 2 aşamalı bir kontrolden geçiyoruz öncelikle aynı numarada kart var mı
@@ -71,92 +74,6 @@ namespace BankaSimulasyon.Services
             return kullaniciResponse;
         }
 
-
-        /*
-        public ApiResponse<object> KartKalanLimitGuncelle(int kullaniciId, string kartNumara, decimal yeniKartLimit)
-        {
-            ApiResponse<object> kullaniciResponse = new();
-
-            try
-            {
-                decimal HesapLimit = _hesapRepository.HesapLimitGetir(kullaniciId);
-                decimal guncellemeOncesiKartLimit = _kartRepository.KartLimitGetir(kartNumara);
-                decimal kalanKullanilabilirLimit;
-                
-
-                kalanKullanilabilirLimit = KalanKullanilabilirHesapLimit(kullaniciId, kartNumara);
-
-                if (yeniKartLimit <= kalanKullanilabilirLimit)
-                {
-                    if (yeniKartLimit != guncellemeOncesiKartLimit)
-                    {
-                        int sonuc = _kartRepository.KartLimitGuncelle(kartNumara, yeniKartLimit,kullaniciId);
-                        if (sonuc > 0)
-                        {
-                            kullaniciResponse.IslemBasariliMi = true;
-                            kullaniciResponse.Mesaj = "Kart limitiniz başarıyla güncellendi";
-                        }
-                        else
-                        {
-                            kullaniciResponse.IslemBasariliMi = false;
-                            kullaniciResponse.Mesaj = "Girdiğiniz kart numarasına ait kart bulunamadı";
-                        }
-                        
-                    }
-                    else
-                    {
-                        kullaniciResponse.IslemBasariliMi = false;
-                        kullaniciResponse.Mesaj = "Güncellenecek limit aktif limitten farklı olmalıdır";
-                    }
-
-                }
-                else if (yeniKartLimit > HesapLimit)
-                {
-                    kullaniciResponse.IslemBasariliMi = false;
-                    kullaniciResponse.Mesaj = "Kartınızın limiti müşteri hesap limitinizden fazla olamaz";
-                }
-                else
-                {
-                    kullaniciResponse.IslemBasariliMi = false;
-                    kullaniciResponse.Mesaj = "Diğer kartlarınız hesap limitinizi kullandığından bu kart için yeterli limit bulunmamaktadır";
-                }
-            }
-            catch (Exception ex)
-            {
-                kullaniciResponse.IslemBasariliMi = false;
-                kullaniciResponse.Mesaj = ex.Message; 
-                return kullaniciResponse;
-            }
-
-
-
-            return kullaniciResponse;
-        }
-         */
-
-        /*
-        public decimal KalanKullanilabilirHesapLimit(int kullaniciId, string kartNumara)
-        {
-            decimal HesapLimit = _hesapRepository.HesapLimitGetir(kullaniciId);
-            decimal guncellemeOncesiKartLimit = _kartRepository.KartLimitGetir(kartNumara);
-            decimal ToplamKullanilanKartLimiti = 0;
-            decimal kalanKullanilabilirLimit;
-
-
-            List<Kart> kartlar = _kartRepository.TumKartlariGetir(kullaniciId);
-
-            foreach (var kart in kartlar)
-            {
-                ToplamKullanilanKartLimiti += kart.KartLimit;
-            }
-
-            //Hesabın total limitinden kartlarda aktif olarak kullanılan limiti çıkarıyoruz aşşağıda 
-            //limit karşılaştırmayı kalanKullanilabilirLimit üzerinden yapıcaz
-            kalanKullanilabilirLimit = HesapLimit - ToplamKullanilanKartLimiti + guncellemeOncesiKartLimit;
-            Console.WriteLine($"LOG:{kalanKullanilabilirLimit}");
-            return kalanKullanilabilirLimit;
-        } 
-        */
 
         //Gunluk limitini güncellerken müşteri limitini geçmemesi gerekiyor.
         public ApiResponse<object> KartGunlukLimitGuncelle(string kartNumara, decimal yeniKartLimit, int musteriId)
@@ -265,6 +182,9 @@ namespace BankaSimulasyon.Services
                 {
                     decimal yeniKalanLimit = kartKalanLimit - cekilecekTutar;
                     _kartRepository.KartKalanLimitGuncelle(kartNumara, yeniKalanLimit);
+
+                    //Geçmiş İşlemler Tablosuna Kaydediyoruz.
+                    _hesapRepository.IslemGecmisiEkleTekTarafli("","Para Çekme","Cikis",cekilecekTutar,yeniKalanLimit,atmId,"ATM'den PARA ÇEKME İŞLEMİ");
 
                     ParaCekApiResponse.Data = AtmParaCekmeDonenDeger.Kasetler;
                     ParaCekApiResponse.IslemBasariliMi = true;

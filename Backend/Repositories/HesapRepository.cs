@@ -160,7 +160,7 @@ namespace BankaSimulasyon.Repositories
         }
 
 
-            public CebeSpResponse CebeParaCek(string aliciTckNO,string aliciTelNo,string gonderenTelNo,decimal tutar)
+        public CebeSpResponse CebeParaCek(string aliciTckNO, string aliciTelNo, string gonderenTelNo, decimal tutar)
         {
             var aliciTckNOParam = new SqlParameter("@AliciTckNO", aliciTckNO);
             var aliciTelNoParam = new SqlParameter("@AliciTelNo", aliciTelNo);
@@ -184,6 +184,45 @@ namespace BankaSimulasyon.Repositories
                 Mesaj = mesajParam.Value?.ToString() ?? string.Empty
             };
         }
+
+        public void IslemGecmisiEkleTekTarafli(string hesapNumara, string islemTuru, string islemYonu, decimal tutar,
+        decimal islemSonrasiBakiye, int atmID, string islemAciklama)
+        {
+            var hesapNumaraParam = new SqlParameter("@HesapNumara", hesapNumara);
+            var islemTuruParam = new SqlParameter("@IslemTuru", islemTuru);
+            var islemYonuParam = new SqlParameter("@IslemYonu", islemYonu);
+            var tutarParam = new SqlParameter("@IslemTutar", tutar);
+            var islemSonrasiBakiyeParam = new SqlParameter("@IslemSonrasiBakiye", islemSonrasiBakiye);
+            var atmIDParam = new SqlParameter("@AtmID", atmID);
+            var islemAciklamaParam = new SqlParameter("@IslemAciklama", islemAciklama);
+
+            _context.Database.ExecuteSqlRaw(
+            "EXEC SP_IslemGecmisiEkleTekTarafli @HesapNumara, @IslemTuru, @IslemYonu, @IslemTutar, @IslemSonrasiBakiye, @AtmID, @IslemAciklama",
+            hesapNumaraParam, islemTuruParam, islemYonuParam, tutarParam,
+            islemSonrasiBakiyeParam, atmIDParam, islemAciklamaParam);
+        }
+
+        public void IslemGecmisiEkleCiftTarafli(string gonderenHesapNumara, string aliciHesapNumara, string islemTuru, decimal tutar,
+        decimal gonderenIslemSonrasiBakiye, decimal aliciIslemSonrasiBakiye, int atmID, string gonderenAciklama, string aliciAciklama)
+        {
+            var gonderenHesapNumaraParam = new SqlParameter("@GonderenHesapNumara", gonderenHesapNumara);
+            var aliciHesapNumaraParam = new SqlParameter("@AliciHesapNumara", aliciHesapNumara);
+            var islemTuruParam = new SqlParameter("@IslemTuru", islemTuru);
+            var tutarParam = new SqlParameter("@Tutar", tutar);
+            var gonderenIslemSonrasiBakiyeParam = new SqlParameter("@GonderenIslemSonrasiBakiye", gonderenIslemSonrasiBakiye);
+            var aliciIslemSonrasiBakiyeParam = new SqlParameter("@AliciIslemSonrasiBakiye", aliciIslemSonrasiBakiye);
+            var atmIDParam = new SqlParameter("@AtmID", atmID);
+            var gonderenAciklamaParam = new SqlParameter("@GonderenAciklama", gonderenAciklama);
+            var aliciAciklamaParam = new SqlParameter("@AliciAciklama", aliciAciklama);
+
+            _context.Database.ExecuteSqlRaw(
+                "EXEC SP_IslemGecmisiEkleCiftTarafli @GonderenHesapNumara, @AliciHesapNumara, @IslemTuru, @Tutar, @GonderenIslemSonrasiBakiye, @AliciIslemSonrasiBakiye, @AtmID, @GonderenAciklama, @AliciAciklama",
+                gonderenHesapNumaraParam, aliciHesapNumaraParam, islemTuruParam, tutarParam,
+                gonderenIslemSonrasiBakiyeParam, aliciIslemSonrasiBakiyeParam, atmIDParam,
+                gonderenAciklamaParam, aliciAciklamaParam
+            );
+        }
+
 
 
 

@@ -20,5 +20,6 @@ namespace BankaSimulasyon.Models.Requests.HesapRequest
 
         [Required(ErrorMessage = "Kart numarası zorunludur")]
         public string KartNumara { get; set; } = string.Empty;
+        public int AtmId { get; set; }
     }
 }
