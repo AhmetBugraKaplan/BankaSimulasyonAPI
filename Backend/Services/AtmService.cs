@@ -84,6 +84,8 @@ namespace BankaSimulasyon.Services
                     .ThenByDescending(k => k.Adet)
                     .ToList();
 
+                
+
                 foreach (AtmKaset kaset in siraliKasetler)
                 {
                     if (kaset.Kupur > cekilecekTutar) continue;

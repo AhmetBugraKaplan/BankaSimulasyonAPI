@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Backend.Models.Responses;
+using BankaSimulasyon.Data;
 using BankaSimulasyon.Models.Entities;
 using BankaSimulasyon.Models.Responses;
 using BankaSimulasyon.Repositories;
@@ -18,15 +19,17 @@ namespace BankaSimulasyon.Services
         private readonly IAtmService _atmService;
         private readonly IAuthService _authService;
         private readonly IHesapRepository _hesapRepository;
+        private readonly AppDbContext _context;
 
         public KartService(IKartRepository kartRepository, IAtmService atmService, IAuthService authService,
-         IMusteriRepository musteriRepository,IHesapRepository hesapRepository)
+         IMusteriRepository musteriRepository, IHesapRepository hesapRepository, AppDbContext context)
         {
             _kartRepository = kartRepository;
             _atmService = atmService;
             _authService = authService;
             _musteriRepository = musteriRepository;
             _hesapRepository = hesapRepository;
+            _context = context;
         }
 
         //Bu fonksiyonda 2 aşamalı bir kontrolden geçiyoruz öncelikle aynı numarada kart var mı
@@ -172,34 +175,49 @@ namespace BankaSimulasyon.Services
             //KartGulukLimit - kullanilan Limit  = Kalan limit hesaplamasını yapmamız geerekiypr bunun sebebi şu
             //Para çekmek istediğim zaman limit kontrolü yapmam gerekiyor e zaten kalan limiti silmemizin sebebi limitguncelleme işlemindkei
             //hesaplama maliyetini düşürmekti bu seferde burda bir hesaplama işlemi yapılıyor manası kalmıyor 
-            decimal kartKalanLimit = _kartRepository.KartKalanLimitGetir(kartNumara);
 
-            if (cekilecekTutar <= kartKalanLimit)
+
+            //Transaction bloğumuz burada başlayacak.
+            using var transaction = _context.Database.BeginTransaction();
+            try
             {
-                AtmdenParaCekmeResponse AtmParaCekmeDonenDeger = _atmService.AtmdenParaCek(atmId, cekilecekTutar, kartNumara);
+                decimal kartKalanLimit = _kartRepository.KartKalanLimitGetir(kartNumara);
 
-                if (AtmParaCekmeDonenDeger.IslemBasariliMi)
+                if (cekilecekTutar <= kartKalanLimit)
                 {
-                    decimal yeniKalanLimit = kartKalanLimit - cekilecekTutar;
-                    _kartRepository.KartKalanLimitGuncelle(kartNumara, yeniKalanLimit);
+                    AtmdenParaCekmeResponse AtmParaCekmeDonenDeger = _atmService.AtmdenParaCek(atmId, cekilecekTutar, kartNumara);
 
-                    //Geçmiş İşlemler Tablosuna Kaydediyoruz.
-                    _hesapRepository.IslemGecmisiEkleTekTarafli("","Para Çekme","Cikis",cekilecekTutar,yeniKalanLimit,atmId,"ATM'den PARA ÇEKME İŞLEMİ");
+                    if (AtmParaCekmeDonenDeger.IslemBasariliMi)
+                    {
+                        decimal yeniKalanLimit = kartKalanLimit - cekilecekTutar;
+                        _kartRepository.KartKalanLimitGuncelle(kartNumara, yeniKalanLimit);
 
-                    ParaCekApiResponse.Data = AtmParaCekmeDonenDeger.Kasetler;
-                    ParaCekApiResponse.IslemBasariliMi = true;
-                    ParaCekApiResponse.Mesaj = "Para çekme işlemi başarıyla gerçekleştirildi.";
+                        //Geçmiş İşlemler Tablosuna Kaydediyoruz.
+                        _hesapRepository.IslemGecmisiEkleTekTarafli("", "Para Çekme", "Cikis", cekilecekTutar, yeniKalanLimit, atmId, "ATM'den PARA ÇEKME İŞLEMİ");
+
+                        transaction.Commit();
+
+                        ParaCekApiResponse.Data = AtmParaCekmeDonenDeger.Kasetler;
+                        ParaCekApiResponse.IslemBasariliMi = true;
+                        ParaCekApiResponse.Mesaj = "Para çekme işlemi başarıyla gerçekleştirildi.";
+                    }
+                    else
+                    {
+                        ParaCekApiResponse.IslemBasariliMi = false;
+                        ParaCekApiResponse.Mesaj = AtmParaCekmeDonenDeger.Mesaj;
+                    }
                 }
                 else
                 {
                     ParaCekApiResponse.IslemBasariliMi = false;
-                    ParaCekApiResponse.Mesaj = AtmParaCekmeDonenDeger.Mesaj;
+                    ParaCekApiResponse.Mesaj = "Kartınızın limiti yetersiz.";
                 }
             }
-            else
+            catch (Exception ex)
             {
+                transaction.Rollback();
                 ParaCekApiResponse.IslemBasariliMi = false;
-                ParaCekApiResponse.Mesaj = "Kartınızın limiti yetersiz.";
+                ParaCekApiResponse.Mesaj = "Beklenmeyen bir hata oluştu.";
             }
 
             return ParaCekApiResponse;
@@ -313,6 +331,6 @@ namespace BankaSimulasyon.Services
         }
 
     }
-    
+
 }
 
