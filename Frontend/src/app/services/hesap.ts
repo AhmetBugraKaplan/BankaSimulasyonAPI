@@ -22,6 +22,7 @@ export interface HavaleTalebi {
     AliciHesapNumara: string;
     GonderilenTutar: number;
     KartNumara: string;
+    atmId:number
 }
 
 

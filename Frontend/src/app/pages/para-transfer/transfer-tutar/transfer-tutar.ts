@@ -60,6 +60,7 @@ export class TransferTutar implements OnInit {
 
   devam(): void {
     this.mesaj = '';
+    
 
     if (!this.tutar || this.tutar <= 0) {
       this.mesaj = 'Lütfen sıfırdan büyük geçerli bir tutar giriniz.';
@@ -79,7 +80,8 @@ export class TransferTutar implements OnInit {
       GonderenHesapNumara: this.secilenHesap!.hesapNumara,
       AliciHesapNumara: this.aliciHesapNumara,
       GonderilenTutar: this.tutar,
-      KartNumara: kartNo
+      KartNumara: kartNo,
+      atmId: parseInt(sessionStorage.getItem("atmId")!!)
     };
 
     forkJoin({

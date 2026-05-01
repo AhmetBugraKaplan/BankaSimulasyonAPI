@@ -223,15 +223,5 @@ namespace BankaSimulasyon.Repositories
             );
         }
 
-
-
-
-
-
-
-
-
-
-
     }
 }

@@ -59,7 +59,7 @@ namespace BankaSimulasyon.Services
             ApiResponse<int> HavaleYapApiResponse = new();
 
             //Başkasının hesabına para göndermeden önce birkaç kontrol sağlamamız gerekiyor 
-
+            //HesapVarMi girilen hesap numarasına ait hespa olup olmadığını kontrol eden bir yapı.
             int aliciVarMi = _hesapRepository.HesapVarMi(aliciHesapNumara);
 
             if (aliciVarMi == 0)
@@ -92,7 +92,7 @@ namespace BankaSimulasyon.Services
                     // Islem Geçmişi için gerekli parametreleri oluşturuyoruz.
                     decimal gonderenIslemSonrasiBakiye = _hesapRepository.HesapBakiyeGetir(gonderenHesapNumara);
                     decimal aliciIslemSonrasiBakiye = _hesapRepository.HesapBakiyeGetir(aliciHesapNumara);
-
+                    //İşlem geçmişini kaydediyoruz.
                     _hesapRepository.IslemGecmisiEkleCiftTarafli(gonderenHesapNumara, aliciHesapNumara, "Havale", gonderilenTutar,
                     gonderenIslemSonrasiBakiye, aliciIslemSonrasiBakiye,atmID,"","");
 

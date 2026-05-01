@@ -21,19 +21,27 @@ export class Login {
 
   girisYap() {
     this.kartService.kartDogrula(this.kartNo, this.kartSifre, Number(this.atmId)).subscribe(sonuc => {
+      this.yanlisDeneme = sonuc.data;
+      //İşlem başarılıysa
       if (sonuc.islemBasariliMi) {
         sessionStorage.setItem('token', sonuc.data.token)
         sessionStorage.setItem('kartNumara', sonuc.data.kartNumara);
         sessionStorage.setItem('atmId', sonuc.data.atmId.toString())
         this.router.navigate(['/atm']);
-      } else if (sonuc.mesaj === 'Yanlış Şifre') {
+      }
+      //kartDogrula.Data içinde yanlış giriş sayısı var yani yanlış giriş sayısı değişkenimiz kartlar tablosunda tutuluyor ve buradan getiriliyor.
+      else if (sonuc.mesaj === 'Yanlış Şifre') {
         this.yanlisDeneme = sonuc.data
         if (this.yanlisDeneme >= 3) {
-          this.router.navigate(['/para-transfer']);
+          this.router.navigate(['/sifre-degistir']);
         } else {
           this.hataMesaji = `Yanlış şifre! ${3 - this.yanlisDeneme} deneme hakkınız kaldı.`;
         }
-      } else {
+      }
+      else if(sonuc.mesaj == "Kart bloke edilmiştir"){
+          this.router.navigate(['/sifre-degistir']);
+      }
+      else {
         this.hataMesaji = sonuc.mesaj;
       }
     });

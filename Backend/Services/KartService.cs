@@ -213,7 +213,7 @@ namespace BankaSimulasyon.Services
                     ParaCekApiResponse.Mesaj = "Kartınızın limiti yetersiz.";
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 transaction.Rollback();
                 ParaCekApiResponse.IslemBasariliMi = false;
@@ -228,6 +228,8 @@ namespace BankaSimulasyon.Services
         {
             ApiResponse<object> kartDogrulaApiResponse = new();
 
+
+            //Şifre kontrolü yapıyoruz girilen numaraya ait şifre yoksa demekki kartta yok :D
             var sifreHash = _kartRepository.KartSifreGetir(kartNumara);
 
             if (sifreHash == null)
@@ -236,6 +238,17 @@ namespace BankaSimulasyon.Services
                 kartDogrulaApiResponse.IslemBasariliMi = false;
                 return kartDogrulaApiResponse;
             }
+
+            //Bloke kontrolü yapıyoruz.
+            int mevcutYanlisGirisSayisi = _kartRepository.YanlisGirisSayisiGetir(kartNumara);
+            if (mevcutYanlisGirisSayisi >= 3)
+            {
+                kartDogrulaApiResponse.Mesaj = "Kart bloke edilmiştir";
+                kartDogrulaApiResponse.IslemBasariliMi = false;
+                kartDogrulaApiResponse.Data = mevcutYanlisGirisSayisi;
+                return kartDogrulaApiResponse;
+            }
+
 
             //Aslında yukarıda aldığımız sifreHash şifreli şifre :D ama aşşağıdaki 
             // BCrypt fonksiyonu onu açıyor ve bizim girdiğimiz şifreye eşit olup olmadığına bakıyor.
