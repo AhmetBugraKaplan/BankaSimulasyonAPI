@@ -88,14 +88,18 @@ namespace BankaSimulasyon.Services
 
                 foreach (AtmKaset kaset in siraliKasetler)
                 {
+                    //İf ile küpür çekilecek tutardan yüksekse sıradaki küpüre geçiyoruz.
                     if (kaset.Kupur > cekilecekTutar) continue;
 
+                    //Bu kasetten en fazla kaç adet banknot alınabilir.
                     int maxAlinabilir = Math.Max(0, kaset.Adet - kaset.KritikDeger);
+                    //Kaç tane almamız gerekiyor
                     int gereken = cekilecekTutar / kaset.Kupur;
+                    //max alınabilir 5 ama gereken 7 ise 7 tane almamak için Math.Min içine koyuyoruz ve kaç adet banknot alacağımızı seçıyoruz.
                     int alinacak = Math.Min(gereken, maxAlinabilir);
 
                     if (alinacak == 0) continue;
-
+                    
                     kaset.Adet -= alinacak;
                     cekilecekTutar -= alinacak * kaset.Kupur;
                     toplamVerilenBanknot += alinacak;
@@ -125,16 +129,19 @@ namespace BankaSimulasyon.Services
                     }
                 }
 
+                //Şimdi banknot sayıları vs. ayarlandı kontroller yapıltı artık son kullanılan küpürü bozacağız.
                 if (cekilecekTutar == 0 && sonKullanilanKaset != null)
                 {
                     AtmKaset? bozulacakKaset = sonKullanilanKaset;
 
                     while (bozulacakKaset != null)
                     {
+                        //Son banknotu yerine koy çünkü onu bozacağız.
                         int sonKupur = bozulacakKaset.Kupur;
                         bozulacakKaset.Adet += 1;
                         int bozulacak = sonKupur;
 
+                        //Bozamaz isek bozmaOncesiAdetler'e geri döndürücez kaset Dizimizi
                         Dictionary<int, int> bozmaOncesiAdetler = kasetDizisi.ToDictionary(k => k.Id, k => k.Adet);
                         AtmKaset? buTurdakiSonKaset = null;
 
@@ -142,6 +149,7 @@ namespace BankaSimulasyon.Services
                             .OrderByDescending(k => k.Kupur)
                             .ThenByDescending(k => k.Adet))
                         {
+                            
                             if (kaset.Kupur < sonKupur && kaset.Kupur <= bozulacak && kaset.Adet > 0)
                             {
                                 int kacKere = Math.Min(bozulacak / kaset.Kupur, kaset.Adet);
@@ -152,6 +160,7 @@ namespace BankaSimulasyon.Services
                             if (bozulacak == 0) break;
                         }
 
+                        //Başarısız olursak bu bloğa giriyoruz. Ve bozmaÖncesiAdetDizisini tekrardan yerine koyuyoruz.
                         if (bozulacak != 0)
                         {
                             foreach (var kaset in kasetDizisi)
@@ -170,14 +179,14 @@ namespace BankaSimulasyon.Services
                         _atmKasetRepository.AtmKasetGuncelle(kaset);
 
                     var kullanilanKasetler = kasetDizisi
-                        .Where(k => k.Adet != orijinalAdetler[k.Id])
+                        .Where(k => k.Adet != orijinalAdetler[k.Id]) //Sadece değişen adetleri güncelle
                         .Select(k => new AtmKaset
                         {
                             Id = k.Id,
                             AtmId = k.AtmId,
                             SlotNumarasi = k.SlotNumarasi,
                             Kupur = k.Kupur,
-                            Adet = orijinalAdetler[k.Id] - k.Adet
+                            Adet = orijinalAdetler[k.Id] - k.Adet //kaç adet verildi.
                         })
                         .OrderByDescending(k => k.Kupur)
                         .ToList();

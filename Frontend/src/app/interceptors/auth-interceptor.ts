@@ -1,9 +1,13 @@
 import { HttpInterceptorFn, HttpRequest, HttpHandlerFn } from '@angular/common/http';
+import { catchError, throwError } from 'rxjs';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   // 1. localStorage'dan token'ı al
   const token = sessionStorage.getItem('token');
+  const router = inject(Router)
 
   // 2. Token varsa isteğe ekle
   if (token) {
@@ -19,7 +23,16 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     });
 
     // Klonlanmış isteği (token eklenmiş) gönder
-    return next(clonedReq);
+    return next(clonedReq).pipe(
+      catchError(error => {
+        if (error.status === 401) {
+          sessionStorage.clear();
+          localStorage.clear();
+          router.navigate(['/']);
+        }
+        return throwError(() => error);
+      })
+    );
   }
 
   // 3. Token yoksa isteği olduğu gibi gönder

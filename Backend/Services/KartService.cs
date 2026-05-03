@@ -8,6 +8,7 @@ using BankaSimulasyon.Models.Entities;
 using BankaSimulasyon.Models.Responses;
 using BankaSimulasyon.Repositories;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
 
 namespace BankaSimulasyon.Services
 {
@@ -20,9 +21,10 @@ namespace BankaSimulasyon.Services
         private readonly IAuthService _authService;
         private readonly IHesapRepository _hesapRepository;
         private readonly AppDbContext _context;
+        private readonly IConfiguration _configuration;
 
         public KartService(IKartRepository kartRepository, IAtmService atmService, IAuthService authService,
-         IMusteriRepository musteriRepository, IHesapRepository hesapRepository, AppDbContext context)
+         IMusteriRepository musteriRepository, IHesapRepository hesapRepository, AppDbContext context, IConfiguration configuration)
         {
             _kartRepository = kartRepository;
             _atmService = atmService;
@@ -30,6 +32,7 @@ namespace BankaSimulasyon.Services
             _musteriRepository = musteriRepository;
             _hesapRepository = hesapRepository;
             _context = context;
+            _configuration = configuration;
         }
 
         //Bu fonksiyonda 2 aşamalı bir kontrolden geçiyoruz öncelikle aynı numarada kart var mı
@@ -343,7 +346,22 @@ namespace BankaSimulasyon.Services
             return _kartRepository.KartNumaraIleMusteriIdGetir(kartNumara);
         }
 
-    }
+        public ApiResponse<bool> CikisYap(string token)
+        {
+            ApiResponse<bool> response = new();
 
+            double dakika = Convert.ToDouble(_configuration["Jwt:ExpireMinutes"]);
+            DateTime expireDate = DateTime.Now.AddMinutes(dakika);
+
+            _kartRepository.CikisYap(token, expireDate);
+
+            response.IslemBasariliMi = true;
+            response.Mesaj = "Çıkış başarıyla yapıldı";
+            return response;
+        }
+
+
+    }
 }
+
 

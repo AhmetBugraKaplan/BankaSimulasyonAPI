@@ -25,9 +25,7 @@ namespace BankaSimulasyon.Repositories
         public void SonIslemTarihiniBugunYap(string kartNumara);
         public int KartKalanLimitSifirla(string kartNumara);
         int KartNumaraIleMusteriIdGetir(string kartNumara);
-
-
-
-
+        public void CikisYap(string token, DateTime expireDate);
+        public bool TokenBlacklistteMi(string token);
     }
 }

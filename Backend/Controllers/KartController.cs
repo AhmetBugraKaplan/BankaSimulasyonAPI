@@ -140,6 +140,18 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        [HttpPost("CikisYap")]
+        public IActionResult CikisYap()
+        {
+            var token = Request.Headers["Authorization"]
+                .FirstOrDefault()?.Replace("Bearer ", "");
+
+            if (string.IsNullOrEmpty(token))
+                return BadRequest(new { mesaj = "Token bulunamadı" });
+
+            var sonuc = _kartService.CikisYap(token);
+            return Ok(sonuc);
+        }
 
 
 

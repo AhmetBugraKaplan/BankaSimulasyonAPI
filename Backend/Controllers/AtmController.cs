@@ -53,9 +53,9 @@ namespace BankaSimulasyon.Controllers
                 return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
 
             var sonuc = _atmService.AtmKasetlerdekiKupurleriGuncelle(
-                request.AtmId, 
-                request.SlotNumarasi, 
-                request.Adet, 
+                request.AtmId,
+                request.SlotNumarasi,
+                request.Adet,
                 request.Kupur
             );
 
@@ -71,8 +71,8 @@ namespace BankaSimulasyon.Controllers
                 return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
 
             var sonuc = _atmService.AtmdenParaCek(
-                request.AtmId, 
-                request.CekilecekTutar, 
+                request.AtmId,
+                request.CekilecekTutar,
                 request.KartNumara
             );
 
@@ -88,7 +88,7 @@ namespace BankaSimulasyon.Controllers
                 return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
 
             var sonuc = _atmService.AtmEkle(
-                request.Konum, 
+                request.Konum,
                 request.AktifMi
             );
 
@@ -103,6 +103,43 @@ namespace BankaSimulasyon.Controllers
             var sonuc = _atmService.TumAtmleriGetir();
 
             return Ok(sonuc);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("ParaCekAlgoritmaTest")]
+        public IActionResult ParaCekAlgoritmaTest([FromBody] int atmId)
+        {
+            var satirlar = new List<string>();
+            int basarili = 0;
+            int basarisiz = 0;
+
+            for (int tutar = 10; tutar <= 1000; tutar += 10)
+            {
+                var sonuc = _atmService.AtmdenParaCek(atmId, tutar, "");
+
+                if (sonuc.IslemBasariliMi && sonuc.Kasetler != null)
+                {
+                    basarili++;
+                    var dagitim = string.Join(" + ", sonuc.Kasetler
+                        .Select(k => $"{k.Kupur}TL x{k.Adet}"));
+                    int toplamBanknot = sonuc.Kasetler.Sum(k => k.Adet);
+                    satirlar.Add($"{tutar,5} TL ✓  {dagitim}  ({toplamBanknot} banknot)");
+                }
+                else
+                {
+                    basarisiz++;
+                    satirlar.Add($"{tutar,5} TL ✗  {sonuc.Mesaj}");
+                }
+            }
+
+            satirlar.Add("");
+            satirlar.Add($"ÖZET: {basarili} başarılı / {basarisiz} başarısız");
+
+            // Dosyaya da kaydet
+            string dosyaYolu = "AtmParaCekTest_Sonuc.txt";
+            System.IO.File.WriteAllLines(dosyaYolu, satirlar, System.Text.Encoding.UTF8);
+
+            return Ok();
         }
     }
 }

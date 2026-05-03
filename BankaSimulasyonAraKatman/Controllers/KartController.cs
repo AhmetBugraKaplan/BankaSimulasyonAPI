@@ -31,6 +31,16 @@ namespace BankaSimulasyon.AraKatman.Controllers
             return Ok(sonuc);
         }
 
+        [HttpPost("KartSifreGuncelle")]
+        public async Task<IActionResult> KartSifreGuncelle([FromBody] object request)
+        {
+            var client = _httpClientFactory.CreateClient("CoreAPI");
+
+            var response = await client.PostAsJsonAsync("api/Kart/KartSifreGuncelle", request);
+            var sonuc = await response.Content.ReadAsStringAsync();
+            return Ok(sonuc);
+        }
+
 
 
         [HttpPost("ParaCek")]
@@ -87,6 +97,22 @@ namespace BankaSimulasyon.AraKatman.Controllers
                 return Ok(musteriId);
 
             return BadRequest(new { message = "MusteriId parse edilemedi." });
+        }
+
+        [HttpPost("CikisYap")]
+        public async Task<IActionResult> CikisYap()
+        {
+            var token = Request.Headers["Authorization"].ToString();
+
+            if (string.IsNullOrEmpty(token))
+                return Unauthorized(new { message = "Token bulunamadı." });
+
+            var client = _httpClientFactory.CreateClient("CoreAPI");
+            client.DefaultRequestHeaders.Add("Authorization", token);
+
+            var response = await client.PostAsJsonAsync("api/Kart/CikisYap", new { });
+            var sonuc = await response.Content.ReadAsStringAsync();
+            return Ok(sonuc);
         }
 
 

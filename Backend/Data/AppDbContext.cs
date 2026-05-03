@@ -18,7 +18,8 @@ namespace BankaSimulasyon.Data
         public DbSet<Hesap> Hesaplar { get; set; } = null!;
         public DbSet<OnayKod> OnayKodlari { get; set; } = null!;
         public DbSet<CebeGonderBekleyenIslem> CebeGonderBekleyenIslemler { get; set; } = null!;
-        public DbSet<IslemGecmisi> IslemGecmisleri{ get; set; } = null!;
+        public DbSet<IslemGecmisi> IslemGecmisleri { get; set; } = null!;
+        public DbSet<TokenBlackList> TokenBlackLists { get; set; } = null!;
 
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)

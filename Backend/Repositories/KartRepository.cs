@@ -204,6 +204,32 @@ namespace BankaSimulasyon.Repositories
                 .FirstOrDefault();
         }
 
+        public void CikisYap(string token, DateTime expireDate)
+        {
+            var tokenParam = new SqlParameter("@Token", token);
+            var expireParam = new SqlParameter("@ExpireDate", expireDate);
+
+            _context.Database.ExecuteSqlRaw(
+                "EXEC SP_TokenBlacklistEkle @Token, @ExpireDate",
+                tokenParam, expireParam
+            );
+        }
+
+        public bool TokenBlacklistteMi(string token)
+        {
+            var tokenParam = new SqlParameter("@Token", token);
+            var sonucParam = new SqlParameter("@Sonuc", SqlDbType.Int)
+            {
+                Direction = ParameterDirection.Output
+            };
+
+            _context.Database.ExecuteSqlRaw(
+                "EXEC SP_TokenBlacklistKontrolEt @Token, @Sonuc OUTPUT",
+                tokenParam, sonucParam
+            );
+
+            return (int)sonucParam.Value == 1;
+        }
 
     }
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 export class Atm {
 
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private http: HttpClient) { }
 
   paraCek() {
     this.router.navigate(['/para-cek']);
@@ -30,9 +31,17 @@ export class Atm {
   }
 
   cikisYap() {
-    sessionStorage.clear();
-    localStorage.clear();
-    this.router.navigate(['/']);
+    this.http.post('http://localhost:5032/api/Kart/CikisYap', {}).subscribe({
+      complete: () => {
+        sessionStorage.clear();
+        localStorage.clear();
+        this.router.navigate(['/']);
+      },
+      error: () => {
+        sessionStorage.clear();
+        localStorage.clear();
+        this.router.navigate(['/']);
+      }
+    });
   }
-
 }

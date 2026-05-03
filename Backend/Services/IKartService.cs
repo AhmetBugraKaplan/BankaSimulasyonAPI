@@ -23,6 +23,7 @@ namespace BankaSimulasyon.Services
         public ApiResponse<decimal> KartKalanLimitGetir(string kartNumara);
         public ApiResponse<bool> AyniNumaradaKartVarMi(string kartNumara);
         int KartNumaraIleMusteriIdGetir(string kartNumara);
+        public ApiResponse<bool> CikisYap(string token);
 
 
 
