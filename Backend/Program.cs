@@ -68,11 +68,11 @@ builder.Services.AddScoped<ISmsService, SmsService>();
 builder.Services.AddScoped<IOnayRepository, OnayRepository>();
 builder.Services.AddScoped<IOnayService, OnayService>();
 
-
-
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+
+builder.Services.AddMemoryCache();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

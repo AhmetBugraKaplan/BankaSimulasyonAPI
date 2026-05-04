@@ -27,7 +27,12 @@ namespace BankaSimulasyonAraKatman.Controllers
 
             var response = await client.PostAsJsonAsync("api/Onay/OnayKoduDogruMu", request);
             var sonuc = await response.Content.ReadAsStringAsync();
-            return Ok(sonuc);
+             return new ContentResult
+            {
+                Content = sonuc,
+                ContentType = "application/json",
+                StatusCode = (int)response.StatusCode // CoreAPI'nin döndüğü asıl statü kodunu Angular'a iletiyoruz
+            };
         }
 
         //Token kullanmıyoruz.
@@ -37,7 +42,12 @@ namespace BankaSimulasyonAraKatman.Controllers
             var client = _httpClientFactory.CreateClient("CoreAPI");
             var response = await client.PostAsJsonAsync("api/Onay/OnayKoduUret", request);
             var sonuc = await response.Content.ReadAsStringAsync();
-            return Ok(sonuc);
+             return new ContentResult
+            {
+                Content = sonuc,
+                ContentType = "application/json",
+                StatusCode = (int)response.StatusCode // CoreAPI'nin döndüğü asıl statü kodunu Angular'a iletiyoruz
+            };
         }
 
     }

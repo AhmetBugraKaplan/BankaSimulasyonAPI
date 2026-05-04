@@ -28,7 +28,12 @@ namespace BankaSimulasyonAraKatman.Controllers
 
             var response = await client.PostAsJsonAsync("api/Musteri/MusteriGetirIdGore", request);
             var sonuc = await response.Content.ReadAsStringAsync();
-            return Ok(sonuc);
+             return new ContentResult
+            {
+                Content = sonuc,
+                ContentType = "application/json",
+                StatusCode = (int)response.StatusCode // CoreAPI'nin döndüğü asıl statü kodunu Angular'a iletiyoruz
+            };
         }
 
     }

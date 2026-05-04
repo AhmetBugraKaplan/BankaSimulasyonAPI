@@ -9,6 +9,7 @@ using BankaSimulasyon.Models.Responses;
 using BankaSimulasyon.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BankaSimulasyon.Services
 {
@@ -22,9 +23,10 @@ namespace BankaSimulasyon.Services
         private readonly IHesapRepository _hesapRepository;
         private readonly AppDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly IMemoryCache _memoryCache;
 
-        public KartService(IKartRepository kartRepository, IAtmService atmService, IAuthService authService,
-         IMusteriRepository musteriRepository, IHesapRepository hesapRepository, AppDbContext context, IConfiguration configuration)
+        public KartService(IKartRepository kartRepository, IAtmService atmService, IAuthService authService,IMusteriRepository musteriRepository,
+         IHesapRepository hesapRepository, AppDbContext context, IConfiguration configuration,IMemoryCache memoryCache)
         {
             _kartRepository = kartRepository;
             _atmService = atmService;
@@ -33,6 +35,7 @@ namespace BankaSimulasyon.Services
             _hesapRepository = hesapRepository;
             _context = context;
             _configuration = configuration;
+            _memoryCache = memoryCache;
         }
 
         //Bu fonksiyonda 2 aşamalı bir kontrolden geçiyoruz öncelikle aynı numarada kart var mı
@@ -354,6 +357,13 @@ namespace BankaSimulasyon.Services
             DateTime expireDate = DateTime.Now.AddMinutes(dakika);
 
             _kartRepository.CikisYap(token, expireDate);
+
+            var cacheOptions = new MemoryCacheEntryOptions().
+                                    SetAbsoluteExpiration(TimeSpan.FromMinutes(dakika));
+
+            _memoryCache.Set("BL_" + token, true ,cacheOptions);
+
+            
 
             response.IslemBasariliMi = true;
             response.Mesaj = "Çıkış başarıyla yapıldı";

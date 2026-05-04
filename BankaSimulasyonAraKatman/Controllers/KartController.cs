@@ -28,7 +28,12 @@ namespace BankaSimulasyon.AraKatman.Controllers
             //iletiyoruz ve sonuç olarak bir response elde ediyoruz.
             var response = await client.PostAsJsonAsync("api/Kart/KartDogrula", request);
             var sonuc = await response.Content.ReadAsStringAsync();
-            return Ok(sonuc);
+            return new ContentResult
+            {
+                Content = sonuc,
+                ContentType = "application/json",
+                StatusCode = (int)response.StatusCode // CoreAPI'nin döndüğü asıl statü kodunu Angular'a iletiyoruz
+            };
         }
 
         [HttpPost("KartSifreGuncelle")]
@@ -38,7 +43,12 @@ namespace BankaSimulasyon.AraKatman.Controllers
 
             var response = await client.PostAsJsonAsync("api/Kart/KartSifreGuncelle", request);
             var sonuc = await response.Content.ReadAsStringAsync();
-            return Ok(sonuc);
+            return new ContentResult
+            {
+                Content = sonuc,
+                ContentType = "application/json",
+                StatusCode = (int)response.StatusCode // CoreAPI'nin döndüğü asıl statü kodunu Angular'a iletiyoruz
+            };
         }
 
 
@@ -59,7 +69,12 @@ namespace BankaSimulasyon.AraKatman.Controllers
             //iletiyoruz ve sonuç olarak bir response elde ediyoruz.
             var response = await client.PostAsJsonAsync("api/Kart/ParaCek", request);
             var sonuc = await response.Content.ReadAsStringAsync();
-            return Ok(sonuc);
+            return new ContentResult
+            {
+                Content = sonuc,
+                ContentType = "application/json",
+                StatusCode = (int)response.StatusCode // CoreAPI'nin döndüğü asıl statü kodunu Angular'a iletiyoruz
+            };
         }
 
 
@@ -75,7 +90,12 @@ namespace BankaSimulasyon.AraKatman.Controllers
 
             var response = await client.PostAsJsonAsync("api/Kart/KartKalanLimitGetir", request);
             var sonuc = await response.Content.ReadAsStringAsync();
-            return Ok(sonuc);
+             return new ContentResult
+            {
+                Content = sonuc,
+                ContentType = "application/json",
+                StatusCode = (int)response.StatusCode // CoreAPI'nin döndüğü asıl statü kodunu Angular'a iletiyoruz
+            };
         }
 
 
@@ -112,7 +132,12 @@ namespace BankaSimulasyon.AraKatman.Controllers
 
             var response = await client.PostAsJsonAsync("api/Kart/CikisYap", new { });
             var sonuc = await response.Content.ReadAsStringAsync();
-            return Ok(sonuc);
+             return new ContentResult
+            {
+                Content = sonuc,
+                ContentType = "application/json",
+                StatusCode = (int)response.StatusCode // CoreAPI'nin döndüğü asıl statü kodunu Angular'a iletiyoruz
+            };
         }
 
 

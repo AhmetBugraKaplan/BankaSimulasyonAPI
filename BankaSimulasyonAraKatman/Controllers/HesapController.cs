@@ -28,7 +28,13 @@ namespace BankaSimulasyonAraKatman.Controllers
 
             var response = await client.PostAsJsonAsync("api/Hesap/MusteriTumHesaplariGetir", request);
             var sonuc = await response.Content.ReadAsStringAsync();
-            return Ok(sonuc);
+
+            return new ContentResult
+            {
+                Content = sonuc,
+                ContentType = "application/json",
+                StatusCode = (int)response.StatusCode // CoreAPI'nin döndüğü asıl statü kodunu Angular'a iletiyoruz
+            };
         }
 
         [HttpPost("HavaleYap")]
@@ -42,7 +48,13 @@ namespace BankaSimulasyonAraKatman.Controllers
 
             var response = await client.PostAsJsonAsync("api/Hesap/HavaleYap", request);
             var sonuc = await response.Content.ReadAsStringAsync();
-            return Ok(sonuc);
+
+            return new ContentResult
+            {
+                Content = sonuc,
+                ContentType = "application/json",
+                StatusCode = (int)response.StatusCode // CoreAPI'nin döndüğü asıl statü kodunu Angular'a iletiyoruz
+            };
         }
 
         [HttpPost("HesapVarMi")]
@@ -53,7 +65,13 @@ namespace BankaSimulasyonAraKatman.Controllers
 
             var response = await client.PostAsJsonAsync("api/Hesap/HesapVarMi", request);
             var sonuc = await response.Content.ReadAsStringAsync();
-            return Ok(sonuc);
+
+            return new ContentResult
+            {
+                Content = sonuc,
+                ContentType = "application/json",
+                StatusCode = (int)response.StatusCode // CoreAPI'nin döndüğü asıl statü kodunu Angular'a iletiyoruz
+            };
         }
 
 
@@ -65,7 +83,13 @@ namespace BankaSimulasyonAraKatman.Controllers
 
             var response = await client.PostAsJsonAsync("api/Hesap/HesapVarMiTelNoIle", request);
             var sonuc = await response.Content.ReadAsStringAsync();
-            return Ok(sonuc);
+
+            return new ContentResult
+            {
+                Content = sonuc,
+                ContentType = "application/json",
+                StatusCode = (int)response.StatusCode // CoreAPI'nin döndüğü asıl statü kodunu Angular'a iletiyoruz
+            };
         }
 
         [HttpPost("HesabaKartsizParaGonder")]
@@ -76,7 +100,13 @@ namespace BankaSimulasyonAraKatman.Controllers
 
             var response = await client.PostAsJsonAsync("api/Hesap/HesabaKartsizParaGonder", request);
             var sonuc = await response.Content.ReadAsStringAsync();
-            return Ok(sonuc);
+
+            return new ContentResult
+            {
+                Content = sonuc,
+                ContentType = "application/json",
+                StatusCode = (int)response.StatusCode // CoreAPI'nin döndüğü asıl statü kodunu Angular'a iletiyoruz
+            };
         }
 
         [HttpPost("CebeParaGonder")]
@@ -90,7 +120,13 @@ namespace BankaSimulasyonAraKatman.Controllers
 
             var response = await client.PostAsJsonAsync("api/Hesap/CebeParaGonder", request);
             var sonuc = await response.Content.ReadAsStringAsync();
-            return Ok(sonuc);
+
+            return new ContentResult
+            {
+                Content = sonuc,
+                ContentType = "application/json",
+                StatusCode = (int)response.StatusCode // CoreAPI'nin döndüğü asıl statü kodunu Angular'a iletiyoruz
+            };
         }
 
 
@@ -101,7 +137,13 @@ namespace BankaSimulasyonAraKatman.Controllers
 
             var response = await client.PostAsJsonAsync("api/Hesap/CebeParaCek", request);
             var sonuc = await response.Content.ReadAsStringAsync();
-            return Ok(sonuc);
+            
+            return new ContentResult
+            {
+                Content = sonuc,
+                ContentType = "application/json",
+                StatusCode = (int)response.StatusCode // CoreAPI'nin döndüğü asıl statü kodunu Angular'a iletiyoruz
+            };
         }
 
 

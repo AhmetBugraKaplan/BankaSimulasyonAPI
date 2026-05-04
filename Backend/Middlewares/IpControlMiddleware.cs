@@ -1,7 +1,5 @@
 using BankaSimulasyon.Repositories;
-using Microsoft.AspNetCore.Http;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BankaSimulasyon.Middlewares
 {
@@ -22,16 +20,16 @@ namespace BankaSimulasyon.Middlewares
             // AllowAnonymous olan (örn: Login, Swagger) endpointlerde burası 'false' döner ve if içine girmez.
             if (context.User.Identity?.IsAuthenticated == true)
             {
-                // ① Blacklist kontrolü — YENİ
+                // Blacklist kontrolü — YENİ
                 var rawToken = context.Request.Headers["Authorization"]
                     .FirstOrDefault()?.Replace("Bearer ", "");
 
-                var kartRepository = context.RequestServices
-                    .GetRequiredService<IKartRepository>();
+                var memoryCache = context.RequestServices.GetRequiredService<IMemoryCache>();
 
-                if (!string.IsNullOrEmpty(rawToken) && kartRepository.TokenBlacklistteMi(rawToken))
+                if (!string.IsNullOrEmpty(rawToken) && memoryCache.TryGetValue("BL_" + rawToken, out _))
                 {
                     context.Response.StatusCode = 401;
+                    context.Response.ContentType = "application/json";
                     await context.Response.WriteAsJsonAsync(new
                     {
                         message = "Oturumunuz sonlandırılmış. Lütfen tekrar giriş yapın."
