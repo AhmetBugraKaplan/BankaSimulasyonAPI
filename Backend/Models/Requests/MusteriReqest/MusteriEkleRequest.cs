@@ -1,17 +1,16 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BankaSimulasyon.Models.Dtos.Requests.Musteri
 {
     public class MusteriEkleRequest
     {
-        [Required(ErrorMessage = "İsim zorunludur")]
         [StringLength(50, MinimumLength = 2, 
-            ErrorMessage = "İsim 2-50 karakter arasında olmalı")]
+            ErrorMessage = "Ä°sim 2-50 karakter arasÄ±nda olmalÄ±")]
+        [Required(ErrorMessage="Bu alan zorunludur")]
         public string Isim { get; set; } = null!;
-        
-        [Required(ErrorMessage = "Soyisim zorunludur")]
         [StringLength(50, MinimumLength = 2, 
-            ErrorMessage = "Soyisim 2-50 karakter arasında olmalı")]
+            ErrorMessage = "Soyisim 2-50 karakter arasÄ±nda olmalÄ±")]
+        [Required(ErrorMessage="Bu alan zorunludur")]
         public string Soyisim { get; set; } = null!;
     }
 }

@@ -1,20 +1,17 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BankaSimulasyon.Models.Dtos.Requests.ATM
 {
     public class KartDogrulaRequest
     {
-        [Required(ErrorMessage = "Kart numarası zorunludur")]
-        [RegularExpression(@"^\d{4}$", ErrorMessage = "Kart numarası 4 haneli olmalı")]
+        [Required(ErrorMessage="Kart numarasi zorunludur")]
+        [RegularExpression(@"^\d{4}$", ErrorMessage="Kart numarasi 4 haneli olmalidir")]
         public string KartNumara { get; set; } = null!;
-        
-        [Required(ErrorMessage = "Kart şifresi zorunludur")]
-        [Length(1, 4, ErrorMessage = "Şifre 3 haneli olmalı")]
-        [RegularExpression(@"^\d{3}$", ErrorMessage = "Şifre sadece rakamlardan oluşmalı")]
+        [Required(ErrorMessage="Sifre zorunludur")]
+        [RegularExpression(@"^\d{3}$", ErrorMessage="Sifre 3 haneli olmalidir")]
         public string KartSifre { get; set; } = null!;
-        
-        [Required(ErrorMessage = "ATM ID zorunludur")]
-        [Range(1, int.MaxValue, ErrorMessage = "Geçerli bir ATM ID girin")]
+        [Required(ErrorMessage="ID zorunludur")]
+        [Range(1, int.MaxValue, ErrorMessage="Gecerli bir ID giriniz")]
         public int AtmId { get; set; }
     }
 }

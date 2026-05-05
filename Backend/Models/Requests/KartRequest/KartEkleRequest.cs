@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,17 +8,18 @@ namespace BankaSimulasyon.Models.Requests
 {
     public class KartEkleRequest
     {
-        [Required(ErrorMessage = "Kullanıcı ID zorunludur")]
+        [Required(ErrorMessage="ID zorunludur")]
+        [Range(1, int.MaxValue, ErrorMessage="Gecerli bir ID giriniz")]
         public int KullaniciId { get; set; }
-
-        [Required]
-        [RegularExpression(@"^\d{4}$", ErrorMessage = "Kart numara 4 haneli olmalı")]
+        [Required(ErrorMessage="Kart numarasi zorunludur")]
+        [RegularExpression(@"^\d{4}$", ErrorMessage="Kart numarasi 4 haneli olmalidir")]
         public string KartNumara { get; set; } = string.Empty;
+        [Required(ErrorMessage="Limit zorunludur")]
+        [Range(10, int.MaxValue, ErrorMessage="Limit en az 10 TL olmalidir")]
         public decimal KartGunlukLimit { get; set; }
-
-        [Required]
-        //Bunu düzelticez sonrasında şu anlık 3 haneli şifreler sabit 4 yapıcaz
-        [Length(1, 4, ErrorMessage = "Şifre 4 haneli olmalı")]
+        //Bunu dÃ¼zelticez sonrasÄ±nda ÅŸu anlÄ±k 3 haneli ÅŸifreler sabit 4 yapÄ±caz
+        [Required(ErrorMessage="Sifre zorunludur")]
+        [RegularExpression(@"^\d{3}$", ErrorMessage="Sifre 3 haneli olmalidir")]
         public string KartSifre { get; set; } = string.Empty;
     }
 }

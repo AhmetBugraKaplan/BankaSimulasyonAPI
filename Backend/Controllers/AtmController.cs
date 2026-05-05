@@ -23,12 +23,15 @@ namespace BankaSimulasyon.Controllers
             _atmService = atmService;
         }
 
-        [AllowAnonymous]
-        [Authorize(Roles = "admin,gelistirici")]
-        [HttpGet("{atmId}/atmdeNeKadarVar")]
-        public IActionResult AtmdeNeKadarParaVar(int atmId)
+        
+        [Authorize]
+        [HttpPost("atmdeNeKadarVar")]
+        public IActionResult AtmdeNeKadarParaVar([FromBody] AtmdeNeKadarParaVarRequest request)
         {
-            var sonuc = _atmService.AtmdekiToplamParayiIdIleGetir(atmId);
+            if (!ModelState.IsValid)
+                return BadRequest(new { hatalar = ModelState.Values.SelectMany(v => v.Errors) });
+
+            var sonuc = _atmService.AtmdekiToplamParayiIdIleGetir(request.AtmId);
 
             if (sonuc.Data > 0)
             {
@@ -44,8 +47,8 @@ namespace BankaSimulasyon.Controllers
             }
         }
 
-        [AllowAnonymous]
-        [Authorize(Roles = "admin,gelistirici")]
+        
+        [Authorize]
         [HttpPost("atmKasetKupurleriGuncelle")]
         public IActionResult AtmKasetdekiKupurleriGuncelle([FromBody] AtmKasetGuncelleRequest request)
         {
@@ -62,8 +65,8 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
-        [AllowAnonymous]
-        [Authorize(Roles = "admin,gelistirici,musteri")]
+        
+        [Authorize]
         [HttpPost("atmdenParaCek")]
         public IActionResult AtmdenParaCek([FromBody] AtmdenParaCekRequest request)
         {
@@ -79,8 +82,8 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
-        [AllowAnonymous]
-        [Authorize(Roles = "admin")]
+        
+        [Authorize]
         [HttpPost("atmEkle")]
         public IActionResult AtmEkle([FromBody] AtmEkleRequest request)
         {
@@ -95,8 +98,8 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
-        [AllowAnonymous]
-        [Authorize(Roles = "admin,gelistirici")]
+        
+        [Authorize]
         [HttpGet("tumAtmleriGetir")]
         public IActionResult TumAtmleriGetir()
         {

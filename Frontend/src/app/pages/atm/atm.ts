@@ -14,6 +14,9 @@ export class Atm {
 
   constructor(private router: Router, private http: HttpClient) { }
 
+
+
+
   paraCek() {
     this.router.navigate(['/para-cek']);
   }

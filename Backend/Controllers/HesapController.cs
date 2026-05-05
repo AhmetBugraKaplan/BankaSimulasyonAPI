@@ -18,6 +18,7 @@ namespace BankaSimulasyon.Controllers
             _hesapService = hesapServis;
         }
 
+
         [HttpPost("MusteriTumHesaplariGetir")]
         public IActionResult MusteriTumHesaplariGetir([FromBody] MusteriTumHesaplariGetirRequest request)
         {

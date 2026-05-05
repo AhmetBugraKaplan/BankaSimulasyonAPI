@@ -2,15 +2,12 @@
 
 namespace BankaSimulasyon.Models.Dtos.Requests.ATM
 {
-    public class AtmKasetGuncelleRequest
+    public class AtmdeNeKadarParaVarRequest
     {
         [Required(ErrorMessage="ID zorunludur")]
         [Range(1, int.MaxValue, ErrorMessage="Gecerli bir ID giriniz")]
         public int AtmId { get; set; }
-        public int SlotNumarasi { get; set; }
-        public int Adet { get; set; }
-        [RegularExpression(@"^(5|10|20|50|100|200)$", 
-            ErrorMessage = "Uyumsuz kÃ¼pÃ¼r")]
-        public int Kupur { get; set; }
     }
 }
+
+

@@ -8,11 +8,11 @@ namespace BankaSimulasyon.Middlewares
     public class RateLimitingMiddleware
     {
         private readonly RequestDelegate _next;
-        private static readonly Dictionary<string,ClientRequestInfo> _clients
+        private static readonly Dictionary<string, ClientRequestInfo> _clients
              = new Dictionary<string, ClientRequestInfo>();
 
         private const int LIMIT = 50;
-        
+
         private const int SURE_DAKIKA = 1;
 
         public RateLimitingMiddleware(RequestDelegate next)
@@ -22,7 +22,12 @@ namespace BankaSimulasyon.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var ipAdresi = context.Connection.RemoteIpAddress?.ToString() ?? "bilinmiyor";
+            var ipAdresi = context.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+
+            if (string.IsNullOrEmpty(ipAdresi))
+            {
+                ipAdresi = context.Connection.RemoteIpAddress?.ToString() ?? "bilinmiyor";
+            }
 
             if (!_clients.ContainsKey(ipAdresi))
             {
@@ -38,7 +43,7 @@ namespace BankaSimulasyon.Middlewares
                 var gecenSure = DateTime.Now - clientBilgi.IlkIstek;
 
 
-                if(gecenSure.TotalMinutes >= SURE_DAKIKA)
+                if (gecenSure.TotalMinutes >= SURE_DAKIKA)
                 {
                     clientBilgi.IlkIstek = DateTime.Now;
                     clientBilgi.IstemSayisi = 1;
@@ -48,8 +53,8 @@ namespace BankaSimulasyon.Middlewares
                     context.Response.StatusCode = 429;
                     await context.Response.WriteAsJsonAsync(new
                     {
-                       message = "Çok fazla istek attınız.",
-                       detail = $"Lütfen {SURE_DAKIKA} dakika kadar bekleyiniz" 
+                        message = "Çok fazla istek attınız.",
+                        detail = $"Lütfen {SURE_DAKIKA} dakika kadar bekleyiniz"
                     });
                     return;
                 }
@@ -59,14 +64,14 @@ namespace BankaSimulasyon.Middlewares
                 }
             }
             await _next(context);
-        
+
         }
     }
 
 
     public class ClientRequestInfo
     {
-        public DateTime IlkIstek {get;set;}
+        public DateTime IlkIstek { get; set; }
         public int IstemSayisi { get; set; }
     }
 

@@ -25,16 +25,15 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
 {
-    /*
     c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-{
-    Name = "Authorization",
-    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,  ApiKey değil Http yap
-    Scheme = "Bearer",
-    BearerFormat = "JWT",
-    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-    Description = "Sadece token giriniz, Bearer otomatik eklenecek"
-});
+    {
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Buraya sadece ürettiğiniz Token'ı yapıştırın (Başına Bearer yazmanıza gerek yok, otomatik eklenecektir)."
+    });
 
     c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
     {
@@ -47,9 +46,9 @@ builder.Services.AddSwaggerGen(c =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            Array.Empty<string>()
         }
-    }); */
+    });
 });
 
 

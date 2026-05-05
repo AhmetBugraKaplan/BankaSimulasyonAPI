@@ -20,7 +20,7 @@ namespace BankaSimulasyon.Middlewares
             // AllowAnonymous olan (örn: Login, Swagger) endpointlerde burası 'false' döner ve if içine girmez.
             if (context.User.Identity?.IsAuthenticated == true)
             {
-                // Blacklist kontrolü — YENİ
+                // Blacklist kontrolü 
                 var rawToken = context.Request.Headers["Authorization"]
                     .FirstOrDefault()?.Replace("Bearer ", "");
 

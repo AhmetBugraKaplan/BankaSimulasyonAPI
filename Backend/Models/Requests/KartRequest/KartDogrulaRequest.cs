@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,15 +9,15 @@ namespace BankaSimulasyon.Models.Requests
 {
     public class KartDogrulaRequest
     {
-        [Required(ErrorMessage = "Kart numarası zorunludur")]
+        [Required(ErrorMessage="Kart numarasi zorunludur")]
+        [RegularExpression(@"^\d{4}$", ErrorMessage="Kart numarasi 4 haneli olmalidir")]
         public string KartNumara { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "Şifre zorunludur")]
-        [Length(3,3)]
+        [Required(ErrorMessage="Sifre zorunludur")]
+        [RegularExpression(@"^\d{3}$", ErrorMessage="Sifre 3 haneli olmalidir")]
         public string KartSifre { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "ATM ID zorunludur")]
-        [Range(1, int.MaxValue)]
+        [Required(ErrorMessage="ID zorunludur")]
+        [Range(1, int.MaxValue, ErrorMessage="Gecerli bir ID giriniz")]
         public int AtmId { get; set; }
     }
 }
+
