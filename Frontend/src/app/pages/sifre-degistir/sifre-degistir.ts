@@ -4,10 +4,9 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Kart } from '../../services/kart';
 
-
 @Component({
   selector: 'app-sifre-degistir',
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './sifre-degistir.html',
   styleUrl: './sifre-degistir.css',
 })
@@ -18,7 +17,7 @@ export class SifreDegistir {
   hataMesaji: string = '';
   basariMesaji: string = '';
 
-  constructor(private kartService: Kart, private router: Router) { }
+  constructor(private kartService: Kart, private router: Router) {}
 
   sifreDegistir() {
     if (this.yeniSifre !== this.yeniSifreTekrar) {
@@ -28,11 +27,15 @@ export class SifreDegistir {
 
     this.kartService.kartSifreGuncelle(this.kartNo, this.yeniSifre).subscribe(sonuc => {
       if (sonuc.islemBasariliMi) {
-        this.basariMesaji = "Şifreniz güncellendi giriş sayfasına yönlendiriliyorsunuz..."
+        this.basariMesaji = 'Şifreniz güncellendi, giriş sayfasına yönlendiriliyorsunuz...';
         setTimeout(() => this.router.navigate(['/']), 1000);
       } else {
         this.hataMesaji = sonuc.mesaj;
       }
     });
+  }
+
+  geriDon(): void {
+    this.router.navigate(['/']);
   }
 }

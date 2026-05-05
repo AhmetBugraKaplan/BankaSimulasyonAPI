@@ -58,6 +58,14 @@ namespace BankaSimulasyon.Services
         {
             ApiResponse<int> HavaleYapApiResponse = new();
 
+            var kullaniciHesaplari = _hesapRepository.MusterininTumHesaplariniGetir(kartNumara);
+            if (kullaniciHesaplari != null && kullaniciHesaplari.Any(h => h.HesapNumara.Trim() == aliciHesapNumara.Trim()))
+            {
+                HavaleYapApiResponse.IslemBasariliMi = false;
+                HavaleYapApiResponse.Mesaj = "Kendi hesabınıza para gönderemezsiniz";
+                return HavaleYapApiResponse;
+            }
+
             //Başkasının hesabına para göndermeden önce birkaç kontrol sağlamamız gerekiyor 
             //HesapVarMi girilen hesap numarasına ait hespa olup olmadığını kontrol eden bir yapı.
             int aliciVarMi = _hesapRepository.HesapVarMi(aliciHesapNumara);
@@ -202,27 +210,41 @@ namespace BankaSimulasyon.Services
 
             string gonderenHesapNo = gonderenHesaplari.First().HesapNumara;
 
-
-
-            // 3. SP çağır (bakiye düş + bekleyen kayıt)
-            CebeSpResponse spSonuc = _hesapRepository.CebeParaGonder(
-                gonderenHesapNo, aliciTckNO, aliciTelNo, gonderilenTutar);
-
-            if (spSonuc.Sonuc == 0)
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                CebeParaGonderApiResponse.IslemBasariliMi = false;
-                CebeParaGonderApiResponse.Mesaj = spSonuc.Mesaj;
-                return CebeParaGonderApiResponse;
+                try
+                {
+                    // 3. SP çağır (bakiye düş + bekleyen kayıt)
+                    CebeSpResponse spSonuc = _hesapRepository.CebeParaGonder(
+                        gonderenHesapNo, aliciTckNO, aliciTelNo, gonderilenTutar);
+
+                    if (spSonuc.Sonuc == 0)
+                    {
+                        transaction.Rollback();
+                        CebeParaGonderApiResponse.IslemBasariliMi = false;
+                        CebeParaGonderApiResponse.Mesaj = spSonuc.Mesaj;
+                        return CebeParaGonderApiResponse;
+                    }
+
+                    decimal gonderenHesapGuncelBakiye = _hesapRepository.HesapBakiyeGetir(gonderenHesapNo);
+                    
+                    _hesapRepository.IslemGecmisiEkleCiftTarafli(gonderenHesapNo,"","Cebe Para Al/Gönder",gonderilenTutar,gonderenHesapGuncelBakiye,gonderilenTutar,7,"Cebe para gönderildi.","Cebe para geldi.");
+
+                    transaction.Commit();
+
+                    // 4. Başarılı response
+                    CebeParaGonderApiResponse.IslemBasariliMi = true;
+                    CebeParaGonderApiResponse.Mesaj = "Para gönderme işlemi başarılı. Alıcı 3 gün içinde parayı çekebilir.";
+                    return CebeParaGonderApiResponse;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    CebeParaGonderApiResponse.IslemBasariliMi = false;
+                    CebeParaGonderApiResponse.Mesaj = "İşlem sırasında beklenmedik bir hata oluştu: " + ex.Message;
+                    return CebeParaGonderApiResponse;
+                }
             }
-
-            decimal gonderenHesapGuncelBakiye = _hesapRepository.HesapBakiyeGetir(gonderenHesapNo);
-            
-            _hesapRepository.IslemGecmisiEkleCiftTarafli(gonderenHesapNo,"","Cebe Para Al/Gönder",gonderilenTutar,gonderenHesapGuncelBakiye,gonderilenTutar,7,"Cebe para gönderildi.","Cebe para geldi.");
-
-            // 4. Başarılı response
-            CebeParaGonderApiResponse.IslemBasariliMi = true;
-            CebeParaGonderApiResponse.Mesaj = "Para gönderme işlemi başarılı. Alıcı 3 gün içinde parayı çekebilir.";
-            return CebeParaGonderApiResponse;
         }
 
 

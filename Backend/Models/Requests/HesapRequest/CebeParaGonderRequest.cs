@@ -22,3 +22,5 @@ namespace BankaSimulasyon.Models.Requests.HesapRequest
         public decimal GonderilenTutar { get; set; }
     }
 }
+
+//Cebe para gonderirken onay butonu lsun

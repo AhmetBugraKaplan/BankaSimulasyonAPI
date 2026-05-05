@@ -1,14 +1,57 @@
-<p>sifre-degistir works!</p>
-<div>
-  <h2>Şifre Değiştir</h2>
-  <p>3 kez yanlış şifre girdiniz. Lütfen yeni şifrenizi belirleyin.</p>
+<div class="atm-screen">
 
-  <input type="text" placeholder="Kart No" [(ngModel)]="kartNo" />
-  <input type="password" placeholder="Yeni Şifre" [(ngModel)]="yeniSifre" />
-  <input type="password" placeholder="Yeni Şifre Tekrar" [(ngModel)]="yeniSifreTekrar" />
+  <svg class="wave-decoration" viewBox="0 0 300 260" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M300 260 L0 260 Q60 200 140 180 Q200 165 240 120 Q270 85 300 60 Z" fill="#f5c842" opacity="0.55"/>
+    <path d="M300 260 L60 260 Q130 210 200 190 Q250 175 275 140 Q292 115 300 90 Z" fill="#e8a800" opacity="0.45"/>
+    <path d="M300 260 L140 260 Q200 235 250 210 Q278 195 295 170 L300 145 Z" fill="#d49200" opacity="0.35"/>
+  </svg>
 
-  <p *ngIf="hataMesaji">{{ hataMesaji }}</p>
-  <p *ngIf="basariMesaji">{{ basariMesaji }}</p>
+  <p class="header-text">Şifre Değiştir</p>
 
-  <button (click)="sifreDegistir()">Şifreyi Güncelle</button>
+  <div class="icerik">
+    <div class="giris-kutu">
+
+      <p class="uyari-mesaj">3 kez yanlış şifre girdiniz. Lütfen yeni şifrenizi belirleyin.</p>
+
+      <div class="input-grup">
+        <span class="input-label">Kart Numarası</span>
+        <input class="atm-input" type="text" placeholder="0000 0000 0000 0000" [(ngModel)]="kartNo"/>
+      </div>
+
+      <div class="input-grup">
+        <span class="input-label">Yeni Şifre</span>
+        <input class="atm-input" type="password" placeholder="••••" [(ngModel)]="yeniSifre"/>
+      </div>
+
+      <div class="input-grup">
+        <span class="input-label">Yeni Şifre Tekrar</span>
+        <input class="atm-input" type="password" placeholder="••••" [(ngModel)]="yeniSifreTekrar"/>
+      </div>
+
+      @if (hataMesaji) {
+        <p class="hata-mesaj">{{ hataMesaji }}</p>
+      }
+
+      @if (basariMesaji) {
+        <p class="basari-mesaj">{{ basariMesaji }}</p>
+      }
+
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+  <button class="atm-btn" (click)="geriDon()">
+    <span class="icon-left">
+      <svg viewBox="0 0 13 13" fill="none"><path d="M9 6.5H4M4 6.5L6.5 4M4 6.5L6.5 9" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </span>
+    <span class="btn-label">Geri</span>
+  </button>
+  <button class="atm-btn" (click)="sifreDegistir()">
+    <span class="btn-label">Şifreyi Güncelle</span>
+    <span class="icon-right">
+      <svg viewBox="0 0 13 13" fill="none"><path d="M4 6.5h5M9 6.5L6.5 4M9 6.5L6.5 9" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </span>
+  </button>
+</div>
+
 </div>
