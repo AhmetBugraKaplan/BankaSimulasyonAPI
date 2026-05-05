@@ -54,15 +54,24 @@ namespace BankaSimulasyon.Services
         }
 
         public ApiResponse<int> HavaleYap(
-            string gonderenHesapNumara, string aliciHesapNumara, decimal gonderilenTutar, string kartNumara,int atmID)
+            string gonderenHesapNumara, string aliciHesapNumara, decimal gonderilenTutar, string kartNumara,int atmID, bool kendiHesaplarimArasiMi = false)
         {
             ApiResponse<int> HavaleYapApiResponse = new();
 
             var kullaniciHesaplari = _hesapRepository.MusterininTumHesaplariniGetir(kartNumara);
-            if (kullaniciHesaplari != null && kullaniciHesaplari.Any(h => h.HesapNumara.Trim() == aliciHesapNumara.Trim()))
+            bool aliciKendiHesabiMi = kullaniciHesaplari != null && kullaniciHesaplari.Any(h => h.HesapNumara.Trim() == aliciHesapNumara.Trim());
+
+            if (!kendiHesaplarimArasiMi && aliciKendiHesabiMi)
             {
                 HavaleYapApiResponse.IslemBasariliMi = false;
-                HavaleYapApiResponse.Mesaj = "Kendi hesabınıza para gönderemezsiniz";
+                HavaleYapApiResponse.Mesaj = "Başkasının hesabına para transferi seçeneğinde kendi hesabınıza para gönderemezsiniz.";
+                return HavaleYapApiResponse;
+            }
+
+            if (kendiHesaplarimArasiMi && !aliciKendiHesabiMi)
+            {
+                HavaleYapApiResponse.IslemBasariliMi = false;
+                HavaleYapApiResponse.Mesaj = "Kendi hesaplarınız arası işlem seçeneğinde başkasının hesabına para gönderemezsiniz.";
                 return HavaleYapApiResponse;
             }
 

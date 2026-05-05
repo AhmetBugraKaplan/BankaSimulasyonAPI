@@ -43,7 +43,8 @@ namespace BankaSimulasyon.Controllers
                 request.AliciHesapNumara,
                 request.GonderilenTutar,
                 request.KartNumara,
-                request.AtmId
+                request.AtmId,
+                request.KendiHesaplarimArasiMi
             );
 
             return Ok(sonuc);

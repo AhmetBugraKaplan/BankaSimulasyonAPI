@@ -13,17 +13,17 @@
 
       <div class="input-grup">
         <span class="input-label">Kart Numarası</span>
-        <input class="atm-input" type="text" placeholder="0000 0000 0000 0000" [(ngModel)]="kartNo"/>
+        <input class="atm-input" type="text" inputmode="numeric" maxlength="4" placeholder="0000" [(ngModel)]="kartNo" (input)="$any($event.target).value = $any($event.target).value.replace(/[^0-9]/g, '')"/>
       </div>
 
       <div class="input-grup">
         <span class="input-label">Kart Şifresi</span>
-        <input class="atm-input" type="password" placeholder="••••" [(ngModel)]="kartSifre"/>
+        <input class="atm-input" type="password" inputmode="numeric" maxlength="3" placeholder="•••" [(ngModel)]="kartSifre" (input)="$any($event.target).value = $any($event.target).value.replace(/[^0-9]/g, '')"/>
       </div>
 
       <div class="input-grup">
         <span class="input-label">ATM ID</span>
-        <input class="atm-input" type="text" placeholder="ATM Numarası" [(ngModel)]="atmId"/>
+        <input class="atm-input" type="text" inputmode="numeric" placeholder="ATM Numarası" [(ngModel)]="atmId" (input)="$any($event.target).value = $any($event.target).value.replace(/[^0-9]/g, '')"/>
       </div>
 
       @if (hataMesaji) {

@@ -16,4 +16,8 @@ export class CeptenAlParaayal {
     sessionStorage.clear();
     this.router.navigate(['/']);
   }
+
+  kartsizMenu(): void {
+    this.router.navigate(['/kartsiz-islem-menu']);
+  }
 }

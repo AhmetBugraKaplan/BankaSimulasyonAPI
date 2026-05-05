@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -23,5 +23,7 @@ namespace BankaSimulasyon.Models.Requests.HesapRequest
         [Required(ErrorMessage="ID zorunludur")]
         [Range(1, int.MaxValue, ErrorMessage="Gecerli bir ID giriniz")]
         public int AtmId { get; set; }
+        
+        public bool KendiHesaplarimArasiMi { get; set; }
     }
 }

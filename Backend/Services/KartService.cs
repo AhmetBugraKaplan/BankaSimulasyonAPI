@@ -358,9 +358,12 @@ namespace BankaSimulasyon.Services
 
             _kartRepository.CikisYap(token, expireDate);
 
+
+            //Veriyi cache'de expire minutes kadar tutuyor sonrasında otomatik kendisi siliyor.
             var cacheOptions = new MemoryCacheEntryOptions().
                                     SetAbsoluteExpiration(TimeSpan.FromMinutes(dakika));
-
+            
+            //Cache token'imizi BL_ başlığı ile kaydediyoruz yukarıda tanımladığımız ayarlar ile set ediyoruz.
             _memoryCache.Set("BL_" + token, true ,cacheOptions);
 
             

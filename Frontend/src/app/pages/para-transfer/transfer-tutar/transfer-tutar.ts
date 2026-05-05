@@ -81,7 +81,8 @@ export class TransferTutar implements OnInit {
       AliciHesapNumara: this.aliciHesapNumara,
       GonderilenTutar: this.tutar,
       KartNumara: kartNo,
-      atmId: parseInt(sessionStorage.getItem("atmId")!!)
+      atmId: parseInt(sessionStorage.getItem("atmId")!!),
+      KendiHesaplarimArasiMi: this.havaletipi === 'HesaplarimArasi'
     };
 
     forkJoin({

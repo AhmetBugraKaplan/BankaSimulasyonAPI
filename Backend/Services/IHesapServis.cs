@@ -12,7 +12,7 @@ namespace BankaSimulasyon.Services
     {
         public ApiResponse<List<Hesap>> MusterininTumHesaplariniGetir(string kartNumara);
 
-        public ApiResponse<int> HavaleYap(string gonderenHesapNumara, string aliciHesapNumara, decimal gonderilenTutar, string kartNumara,int atmId);
+        public ApiResponse<int> HavaleYap(string gonderenHesapNumara, string aliciHesapNumara, decimal gonderilenTutar, string kartNumara,int atmId, bool kendiHesaplarimArasiMi = false);
 
         public ApiResponse<bool> HesapVarMi(string hesapNumara);
 
