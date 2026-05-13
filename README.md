@@ -1,5 +1,5 @@
 
-**Vakıfbank** ATM ekibinde gerçekleştirdiğim bu proje, gerçek dünya standartlarında bir ATM uygulamasının tüm uçtan uca (End-to-End) süreçlerini simüle eden, güçlü bir **ASP.NET Core Web API** arka planına ve modern bir **Angular** arayüzüne sahip Full-Stack bankacılık uygulamasıdır. Mimarisi, güvenlik önlemleri ve iş mantığı (Business Logic) kurumsal ölçekli bir bankacılık altyapısı örnek alınarak tasarlanmıştır.
+**Vakıfbank** ATM ekibinde stajyer yazılım mühendisi olarak gerçekleştirdiğim bu proje, gerçek dünya standartlarında bir ATM uygulamasının tüm uçtan uca (End-to-End) süreçlerini simüle eden, güçlü bir **ASP.NET Core Web API** arka planına ve modern bir **Angular** arayüzüne sahip Full-Stack bankacılık uygulamasıdır. Mimarisi, güvenlik önlemleri ve iş mantığı (Business Logic) kurumsal ölçekli bir bankacılık altyapısı örnek alınarak tasarlanmıştır.
 
 ---
 
