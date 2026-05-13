@@ -1,4 +1,3 @@
-<img width="1907" height="904" alt="AtmSimulasyonGirişEkrani" src="https://github.com/user-attachments/assets/18116d0d-13d8-4c5d-95da-84b32ab16214" /># 🏦 VakıfBank ATM Simülasyonu (Full-Stack Banking Project)
 
 **Vakıfbank** ATM ekibinde gerçekleştirdiğim bu proje, gerçek dünya standartlarında bir ATM uygulamasının tüm uçtan uca (End-to-End) süreçlerini simüle eden, güçlü bir **ASP.NET Core Web API** arka planına ve modern bir **Angular** arayüzüne sahip Full-Stack bankacılık uygulamasıdır. Mimarisi, güvenlik önlemleri ve iş mantığı (Business Logic) kurumsal ölçekli bir bankacılık altyapısı örnek alınarak tasarlanmıştır.
 
