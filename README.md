@@ -1,6 +1,6 @@
-# 🏦 VakıfBank ATM Simülasyonu (Full-Stack Banking Project)
+<img width="1907" height="904" alt="AtmSimulasyonGirişEkrani" src="https://github.com/user-attachments/assets/18116d0d-13d8-4c5d-95da-84b32ab16214" /># 🏦 VakıfBank ATM Simülasyonu (Full-Stack Banking Project)
 
-Bu proje, gerçek dünya standartlarında bir ATM uygulamasının tüm uçtan uca (End-to-End) süreçlerini simüle eden, güçlü bir **ASP.NET Core Web API** arka planına ve modern bir **Angular** arayüzüne sahip Full-Stack bankacılık uygulamasıdır. Mimarisi, güvenlik önlemleri ve iş mantığı (Business Logic) kurumsal ölçekli bir bankacılık altyapısı örnek alınarak tasarlanmıştır.
+**Vakıfbank** ATM ekibinde gerçekleştirdiğim bu proje, gerçek dünya standartlarında bir ATM uygulamasının tüm uçtan uca (End-to-End) süreçlerini simüle eden, güçlü bir **ASP.NET Core Web API** arka planına ve modern bir **Angular** arayüzüne sahip Full-Stack bankacılık uygulamasıdır. Mimarisi, güvenlik önlemleri ve iş mantığı (Business Logic) kurumsal ölçekli bir bankacılık altyapısı örnek alınarak tasarlanmıştır.
 
 ---
 
@@ -8,15 +8,18 @@ Bu proje, gerçek dünya standartlarında bir ATM uygulamasının tüm uçtan uc
 
 ### 1. Sisteme Giriş (Login) & Kartsız İşlemler
 Kullanıcılar kart numarası, şifre ve fiziksel ATM kimliği (ATM ID) ile güvenli giriş yapabilirler.
-![Login Ekranı](assets/login.png)
+![Login Ekranı]<img width="1907" height="904" alt="AtmSimulasyonGirişEkrani" src="https://github.com/user-attachments/assets/8a3a00b2-4266-4929-af12-250f608cb57b" />
+
 
 ### 2. Ana Menü
 Sisteme giriş yapıldıktan sonra kullanıcıyı karşılayan, tüm işlemlerin yönetildiği merkezi menü.
-![Ana Menü](assets/main-menu.png)
+![Ana Menü]<img width="1900" height="890" alt="AtmSimulasyonIslemMenusu" src="https://github.com/user-attachments/assets/d1cae2e5-fa8d-480c-9ef5-b24c643ceadd" />
+
 
 ### 3. Hesap Seçimi & Transferler
 Havale (Başka Hesaba) ve Virman (Kendi Hesaplarım Arası) işlemleri için dinamik hesap seçim ekranı.
-![Hesap Seçimi](assets/account-selection.png)
+![Hesap Seçimi]<img width="1868" height="866" alt="AtmSimulasyonGonderilecekTutar" src="https://github.com/user-attachments/assets/22a9299f-1f1a-46da-99e8-04344889a1f7" />
+
 
 ---
 
@@ -94,5 +97,5 @@ Tarayıcınızdan `http://localhost:4200` adresine giderek ATM simülasyonunu ku
 
 ## 👨‍💻 Geliştirici
 
-**[Senin Adın/Soyadın veya GitHub Kullanıcı Adın]**
+**[Ahmet Buğra Kaplan/]**
 Bu proje, ileri seviye bankacılık yazılım süreçlerinin analiz edilip uygulanması amacıyla geliştirilmiştir. Staj ve mülakat süreçlerinde teknik bir referans olarak sunulmuştur.
