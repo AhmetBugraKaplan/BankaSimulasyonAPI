@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BankaSimulasyon.Models.Requests.OnayRequest;
 using BankaSimulasyon.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -22,7 +23,7 @@ namespace BankaSimulasyon.Controllers
             _smsService = smsService;
         }
 
-        
+        [AllowAnonymous]
         [HttpPost("OnayKoduDogruMu")]
         public IActionResult OnayKoduDogruMu([FromBody] OnayKoduDogruMuRequest request)
         {
@@ -30,6 +31,7 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        [AllowAnonymous]
         [HttpPost("OnayKoduUret")]
         public IActionResult OnayKoduUret([FromBody] OnayKoduUretRequest request)
         {

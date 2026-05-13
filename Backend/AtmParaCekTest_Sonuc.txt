@@ -19,84 +19,84 @@
   190 TL ✓  100TL x1 + 50TL x1 + 20TL x2  (4 banknot)
   200 TL ✓  100TL x1 + 50TL x2  (3 banknot)
   210 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  220 TL ✓  100TL x2 + 20TL x1  (3 banknot)
+  220 TL ✓  200TL x1 + 20TL x1  (2 banknot)
   230 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  240 TL ✓  100TL x2 + 20TL x2  (4 banknot)
-  250 TL ✓  100TL x2 + 50TL x1  (3 banknot)
+  240 TL ✓  200TL x1 + 20TL x2  (3 banknot)
+  250 TL ✓  200TL x1 + 50TL x1  (2 banknot)
   260 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  270 TL ✓  100TL x2 + 50TL x1 + 20TL x1  (4 banknot)
+  270 TL ✓  200TL x1 + 50TL x1 + 20TL x1  (3 banknot)
   280 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  290 TL ✓  100TL x2 + 50TL x1 + 20TL x2  (5 banknot)
-  300 TL ✓  100TL x2 + 50TL x2  (4 banknot)
+  290 TL ✓  200TL x1 + 50TL x1 + 20TL x2  (4 banknot)
+  300 TL ✓  200TL x1 + 50TL x2  (3 banknot)
   310 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  320 TL ✓  100TL x3 + 20TL x1  (4 banknot)
+  320 TL ✓  200TL x1 + 100TL x1 + 20TL x1  (3 banknot)
   330 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  340 TL ✓  100TL x3 + 20TL x2  (5 banknot)
-  350 TL ✓  100TL x3 + 50TL x1  (4 banknot)
+  340 TL ✓  200TL x1 + 100TL x1 + 20TL x2  (4 banknot)
+  350 TL ✓  200TL x1 + 100TL x1 + 50TL x1  (3 banknot)
   360 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  370 TL ✓  100TL x3 + 50TL x1 + 20TL x1  (5 banknot)
+  370 TL ✓  200TL x1 + 100TL x1 + 50TL x1 + 20TL x1  (4 banknot)
   380 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  390 TL ✓  100TL x3 + 50TL x1 + 20TL x2  (6 banknot)
-  400 TL ✓  100TL x3 + 50TL x2  (5 banknot)
+  390 TL ✓  200TL x1 + 100TL x1 + 50TL x1 + 20TL x2  (5 banknot)
+  400 TL ✓  200TL x1 + 100TL x1 + 50TL x2  (4 banknot)
   410 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  420 TL ✓  100TL x4 + 20TL x1  (5 banknot)
+  420 TL ✓  200TL x2 + 20TL x1  (3 banknot)
   430 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  440 TL ✓  100TL x4 + 20TL x2  (6 banknot)
-  450 TL ✓  100TL x4 + 50TL x1  (5 banknot)
+  440 TL ✓  200TL x2 + 20TL x2  (4 banknot)
+  450 TL ✓  200TL x2 + 50TL x1  (3 banknot)
   460 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  470 TL ✓  100TL x4 + 50TL x1 + 20TL x1  (6 banknot)
+  470 TL ✓  200TL x2 + 50TL x1 + 20TL x1  (4 banknot)
   480 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  490 TL ✓  100TL x4 + 50TL x1 + 20TL x2  (7 banknot)
-  500 TL ✓  100TL x4 + 50TL x2  (6 banknot)
+  490 TL ✓  200TL x2 + 50TL x1 + 20TL x2  (5 banknot)
+  500 TL ✓  200TL x2 + 50TL x2  (4 banknot)
   510 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  520 TL ✓  100TL x5 + 20TL x1  (6 banknot)
+  520 TL ✓  200TL x2 + 100TL x1 + 20TL x1  (4 banknot)
   530 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  540 TL ✓  100TL x5 + 20TL x2  (7 banknot)
-  550 TL ✓  100TL x5 + 50TL x1  (6 banknot)
+  540 TL ✓  200TL x2 + 100TL x1 + 20TL x2  (5 banknot)
+  550 TL ✓  200TL x2 + 100TL x1 + 50TL x1  (4 banknot)
   560 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  570 TL ✓  100TL x5 + 50TL x1 + 20TL x1  (7 banknot)
+  570 TL ✓  200TL x2 + 100TL x1 + 50TL x1 + 20TL x1  (5 banknot)
   580 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  590 TL ✓  100TL x5 + 50TL x1 + 20TL x2  (8 banknot)
-  600 TL ✓  100TL x5 + 50TL x2  (7 banknot)
+  590 TL ✓  200TL x2 + 100TL x1 + 50TL x1 + 20TL x2  (6 banknot)
+  600 TL ✓  200TL x2 + 100TL x1 + 50TL x2  (5 banknot)
   610 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  620 TL ✓  100TL x6 + 20TL x1  (7 banknot)
+  620 TL ✓  200TL x3 + 20TL x1  (4 banknot)
   630 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  640 TL ✓  100TL x6 + 20TL x2  (8 banknot)
-  650 TL ✓  100TL x6 + 50TL x1  (7 banknot)
+  640 TL ✓  200TL x3 + 20TL x2  (5 banknot)
+  650 TL ✓  200TL x3 + 50TL x1  (4 banknot)
   660 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  670 TL ✓  100TL x6 + 50TL x1 + 20TL x1  (8 banknot)
+  670 TL ✓  200TL x3 + 50TL x1 + 20TL x1  (5 banknot)
   680 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  690 TL ✓  100TL x6 + 50TL x1 + 20TL x2  (9 banknot)
-  700 TL ✓  100TL x6 + 50TL x2  (8 banknot)
+  690 TL ✓  200TL x3 + 50TL x1 + 20TL x2  (6 banknot)
+  700 TL ✓  200TL x3 + 50TL x2  (5 banknot)
   710 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  720 TL ✓  100TL x7 + 20TL x1  (8 banknot)
+  720 TL ✓  200TL x3 + 100TL x1 + 20TL x1  (5 banknot)
   730 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  740 TL ✓  100TL x7 + 20TL x2  (9 banknot)
-  750 TL ✓  100TL x7 + 50TL x1  (8 banknot)
+  740 TL ✓  200TL x3 + 100TL x1 + 20TL x2  (6 banknot)
+  750 TL ✓  200TL x3 + 100TL x1 + 50TL x1  (5 banknot)
   760 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  770 TL ✓  100TL x7 + 50TL x1 + 20TL x1  (9 banknot)
+  770 TL ✓  200TL x3 + 100TL x1 + 50TL x1 + 20TL x1  (6 banknot)
   780 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  790 TL ✓  100TL x7 + 50TL x1 + 20TL x2  (10 banknot)
-  800 TL ✓  100TL x7 + 50TL x2  (9 banknot)
+  790 TL ✓  200TL x3 + 100TL x1 + 50TL x1 + 20TL x2  (7 banknot)
+  800 TL ✓  200TL x3 + 100TL x1 + 50TL x2  (6 banknot)
   810 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  820 TL ✓  100TL x8 + 20TL x1  (9 banknot)
+  820 TL ✓  200TL x4 + 20TL x1  (5 banknot)
   830 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  840 TL ✓  100TL x8 + 20TL x2  (10 banknot)
-  850 TL ✓  100TL x8 + 50TL x1  (9 banknot)
+  840 TL ✓  200TL x4 + 20TL x2  (6 banknot)
+  850 TL ✓  200TL x4 + 50TL x1  (5 banknot)
   860 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  870 TL ✓  100TL x8 + 50TL x1 + 20TL x1  (10 banknot)
+  870 TL ✓  200TL x4 + 50TL x1 + 20TL x1  (6 banknot)
   880 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  890 TL ✓  100TL x8 + 50TL x1 + 20TL x2  (11 banknot)
-  900 TL ✓  100TL x8 + 50TL x2  (10 banknot)
+  890 TL ✓  200TL x4 + 50TL x1 + 20TL x2  (7 banknot)
+  900 TL ✓  200TL x4 + 50TL x2  (6 banknot)
   910 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  920 TL ✓  100TL x9 + 20TL x1  (10 banknot)
+  920 TL ✓  200TL x4 + 100TL x1 + 20TL x1  (6 banknot)
   930 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  940 TL ✓  100TL x9 + 20TL x2  (11 banknot)
-  950 TL ✓  100TL x9 + 50TL x1  (10 banknot)
+  940 TL ✓  200TL x4 + 100TL x1 + 20TL x2  (7 banknot)
+  950 TL ✓  200TL x4 + 100TL x1 + 50TL x1  (6 banknot)
   960 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  970 TL ✓  100TL x9 + 50TL x1 + 20TL x1  (11 banknot)
+  970 TL ✓  200TL x4 + 100TL x1 + 50TL x1 + 20TL x1  (7 banknot)
   980 TL ✗  Kupurler uyusmuyor, islem gerceklestirilemedi
-  990 TL ✓  100TL x9 + 50TL x1 + 20TL x2  (12 banknot)
- 1000 TL ✓  100TL x9 + 50TL x2  (11 banknot)
+  990 TL ✓  200TL x4 + 100TL x1 + 50TL x1 + 20TL x2  (8 banknot)
+ 1000 TL ✓  200TL x4 + 100TL x1 + 50TL x2  (7 banknot)
 
 ÖZET: 60 başarılı / 40 başarısız

@@ -47,6 +47,7 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        [AllowAnonymous]
         [HttpPost("KartSifreGuncelle")]
         public IActionResult KartSifreGuncelle([FromBody] KartSifreGuncelleRequest request)
         {
@@ -101,7 +102,7 @@ namespace BankaSimulasyon.Controllers
 
 
 
-
+        [AllowAnonymous]
         [HttpPost("KartGunlukLimitGuncelle")]
         public IActionResult KartGunlukLimitGuncelle([FromBody] KartGunlukLimitGuncelleRequest request)
         {
@@ -129,7 +130,7 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
-
+        [Authorize]
         [HttpPost("KartNumaraIleMusteriIdGetir")]
         public IActionResult KartNumaraIleMusteriIdGetir([FromBody] KartNumaraIleMusteriIdGetirRequest request)
         {
@@ -140,6 +141,7 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        [AllowAnonymous]
         [HttpPost("CikisYap")]
         public IActionResult CikisYap()
         {

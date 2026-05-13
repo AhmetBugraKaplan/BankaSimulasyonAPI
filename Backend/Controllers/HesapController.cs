@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BankaSimulasyon.Models.Requests.HesapRequest;
 using BankaSimulasyon.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankaSimulasyon.Controllers
@@ -19,6 +20,7 @@ namespace BankaSimulasyon.Controllers
         }
 
 
+        [Authorize]
         [HttpPost("MusteriTumHesaplariGetir")]
         public IActionResult MusteriTumHesaplariGetir([FromBody] MusteriTumHesaplariGetirRequest request)
         {
@@ -32,6 +34,7 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        [Authorize]
         [HttpPost("HavaleYap")]
         public IActionResult HavaleYap([FromBody] HavaleYapRequest request)
         {
@@ -50,6 +53,7 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        [Authorize]
         [HttpPost("HesapVarMi")]
         public IActionResult HesapVarMi([FromBody] HesapVarMiRequest request)
         {
@@ -60,6 +64,7 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        [Authorize]
         [HttpPost("HesapVarMiTelNoIle")]
         public IActionResult HesapVarMiTelNoIle([FromBody] HesapVarMiTelefonNoIleRequest request)
         {
@@ -70,6 +75,7 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        [AllowAnonymous]
         [HttpPost("HesabaKartsizParaGonder")]
         public IActionResult HesabaKartsizParaGonder([FromBody] HesabaKartsizParaGonderRequest request)
         {
@@ -84,7 +90,7 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
-
+        [Authorize]
         [HttpPost("CebeParaGonder")]
         public IActionResult CebeParaGonder([FromBody] CebeParaGonderRequest request)
         {
@@ -101,6 +107,7 @@ namespace BankaSimulasyon.Controllers
             return Ok(sonuc);
         }
 
+        [AllowAnonymous]
         [HttpPost("CebeParaCek")]
         public IActionResult CebeParaCek([FromBody] CebeParaCekRequest request)
         {

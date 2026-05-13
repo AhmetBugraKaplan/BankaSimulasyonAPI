@@ -54,7 +54,7 @@ namespace BankaSimulasyon.Services
         }
 
         public ApiResponse<int> HavaleYap(
-            string gonderenHesapNumara, string aliciHesapNumara, decimal gonderilenTutar, string kartNumara,int atmID, bool kendiHesaplarimArasiMi = false)
+            string gonderenHesapNumara, string aliciHesapNumara, decimal gonderilenTutar, string kartNumara, int atmID, bool kendiHesaplarimArasiMi = false)
         {
             ApiResponse<int> HavaleYapApiResponse = new();
 
@@ -111,13 +111,13 @@ namespace BankaSimulasyon.Services
                     decimal aliciIslemSonrasiBakiye = _hesapRepository.HesapBakiyeGetir(aliciHesapNumara);
                     //İşlem geçmişini kaydediyoruz.
                     _hesapRepository.IslemGecmisiEkleCiftTarafli(gonderenHesapNumara, aliciHesapNumara, "Havale", gonderilenTutar,
-                    gonderenIslemSonrasiBakiye, aliciIslemSonrasiBakiye,atmID,"","");
+                    gonderenIslemSonrasiBakiye, aliciIslemSonrasiBakiye, atmID, "", "");
 
                     transaction.Commit();
 
                     HavaleYapApiResponse.IslemBasariliMi = true;
                     HavaleYapApiResponse.Mesaj = "Başkasının hesabına para yatırma işlemi başarıyla gerçekleşti";
-                    
+
                     return HavaleYapApiResponse;
                 }
                 catch (Exception)
@@ -160,10 +160,10 @@ namespace BankaSimulasyon.Services
                 int sonuc = _hesapRepository.HesabaKartsizParaGonder(hesapNumara, gonderilecekTutar);
 
                 if (sonuc == 1)
-                {   
+                {
                     decimal guncelBakiye = _hesapRepository.HesapBakiyeGetir(hesapNumara);
-                    _hesapRepository.IslemGecmisiEkleCiftTarafli("",hesapNumara,"Kartsiz Para Gönderme",gonderilecekTutar,0,guncelBakiye,7,
-                    "Kartısz Para Gönderdiniz","Hesabınıza Kartsız Para Gönderildi.");
+                    _hesapRepository.IslemGecmisiEkleCiftTarafli("", hesapNumara, "Kartsiz Para Gönderme", gonderilecekTutar, 0, guncelBakiye, 7,
+                    "Kartısz Para Gönderdiniz", "Hesabınıza Kartsız Para Gönderildi.");
                     response.IslemBasariliMi = true;
                     response.Data = sonuc;
                     response.Mesaj = "Para transferi başarıyla gerçekleşti.";
@@ -236,8 +236,8 @@ namespace BankaSimulasyon.Services
                     }
 
                     decimal gonderenHesapGuncelBakiye = _hesapRepository.HesapBakiyeGetir(gonderenHesapNo);
-                    
-                    _hesapRepository.IslemGecmisiEkleCiftTarafli(gonderenHesapNo,"","Cebe Para Al/Gönder",gonderilenTutar,gonderenHesapGuncelBakiye,gonderilenTutar,7,"Cebe para gönderildi.","Cebe para geldi.");
+
+                    _hesapRepository.IslemGecmisiEkleCiftTarafli(gonderenHesapNo, "", "Cebe Para Al/Gönder", gonderilenTutar, gonderenHesapGuncelBakiye, gonderilenTutar, 7, "Cebe para gönderildi.", "Cebe para geldi.");
 
                     transaction.Commit();
 
@@ -261,7 +261,7 @@ namespace BankaSimulasyon.Services
         {
             ApiResponse<object> CebeParaCekApiResponse = new();
 
-
+            // 1. Validation
             if (tutar <= 0)
             {
                 CebeParaCekApiResponse.IslemBasariliMi = false;
@@ -269,21 +269,37 @@ namespace BankaSimulasyon.Services
                 return CebeParaCekApiResponse;
             }
 
-            // 2. SP çağır (eşleşme + süre + Durum güncelle)
-            CebeSpResponse spSonuc = _hesapRepository.CebeParaCek(
-                aliciTckNO, aliciTelNo, gonderenTelNo, tutar);
-
-            if (spSonuc.Sonuc == 0)
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                CebeParaCekApiResponse.IslemBasariliMi = false;
-                CebeParaCekApiResponse.Mesaj = spSonuc.Mesaj;
-                return CebeParaCekApiResponse;
-            }
+                try
+                {
+                    // 2. SP çağır (eşleşme + süre + Durum güncelle)
+                    CebeSpResponse spSonuc = _hesapRepository.CebeParaCek(
+                        aliciTckNO, aliciTelNo, gonderenTelNo, tutar);
 
-            // 3. Başarılı response
-            CebeParaCekApiResponse.IslemBasariliMi = true;
-            CebeParaCekApiResponse.Mesaj = spSonuc.Mesaj;
-            return CebeParaCekApiResponse;
+                    if (spSonuc.Sonuc == 0)
+                    {
+                        transaction.Rollback();
+                        CebeParaCekApiResponse.IslemBasariliMi = false;
+                        CebeParaCekApiResponse.Mesaj = spSonuc.Mesaj;
+                        return CebeParaCekApiResponse;
+                    }
+
+                    transaction.Commit();
+
+                    // 4. Başarılı response
+                    CebeParaCekApiResponse.IslemBasariliMi = true;
+                    CebeParaCekApiResponse.Mesaj = spSonuc.Mesaj;
+                    return CebeParaCekApiResponse;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    CebeParaCekApiResponse.IslemBasariliMi = false;
+                    CebeParaCekApiResponse.Mesaj = "İşlem sırasında beklenmedik bir hata oluştu: " + ex.Message;
+                    return CebeParaCekApiResponse;
+                }
+            }
         }
 
 
